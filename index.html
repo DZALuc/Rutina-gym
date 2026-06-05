@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0c0d0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Bloque Offseason — Jimmy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0d0e;
+    --surface:#16181a;
+    --surface-2:#1d2023;
+    --line:#2a2e32;
+    --text:#eef1f2;
+    --muted:#8b9296;
+    --faint:#5c6266;
+    --volt:#c8fb3d;
+    --volt-dim:#9bc62c;
+    --amber:#ff9d2e;
+    --amber-dim:#3a2a14;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Archivo',sans-serif;
+    line-height:1.5;
+    padding-bottom:60px;
+    background-image:radial-gradient(circle at 80% -10%, rgba(200,251,61,0.07), transparent 45%);
+  }
+
+  /* ---- Header ---- */
+  header{
+    padding:max(env(safe-area-inset-top),18px) 20px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .kicker{
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--volt-dim);font-weight:700;margin-bottom:6px;
+  }
+  h1{
+    font-family:'Anton',sans-serif;font-weight:400;
+    font-size:clamp(34px,11vw,46px);line-height:.92;
+    letter-spacing:.01em;text-transform:uppercase;
+  }
+  h1 .accent{color:var(--volt);}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:8px;max-width:34ch;}
+  .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .chip{
+    font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:600;
+    background:var(--surface);border:1px solid var(--line);
+    padding:5px 10px;border-radius:99px;color:var(--muted);
+  }
+  .chip b{color:var(--text);}
+
+  /* ---- Day tabs ---- */
+  .tabs{
+    position:sticky;top:0;z-index:30;
+    background:rgba(12,13,14,.86);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    display:flex;gap:6px;overflow-x:auto;padding:10px 14px;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;border:1px solid var(--line);background:var(--surface);
+    color:var(--muted);border-radius:11px;padding:8px 13px;cursor:pointer;
+    font-weight:700;font-size:13px;display:flex;flex-direction:column;
+    align-items:center;line-height:1.15;transition:.18s;min-width:54px;
+  }
+  .tab small{font-family:'Spline Sans Mono',monospace;font-size:9px;font-weight:600;color:var(--faint);letter-spacing:.05em;text-transform:uppercase;margin-top:2px;}
+  .tab.active{background:var(--volt);color:#0c0d0e;border-color:var(--volt);}
+  .tab.active small{color:#0c0d0e;opacity:.7;}
+
+  /* ---- Panels ---- */
+  main{padding:20px 16px 0;}
+  .panel{display:none;animation:fade .3s ease;}
+  .panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .day-head{margin-bottom:18px;}
+  .day-title{
+    font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    font-size:30px;line-height:1;letter-spacing:.01em;
+  }
+  .day-focus{
+    display:inline-block;margin-top:8px;font-size:12px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.12em;color:var(--volt);
+    border:1px solid var(--volt-dim);padding:4px 10px;border-radius:99px;
+  }
+
+  /* ---- Exercise card ---- */
+  .ex{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:15px 15px 14px;margin-bottom:11px;
+    position:relative;transition:.2s;
+  }
+  .ex.fst{border-color:var(--amber);background:linear-gradient(180deg,var(--amber-dim),var(--surface) 60%);}
+  .ex.done{opacity:.45;}
+  .ex.done .ex-name{text-decoration:line-through;text-decoration-color:var(--faint);}
+  .ex-top{display:flex;align-items:flex-start;gap:12px;}
+  .num{
+    font-family:'Anton',sans-serif;font-size:22px;color:var(--faint);
+    line-height:1;min-width:24px;padding-top:2px;
+  }
+  .ex.fst .num{color:var(--amber);}
+  .ex-body{flex:1;min-width:0;}
+  .ex-name{font-weight:700;font-size:15.5px;line-height:1.25;}
+  .ex-sets{
+    display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap;
+  }
+  .sets-badge{
+    font-family:'Spline Sans Mono',monospace;font-weight:600;font-size:13px;
+    background:var(--surface-2);border:1px solid var(--line);
+    padding:3px 9px;border-radius:7px;color:var(--text);white-space:nowrap;
+  }
+  .ex.fst .sets-badge{background:rgba(255,157,46,.14);border-color:var(--amber);color:#ffce93;}
+  .rest{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--faint);}
+  .fst-tag{
+    font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--amber);color:#211404;padding:3px 7px;border-radius:6px;
+  }
+  .cue{
+    font-size:13px;color:var(--muted);margin-top:9px;
+    border-top:1px dashed var(--line);padding-top:9px;
+  }
+  .cue b{color:var(--text);font-weight:600;}
+  /* done toggle */
+  .check{
+    position:absolute;top:13px;right:13px;width:24px;height:24px;
+    border:1.5px solid var(--line);border-radius:7px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;background:var(--surface-2);
+    transition:.15s;
+  }
+  .check svg{width:14px;height:14px;opacity:0;transform:scale(.5);transition:.15s;}
+  .ex.done .check{background:var(--volt);border-color:var(--volt);}
+  .ex.done .check svg{opacity:1;transform:scale(1);}
+  .check svg path{stroke:#0c0d0e;}
+
+  .reset{
+    width:100%;margin:6px 0 30px;padding:12px;border-radius:12px;
+    background:transparent;border:1px solid var(--line);color:var(--muted);
+    font-family:'Archivo';font-weight:600;font-size:13px;cursor:pointer;
+  }
+  .reset:active{background:var(--surface);}
+
+  /* ---- Notas ---- */
+  .note-block{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;margin-bottom:14px;
+  }
+  .note-block h3{
+    font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+    font-size:19px;letter-spacing:.02em;margin-bottom:10px;color:var(--volt);
+  }
+  .note-block.amberblk h3{color:var(--amber);}
+  .note-block p{font-size:13.5px;color:var(--muted);margin-bottom:9px;}
+  .note-block p:last-child{margin-bottom:0;}
+  .note-block b{color:var(--text);font-weight:600;}
+  .note-block ul{list-style:none;margin-top:4px;}
+  .note-block li{font-size:13.5px;color:var(--muted);padding-left:18px;position:relative;margin-bottom:7px;}
+  .note-block li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;background:var(--volt-dim);}
+  .note-block.amberblk li::before{background:var(--amber);}
+
+  footer{text-align:center;color:var(--faint);font-size:11px;padding:8px 0 20px;font-family:'Spline Sans Mono',monospace;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Bloque Hipertrofia · PPL ×2</div>
+  <h1>Modo <span class="accent">Offseason</span></h1>
+  <p class="sub">6 días, cada músculo 2× por semana. Objetivo único: meter masa.</p>
+  <div class="meta-row">
+    <span class="chip">RPE <b>8–10</b></span>
+    <span class="chip">Compuestos <b>2–3 min</b></span>
+    <span class="chip">Aislados <b>60–90 s</b></span>
+    <span class="chip"><b>FST-7</b> 30–45 s</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-day="lun">LUN<small>Push A</small></button>
+  <button class="tab" data-day="mar">MAR<small>Pull A</small></button>
+  <button class="tab" data-day="mie">MIÉ<small>Legs A</small></button>
+  <button class="tab" data-day="jue">JUE<small>Push B</small></button>
+  <button class="tab" data-day="vie">VIE<small>Pull B</small></button>
+  <button class="tab" data-day="sab">SÁB<small>Legs B</small></button>
+  <button class="tab" data-day="notas">NOTAS<small>Reglas</small></button>
+</nav>
+
+<main id="main"></main>
+
+<footer>Doble progresión · Deload cada 6–8 sem · Domingo descanso</footer>
+
+<script>
+const DAYS = {
+  lun:{title:"Push A", focus:"Pecho énfasis", ex:[
+    {n:"Press inclinado mancuerna", s:"4 × 6–10", r:"2–3 min", cue:"Banco a 30°. Baja <b>controlado (2–3 s)</b>, codos ~45°, ROM completo. Sube de 35 kg cuando saques 10 limpias."},
+    {n:"Press plano máquina o barra", s:"4 × 8–12", r:"2 min", cue:"Pecho medio. Aprieta arriba, estira abajo sin rebotar."},
+    {n:"Aperturas pec deck o polea", s:"7 × 10–12", r:"30–45 s", fst:true, cue:"Remate del pecho. Peso moderado, busca el <b>estiramiento</b> entre series. La quemazón de las series 5–7 es el objetivo."},
+    {n:"Press hombro mancuerna", s:"3 × 8–12", r:"90 s", cue:"No bloquees del todo arriba para mantener tensión en el deltoide."},
+    {n:"Elevaciones laterales", s:"4 × 12–15", r:"60 s", cue:"Último set <b>dropset</b>. Sube con codos, no con muñecas. Sin balanceo."},
+    {n:"Tríceps en polea (pushdown)", s:"3 × 10–12", r:"60 s", cue:"Codos pegados al cuerpo, extiende completo."},
+    {n:"Extensión tríceps sobre cabeza", s:"3 × 10–12", r:"60 s", cue:"Estira la <b>cabeza larga</b> bajando bien atrás de la cabeza."}
+  ]},
+  mar:{title:"Pull A", focus:"Espalda grosor", ex:[
+    {n:"Dominadas con lastre o jalón al pecho", s:"4 × 6–10", r:"2–3 min", cue:"Lleva los codos al bolsillo, pecho arriba. Estira completo abajo."},
+    {n:"Remo con barra o T-bar", s:"4 × 8–10", r:"2 min", cue:"Torso ~45°, espalda neutra. Jala hacia el ombligo, aprieta escápulas."},
+    {n:"Remo en máquina con apoyo de pecho", s:"3 × 10–12", r:"90 s", cue:"El apoyo quita el balanceo: aísla la espalda, no uses lumbar."},
+    {n:"Pullover en polea", s:"3 × 12–15", r:"90 s", cue:"Brazos casi rectos. Siente el <b>dorsal estirado</b> arriba."},
+    {n:"Deltoide posterior (pec deck inverso)", s:"3 × 15", r:"60 s", cue:"Reps altas, peso ligero. Abre con los codos."},
+    {n:"Curl con barra", s:"3 × 8–10", r:"90 s", cue:"Codos quietos pegados al torso. Sin impulso de cadera."},
+    {n:"Curl inclinado mancuerna", s:"3 × 10–12", r:"60 s", cue:"Banco inclinado = bíceps en <b>estiramiento</b>. Brazos atrás del cuerpo."},
+    {n:"Curl en polea", s:"7 × 12", r:"30–45 s", fst:true, cue:"Remate de bíceps. Tensión constante de la polea, bombeo brutal."}
+  ]},
+  mie:{title:"Legs A", focus:"Cuádriceps énfasis", ex:[
+    {n:"Sentadilla", s:"4 × 6–10", r:"3 min", cue:"Baja al menos paralelo, espalda neutra, empuja el piso con todo el pie."},
+    {n:"Hack squat", s:"4 × 8–10", r:"2 min", cue:"Aquí <b>aprietas</b> (vienes fuerte con 130). Excéntrica lenta + <b>partials abajo</b> al cerrar."},
+    {n:"Prensa", s:"3 × 10–12", r:"2 min", cue:"Pies medios. ROM completo sin despegar el sacro del respaldo."},
+    {n:"Extensión de cuádriceps", s:"7 × 10–12", r:"30–45 s", fst:true, cue:"Remate. Aprieta 1 s arriba cada rep. Las últimas series queman: ese es el punto."},
+    {n:"Curl femoral tumbado", s:"3 × 10–12", r:"60 s", cue:"Algo de isquio para equilibrar la rodilla. Controla la bajada."},
+    {n:"Gemelo de pie", s:"4 × 8–10", r:"60 s", cue:"<b>Pausa de estiramiento abajo</b> 1–2 s, sube hasta la punta."},
+    {n:"Core — Crunch en polea (arrodillado)", s:"3 × 12–15", r:"45 s", cue:"Con peso, redondea la espalda. Trátalo como músculo a hipertrofiar."},
+    {n:"Core — Elevación de piernas colgado", s:"3 × 12–15", r:"45 s", cue:"Sube con el abdomen bajo, sin balancear las piernas."}
+  ]},
+  jue:{title:"Push B", focus:"Hombro énfasis", ex:[
+    {n:"Press militar de pie o press hombro máquina", s:"4 × 6–10", r:"2–3 min", cue:"Compuesto pesado, va primero. De pie = más estabilizadores; máquina = más aislamiento."},
+    {n:"Press inclinado máquina", s:"3 × 10–12", r:"90 s", cue:"Pecho superior en segundo plano. Reps altas, trabajo secundario."},
+    {n:"Fondos (dips)", s:"3 × 8–12", r:"90 s", cue:"Pecho bajo y tríceps. Si los dominas con peso corporal, agrega lastre."},
+    {n:"Elevaciones laterales", s:"7 × 12–15", r:"30–45 s", fst:true, cue:"<b>Protagonista del día</b>: deltoide medial = hombro ancho. Bombeo de las 7 series."},
+    {n:"Aperturas en polea", s:"3 × 12–15", r:"60 s", cue:"Cierre de pecho en estiramiento."},
+    {n:"Rompecráneos → pushdown dropset", s:"3 × 10", r:"60 s", cue:"Estira la cabeza larga; en el último set encadena <b>dropset</b> en polea sin descanso."},
+    {n:"Posterior de hombro de cierre", s:"3 × 15", r:"45 s", cue:"Equilibra el deltoide posterior que siempre queda corto. Reps altas."}
+  ]},
+  vie:{title:"Pull B", focus:"Espalda amplitud + brazo", ex:[
+    {n:"Jalón agarre neutro o abierto", s:"4 × 8–10", r:"2 min", cue:"Agarre distinto al martes = busca <b>amplitud</b> (las 'alas'). Codos abajo y atrás."},
+    {n:"Remo en polea baja", s:"3 × 10–12", r:"90 s", cue:"Torso firme, jala al abdomen, escápulas atrás."},
+    {n:"Remo unilateral con mancuerna", s:"3 × 10–12", r:"60 s/lado", cue:"Rango largo, estira abajo. Corrige asimetrías."},
+    {n:"Pullover o pull-around en polea", s:"3 × 12–15", r:"60 s", cue:"Aislamiento de dorsal en arco amplio."},
+    {n:"Encogimientos (trapecio)", s:"3 × 12–15", r:"60 s", cue:"Sube los hombros recto hacia las orejas, pausa arriba. Sin rodar."},
+    {n:"Curl martillo", s:"3 × 10–12", r:"60 s", cue:"Agarre neutro = braquial y antebrazo, da grosor al brazo."},
+    {n:"Curl predicador", s:"7 × 12", r:"30–45 s", fst:true, cue:"Remate de bíceps con el brazo fijo. Bombeo total, no sueltes la tensión."}
+  ]},
+  sab:{title:"Legs B", focus:"Cadena posterior énfasis", ex:[
+    {n:"Peso muerto rumano", s:"4 × 6–10", r:"2–3 min", cue:"Isquio en <b>estiramiento</b>, no busques 1RM. Cadera atrás, barra pegada, espalda neutra."},
+    {n:"Prensa con pies altos", s:"4 × 10–12", r:"2 min", cue:"Pies arriba en la plataforma = más glúteo e isquio."},
+    {n:"Hip thrust", s:"3 × 8–12", r:"90 s", cue:"Motor de la cadera. Aprieta glúteo 1 s arriba, barbilla metida."},
+    {n:"Curl femoral sentado", s:"7 × 10–12", r:"30–45 s", fst:true, cue:"Remate de isquios. Controla la vuelta, bombeo en las últimas series."},
+    {n:"Búlgaras", s:"3 × 10–12 /pierna", r:"60 s", cue:"Unilateral. Tronco ligeramente al frente para cargar glúteo."},
+    {n:"Gemelo sentado (sóleo)", s:"4 × 12–15", r:"45 s", cue:"Rodilla flexionada apunta al sóleo. Reps altas, pausa arriba."},
+    {n:"Core anti-rotación — Pallof press", s:"3 × 12 /lado", r:"45 s", cue:"En polea, resiste que el torso gire. Trabaja faja profunda y oblicuos."}
+  ]}
+};
+
+const NOTAS = `
+  <div class="note-block">
+    <h3>Cómo ejecutar</h3>
+    <p>Rango <b>6–15 reps</b> general, <b>12–20</b> en aislamientos. Lleva las series a <b>RPE 8–10</b>: deja 1–2 reps en los compuestos pesados y el <b>último set de cada ejercicio va al fallo</b>.</p>
+    <p>Excéntrica controlada (<b>2–3 s</b>), ROM completo, y <b>partials en estiramiento</b> al cerrar la serie. Descanso: compuestos 2–3 min, aislamientos 60–90 s.</p>
+  </div>
+  <div class="note-block amberblk">
+    <h3>FST-7</h3>
+    <p><b>7 series</b> de un aislamiento, <b>30–45 s</b> de descanso entre cada una. Siempre al <b>final</b> del músculo del día. Bombeo y estiramiento de fascia.</p>
+    <p>Es normal bajar reps o pausar 2–3 s en las series 5–7. No sacrifiques técnica por el número. Solo <b>un músculo por sesión</b> lleva FST-7.</p>
+  </div>
+  <div class="note-block">
+    <h3>Progresión</h3>
+    <p><b>Doble progresión:</b> primero sube reps dentro del rango; cuando topes el techo en todas las series, sube carga y vuelve a empezar abajo. Lleva registro de cada sesión.</p>
+    <p><b>Deload cada 6–8 semanas:</b> una semana bajando volumen ~50%, manteniendo intensidad. Si una articulación se carga, recorta volumen ahí antes de empujar más.</p>
+  </div>
+  <div class="note-block amberblk">
+    <h3>El bulk y el primer déficit</h3>
+    <p>Sube a ritmo controlado: <b>+0.25 a 0.5% del peso por semana</b> (≈ 1–1.8 kg al mes). Superávit ligero: arranca <b>+200 a +350 kcal</b> sobre mantenimiento y ajusta a las 2 semanas.</p>
+    <p>Proteína <b>1.8–2.2 g/kg</b> (≈ 160–190 g/día para ti).</p>
+    <p>El primer corte no lo manda el calendario sino tu <b>% de grasa</b>: corre el bulk <b>4–6 meses mínimo</b> y mete el déficit (8–12 sem) cuando llegues a <b>~15–17%</b> de grasa. El espejo y la cinta te avisan antes que la fecha.</p>
+  </div>
+`;
+
+const main = document.getElementById('main');
+const tabs = document.getElementById('tabs');
+let store = {};
+try { store = JSON.parse(localStorage.getItem('rutina_done')||'{}'); } catch(e){ store = {}; }
+function save(){ try{ localStorage.setItem('rutina_done', JSON.stringify(store)); }catch(e){} }
+
+function renderDay(key){
+  const d = DAYS[key];
+  let html = `<div class="panel active"><div class="day-head"><div class="day-title">${d.title}</div><br><span class="day-focus">${d.focus}</span></div>`;
+  d.ex.forEach((e,i)=>{
+    const id = key+'_'+i;
+    const done = store[id] ? ' done':'';
+    html += `<div class="ex${e.fst?' fst':''}${done}" data-id="${id}">
+      <div class="check" role="checkbox"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="ex-top">
+        <div class="num">${(i+1).toString().padStart(2,'0')}</div>
+        <div class="ex-body">
+          <div class="ex-name">${e.n}</div>
+          <div class="ex-sets">
+            <span class="sets-badge">${e.s}</span>
+            ${e.fst?'<span class="fst-tag">FST-7</span>':''}
+            <span class="rest">⏱ ${e.r}</span>
+          </div>
+          <div class="cue">${e.cue}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  html += `<button class="reset" id="resetBtn">Reiniciar marcas de hoy</button></div>`;
+  main.innerHTML = html;
+
+  main.querySelectorAll('.ex').forEach(el=>{
+    el.querySelector('.check').addEventListener('click', ()=>{
+      const id = el.dataset.id;
+      el.classList.toggle('done');
+      store[id] = el.classList.contains('done');
+      if(!store[id]) delete store[id];
+      save();
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    DAYS[key].ex.forEach((e,i)=>{ delete store[key+'_'+i]; });
+    save(); renderDay(key);
+  });
+}
+
+function renderNotas(){
+  main.innerHTML = `<div class="panel active">${NOTAS}</div>`;
+}
+
+tabs.addEventListener('click', ev=>{
+  const btn = ev.target.closest('.tab');
+  if(!btn) return;
+  tabs.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const day = btn.dataset.day;
+  window.scrollTo({top:0,behavior:'instant'});
+  if(day==='notas') renderNotas(); else renderDay(day);
+});
+
+renderDay('lun');
+</script>
+</body>
+</html>
