@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0c0d0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Bloque Offseason — Jimmy</title>
+<title>PPL x2 — Jimmy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -132,6 +132,17 @@
     border-top:1px dashed var(--line);padding-top:9px;
   }
   .cue b{color:var(--text);font-weight:600;}
+  
+  /* Category badges */
+  .category-badge{
+    font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:2px 6px;border-radius:5px;
+  }
+  .cat-strength{ background:rgba(220,38,38,.15); color:#fca5a5; }
+  .cat-hypertrophy{ background:rgba(59,130,246,.15); color:#93c5fd; }
+  .cat-plyometric{ background:rgba(234,88,12,.15); color:#fed7aa; }
+  .cat-core{ background:rgba(147,51,234,.15); color:#d8b4fe; }
+
   /* done toggle */
   .check{
     position:absolute;top:13px;right:13px;width:24px;height:24px;
@@ -142,153 +153,232 @@
   .check svg{width:14px;height:14px;opacity:0;transform:scale(.5);transition:.15s;}
   .ex.done .check{background:var(--volt);border-color:var(--volt);}
   .ex.done .check svg{opacity:1;transform:scale(1);}
-  .check svg path{stroke:#0c0d0e;}
 
+  /* reset button */
   .reset{
-    width:100%;margin:6px 0 30px;padding:12px;border-radius:12px;
-    background:transparent;border:1px solid var(--line);color:var(--muted);
-    font-family:'Archivo';font-weight:600;font-size:13px;cursor:pointer;
+    display:block;width:100%;padding:14px;margin-top:22px;margin-bottom:20px;
+    border:1px solid var(--line);background:transparent;color:var(--muted);
+    border-radius:11px;cursor:pointer;font-weight:700;font-size:13px;
+    transition:.18s;font-family:'Archivo',sans-serif;letter-spacing:.04em;
+    text-transform:uppercase;
   }
-  .reset:active{background:var(--surface);}
+  .reset:active{background:var(--surface-2);}
 
-  /* ---- Notas ---- */
+  /* Image button */
+  .image-btn{
+    display:block;width:100%;padding:10px;margin:10px 0;
+    background:rgba(200,251,61,.08);border:1px solid rgba(200,251,61,.3);
+    color:var(--volt);border-radius:8px;cursor:pointer;
+    font-weight:600;font-size:12px;font-family:'Archivo',sans-serif;
+    transition:.2s;
+  }
+  .image-btn:active{background:rgba(200,251,61,.15);}
+
+  /* Modal */
+  .modal{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);
+    backdrop-filter:blur(8px);z-index:50;align-items:center;justify-content:center;
+    padding:20px;
+  }
+  .modal.active{display:flex;}
+  .modal-content{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);max-width:540px;width:100%;max-height:90vh;
+    overflow-y:auto;
+  }
+  .modal-header{
+    padding:20px;border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;
+    position:sticky;top:0;background:var(--surface);z-index:10;
+  }
+  .modal-title{
+    font-family:'Anton',sans-serif;font-weight:400;font-size:22px;
+    text-transform:uppercase;
+  }
+  .modal-close{
+    background:none;border:none;color:var(--muted);cursor:pointer;
+    font-size:24px;transition:.2s;
+  }
+  .modal-close:active{color:var(--text);}
+  .modal-body{
+    padding:20px;background:var(--surface-2);
+  }
+  .modal-body img{
+    width:100%;height:auto;max-height:350px;object-fit:cover;
+    border-radius:11px;margin-bottom:16px;border:1px solid var(--line);
+  }
+  .modal-tip{
+    font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px;
+  }
+  .modal-close-btn{
+    width:100%;padding:12px;background:rgba(200,251,61,.1);
+    border:1px solid var(--volt-dim);color:var(--volt);border-radius:8px;
+    font-weight:700;font-size:13px;cursor:pointer;font-family:'Archivo',sans-serif;
+    text-transform:uppercase;
+  }
+  .modal-close-btn:active{background:rgba(200,251,61,.2);}
+
+  /* Note blocks */
   .note-block{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:18px;margin-bottom:14px;
+    background:var(--surface);border:1px solid var(--line);padding:16px;
+    border-radius:var(--radius);margin-bottom:14px;
   }
   .note-block h3{
-    font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
-    font-size:19px;letter-spacing:.02em;margin-bottom:10px;color:var(--volt);
+    font-family:'Anton',sans-serif;font-weight:400;font-size:16px;
+    text-transform:uppercase;margin-bottom:10px;color:var(--text);
+    letter-spacing:.01em;
+  }
+  .note-block p{
+    font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:10px;
+  }
+  .note-block p:last-child{margin-bottom:0;}
+  .note-block p b{color:var(--text);}
+  .note-block.amberblk{
+    border-color:var(--amber);background:linear-gradient(180deg,var(--amber-dim),var(--surface) 60%);
   }
   .note-block.amberblk h3{color:var(--amber);}
-  .note-block p{font-size:13.5px;color:var(--muted);margin-bottom:9px;}
-  .note-block p:last-child{margin-bottom:0;}
-  .note-block b{color:var(--text);font-weight:600;}
-  .note-block ul{list-style:none;margin-top:4px;}
-  .note-block li{font-size:13.5px;color:var(--muted);padding-left:18px;position:relative;margin-bottom:7px;}
-  .note-block li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;background:var(--volt-dim);}
-  .note-block.amberblk li::before{background:var(--amber);}
-
-  footer{text-align:center;color:var(--faint);font-size:11px;padding:8px 0 20px;font-family:'Spline Sans Mono',monospace;}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="kicker">Bloque Hipertrofia · PPL ×2</div>
-  <h1>Modo <span class="accent">Offseason</span></h1>
-  <p class="sub">6 días, cada músculo 2× por semana. Objetivo único: meter masa.</p>
+  <div class="kicker">Mes 4 • Opción A</div>
+  <h1>PPL <span class="accent">x2</span></h1>
+  <p class="sub">6 días + Hipertrofia + Pliométricos + Core Avanzado</p>
   <div class="meta-row">
-    <span class="chip">RPE <b>8–10</b></span>
-    <span class="chip">Compuestos <b>2–3 min</b></span>
-    <span class="chip">Aislados <b>60–90 s</b></span>
-    <span class="chip"><b>FST-7</b> 30–45 s</span>
+    <span class="chip"><b>Incline DB:</b> 35kg</span>
+    <span class="chip"><b>Hack Squat:</b> 130kg</span>
+    <span class="chip"><b>Deadlift:</b> 140kg</span>
   </div>
 </header>
 
-<nav class="tabs" id="tabs">
-  <button class="tab active" data-day="lun">LUN<small>Push A</small></button>
-  <button class="tab" data-day="mar">MAR<small>Pull A</small></button>
-  <button class="tab" data-day="mie">MIÉ<small>Legs A</small></button>
-  <button class="tab" data-day="jue">JUE<small>Push B</small></button>
-  <button class="tab" data-day="vie">VIE<small>Pull B</small></button>
-  <button class="tab" data-day="sab">SÁB<small>Legs B</small></button>
-  <button class="tab" data-day="notas">NOTAS<small>Reglas</small></button>
-</nav>
+<div class="tabs" id="tabs">
+  <button class="tab active" data-day="lun"><span>Push 1</span><small>Lunes</small></button>
+  <button class="tab" data-day="mar"><span>Pull 1</span><small>Martes</small></button>
+  <button class="tab" data-day="mie"><span>Legs 1</span><small>Miércoles</small></button>
+  <button class="tab" data-day="jue"><span>Push 2</span><small>Jueves</small></button>
+  <button class="tab" data-day="vie"><span>Pull 2</span><small>Viernes</small></button>
+  <button class="tab" data-day="sab"><span>Legs 2</span><small>Sábado</small></button>
+  <button class="tab" data-day="notas"><span>Notas</span><small>Info</small></button>
+</div>
 
 <main id="main"></main>
 
-<footer>Doble progresión · Deload cada 6–8 sem · Domingo descanso</footer>
+<!-- Modal de Imagen -->
+<div class="modal" id="imageModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <img id="modalImage" src="" alt="Forma correcta del ejercicio" onerror="this.src='https://via.placeholder.com/540x300?text=Ejercicio'">
+      <p class="modal-tip">💡 Consejo: Mantén la forma correcta en todo momento. Si no puedes completar todas las reps con buena forma, reduce el peso o reps.</p>
+      <button class="modal-close-btn" id="closeModalBtn">Entendido</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const DAYS = {
-  lun:{title:"Push A", focus:"Pecho énfasis", ex:[
-    {n:"Press inclinado mancuerna", s:"4 × 6–10", r:"2–3 min", cue:"Banco a 30°. Baja <b>controlado (2–3 s)</b>, codos ~45°, ROM completo. Sube de 35 kg cuando saques 10 limpias."},
-    {n:"Press plano máquina o barra", s:"4 × 8–12", r:"2 min", cue:"Pecho medio. Aprieta arriba, estira abajo sin rebotar."},
-    {n:"Aperturas pec deck o polea", s:"7 × 10–12", r:"30–45 s", fst:true, cue:"Remate del pecho. Peso moderado, busca el <b>estiramiento</b> entre series. La quemazón de las series 5–7 es el objetivo."},
-    {n:"Press hombro mancuerna", s:"3 × 8–12", r:"90 s", cue:"No bloquees del todo arriba para mantener tensión en el deltoide."},
-    {n:"Elevaciones laterales", s:"4 × 12–15", r:"60 s", cue:"Último set <b>dropset</b>. Sube con codos, no con muñecas. Sin balanceo."},
-    {n:"Tríceps en polea (pushdown)", s:"3 × 10–12", r:"60 s", cue:"Codos pegados al cuerpo, extiende completo."},
-    {n:"Extensión tríceps sobre cabeza", s:"3 × 10–12", r:"60 s", cue:"Estira la <b>cabeza larga</b> bajando bien atrás de la cabeza."}
+  lun:{title:"Push 1", focus:"Pecho + Explosividad", ex:[
+    {n:"Incline Dumbbell Press", s:"4 × 6–8", r:"2–3 min", cat:"strength", img:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop"},
+    {n:"Barbell Bench Press", s:"3 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1541534741688-6078c6bfb5c7?w=500&h=300&fit=crop"},
+    {n:"Incline Cable Fly", s:"3 × 10–12", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1598971457381-f60fddd500cb?w=500&h=300&fit=crop"},
+    {n:"Dumbbell Shoulder Press", s:"3 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1539881912656-76aea286f11e?w=500&h=300&fit=crop"},
+    {n:"Lateral Raise", s:"7 × 10–12", r:"30–45 s", fst:true, cat:"hypertrophy", img:"https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=300&fit=crop", cue:"FST-7 remate de hombro. Bombeo de las 7 series."},
+    {n:"Clap Push-up", s:"3 × 3–5", r:"90 s", cat:"plyometric", img:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop", cue:"Explosividad máxima. Controlado en la bajada."},
+    {n:"Pallof Press", s:"3 × 10/lado", r:"60 s", cat:"core", img:"https://images.unsplash.com/photo-1587280591945-3e512337babd?w=500&h=300&fit=crop", cue:"Resiste la rotación. Core anti-rotación."}
   ]},
-  mar:{title:"Pull A", focus:"Espalda grosor", ex:[
-    {n:"Dominadas con lastre o jalón al pecho", s:"4 × 6–10", r:"2–3 min", cue:"Lleva los codos al bolsillo, pecho arriba. Estira completo abajo."},
-    {n:"Remo con barra o T-bar", s:"4 × 8–10", r:"2 min", cue:"Torso ~45°, espalda neutra. Jala hacia el ombligo, aprieta escápulas."},
-    {n:"Remo en máquina con apoyo de pecho", s:"3 × 10–12", r:"90 s", cue:"El apoyo quita el balanceo: aísla la espalda, no uses lumbar."},
-    {n:"Pullover en polea", s:"3 × 12–15", r:"90 s", cue:"Brazos casi rectos. Siente el <b>dorsal estirado</b> arriba."},
-    {n:"Deltoide posterior (pec deck inverso)", s:"3 × 15", r:"60 s", cue:"Reps altas, peso ligero. Abre con los codos."},
-    {n:"Curl con barra", s:"3 × 8–10", r:"90 s", cue:"Codos quietos pegados al torso. Sin impulso de cadera."},
-    {n:"Curl inclinado mancuerna", s:"3 × 10–12", r:"60 s", cue:"Banco inclinado = bíceps en <b>estiramiento</b>. Brazos atrás del cuerpo."},
-    {n:"Curl en polea", s:"7 × 12", r:"30–45 s", fst:true, cue:"Remate de bíceps. Tensión constante de la polea, bombeo brutal."}
+  mar:{title:"Pull 1", focus:"Espalda + Pliométrico", ex:[
+    {n:"Deadlift", s:"4 × 3–5", r:"2–3 min", cat:"strength", img:"https://images.unsplash.com/photo-1520312151996-ce3a9cb86de8?w=500&h=300&fit=crop"},
+    {n:"Barbell Rows", s:"3 × 6–8", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1590279033100-9f60a05a9d82?w=500&h=300&fit=crop"},
+    {n:"Weighted Pull-ups", s:"3 × 6–8", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1599058917212-d217368e6651?w=500&h=300&fit=crop"},
+    {n:"Face Pulls", s:"3 × 12–15", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1570214891767-2b2c5e3d4d44?w=500&h=300&fit=crop"},
+    {n:"Barbell Curls", s:"7 × 8–10", r:"30–45 s", fst:true, cat:"hypertrophy", img:"https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=500&h=300&fit=crop", cue:"FST-7 remate de bíceps. Tensión constante."},
+    {n:"Explosive Pull-ups", s:"3 × 5–6", r:"90 s", cat:"plyometric", img:"https://images.unsplash.com/photo-1599058917212-d217368e6651?w=500&h=300&fit=crop", cue:"Toque de pecho. Explosividad vertical."},
+    {n:"Dead Bug", s:"3 × 12/lado", r:"60 s", cat:"core", img:"https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=300&fit=crop", cue:"Control espinal lumbar. Movimiento coordinado."}
   ]},
-  mie:{title:"Legs A", focus:"Cuádriceps énfasis", ex:[
-    {n:"Sentadilla", s:"4 × 6–10", r:"3 min", cue:"Baja al menos paralelo, espalda neutra, empuja el piso con todo el pie."},
-    {n:"Hack squat", s:"4 × 8–10", r:"2 min", cue:"Aquí <b>aprietas</b> (vienes fuerte con 130). Excéntrica lenta + <b>partials abajo</b> al cerrar."},
-    {n:"Prensa", s:"3 × 10–12", r:"2 min", cue:"Pies medios. ROM completo sin despegar el sacro del respaldo."},
-    {n:"Extensión de cuádriceps", s:"7 × 10–12", r:"30–45 s", fst:true, cue:"Remate. Aprieta 1 s arriba cada rep. Las últimas series queman: ese es el punto."},
-    {n:"Curl femoral tumbado", s:"3 × 10–12", r:"60 s", cue:"Algo de isquio para equilibrar la rodilla. Controla la bajada."},
-    {n:"Gemelo de pie", s:"4 × 8–10", r:"60 s", cue:"<b>Pausa de estiramiento abajo</b> 1–2 s, sube hasta la punta."},
-    {n:"Core — Crunch en polea (arrodillado)", s:"3 × 12–15", r:"45 s", cue:"Con peso, redondea la espalda. Trátalo como músculo a hipertrofiar."},
-    {n:"Core — Elevación de piernas colgado", s:"3 × 12–15", r:"45 s", cue:"Sube con el abdomen bajo, sin balancear las piernas."}
+  mie:{title:"Legs 1", focus:"Cuádriceps + Pliométrico", ex:[
+    {n:"Hack Squat", s:"4 × 6–8", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1604480132715-8ceb299b0d0d?w=500&h=300&fit=crop"},
+    {n:"Leg Press", s:"3 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1598747411994-8c7ea253b77e?w=500&h=300&fit=crop"},
+    {n:"Leg Curl", s:"3 × 8–10", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1586869657354-48dfc4d02c9f?w=500&h=300&fit=crop"},
+    {n:"Leg Extensions", s:"3 × 10–12", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1598747411994-8c7ea253b77e?w=500&h=300&fit=crop"},
+    {n:"Calf Raises", s:"7 × 12–15", r:"30–45 s", fst:true, cat:"hypertrophy", img:"https://images.unsplash.com/photo-1604480132715-8ceb299b0d0d?w=500&h=300&fit=crop", cue:"FST-7 remate de gemelos. Pausa arriba cada rep."},
+    {n:"Box Jump", s:"3 × 5–6", r:"90 s", cat:"plyometric", img:"https://images.unsplash.com/photo-1584966990588-7fd0cd4ff14b?w=500&h=300&fit=crop", cue:"Salto vertical explosivo. Forma antes que altura."},
+    {n:"Suitcase Carry", s:"3 × 40m/lado", r:"60 s", cat:"core", img:"https://images.unsplash.com/photo-1586869657354-48dfc4d02c9f?w=500&h=300&fit=crop", cue:"Anti-flexión lateral. Core profundo."}
   ]},
-  jue:{title:"Push B", focus:"Hombro énfasis", ex:[
-    {n:"Press militar de pie o press hombro máquina", s:"4 × 6–10", r:"2–3 min", cue:"Compuesto pesado, va primero. De pie = más estabilizadores; máquina = más aislamiento."},
-    {n:"Press inclinado máquina", s:"3 × 10–12", r:"90 s", cue:"Pecho superior en segundo plano. Reps altas, trabajo secundario."},
-    {n:"Fondos (dips)", s:"3 × 8–12", r:"90 s", cue:"Pecho bajo y tríceps. Si los dominas con peso corporal, agrega lastre."},
-    {n:"Elevaciones laterales", s:"7 × 12–15", r:"30–45 s", fst:true, cue:"<b>Protagonista del día</b>: deltoide medial = hombro ancho. Bombeo de las 7 series."},
-    {n:"Aperturas en polea", s:"3 × 12–15", r:"60 s", cue:"Cierre de pecho en estiramiento."},
-    {n:"Rompecráneos → pushdown dropset", s:"3 × 10", r:"60 s", cue:"Estira la cabeza larga; en el último set encadena <b>dropset</b> en polea sin descanso."},
-    {n:"Posterior de hombro de cierre", s:"3 × 15", r:"45 s", cue:"Equilibra el deltoide posterior que siempre queda corto. Reps altas."}
+  jue:{title:"Push 2", focus:"Pecho + Core", ex:[
+    {n:"Barbell Bench Press", s:"4 × 6–8", r:"2–3 min", cat:"strength", img:"https://images.unsplash.com/photo-1541534741688-6078c6bfb5c7?w=500&h=300&fit=crop"},
+    {n:"Incline Dumbbell Press", s:"3 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop"},
+    {n:"Machine Chest Press", s:"3 × 10–12", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1598971457381-f60fddd500cb?w=500&h=300&fit=crop"},
+    {n:"Machine Shoulder Press", s:"3 × 10–12", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1539881912656-76aea286f11e?w=500&h=300&fit=crop"},
+    {n:"Tricep Pushdown", s:"7 × 10–12", r:"30–45 s", fst:true, cat:"hypertrophy", img:"https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=300&fit=crop", cue:"FST-7 remate de tríceps. Bombeo brutal."},
+    {n:"Clap Push-up", s:"3 × 3–5", r:"90 s", cat:"plyometric", img:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&h=300&fit=crop", cue:"Explosividad máxima. Controlado en bajada."},
+    {n:"Anti-Rotational Hold", s:"3 × 30s/lado", r:"60 s", cat:"core", img:"https://images.unsplash.com/photo-1587280591945-3e512337babd?w=500&h=300&fit=crop", cue:"En polea, resiste rotación. Faja profunda."}
   ]},
-  vie:{title:"Pull B", focus:"Espalda amplitud + brazo", ex:[
-    {n:"Jalón agarre neutro o abierto", s:"4 × 8–10", r:"2 min", cue:"Agarre distinto al martes = busca <b>amplitud</b> (las 'alas'). Codos abajo y atrás."},
-    {n:"Remo en polea baja", s:"3 × 10–12", r:"90 s", cue:"Torso firme, jala al abdomen, escápulas atrás."},
-    {n:"Remo unilateral con mancuerna", s:"3 × 10–12", r:"60 s/lado", cue:"Rango largo, estira abajo. Corrige asimetrías."},
-    {n:"Pullover o pull-around en polea", s:"3 × 12–15", r:"60 s", cue:"Aislamiento de dorsal en arco amplio."},
-    {n:"Encogimientos (trapecio)", s:"3 × 12–15", r:"60 s", cue:"Sube los hombros recto hacia las orejas, pausa arriba. Sin rodar."},
-    {n:"Curl martillo", s:"3 × 10–12", r:"60 s", cue:"Agarre neutro = braquial y antebrazo, da grosor al brazo."},
-    {n:"Curl predicador", s:"7 × 12", r:"30–45 s", fst:true, cue:"Remate de bíceps con el brazo fijo. Bombeo total, no sueltes la tensión."}
+  vie:{title:"Pull 2", focus:"Espalda + Calistenia", ex:[
+    {n:"Barbell Rows", s:"4 × 6–8", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1590279033100-9f60a05a9d82?w=500&h=300&fit=crop"},
+    {n:"Assisted Pull-ups", s:"3 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1599058917212-d217368e6651?w=500&h=300&fit=crop"},
+    {n:"Machine Rows", s:"3 × 10–12", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1590279033100-9f60a05a9d82?w=500&h=300&fit=crop"},
+    {n:"Chest-Supported Rows", s:"3 × 8–10", r:"90 s", cat:"strength", img:"https://images.unsplash.com/photo-1590279033100-9f60a05a9d82?w=500&h=300&fit=crop"},
+    {n:"Dumbbell Curls", s:"7 × 10–12", r:"30–45 s", fst:true, cat:"hypertrophy", img:"https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=500&h=300&fit=crop", cue:"FST-7 remate de bíceps. Control de excéntrica."},
+    {n:"Explosive Pull-ups", s:"3 × 5–6", r:"90 s", cat:"plyometric", img:"https://images.unsplash.com/photo-1599058917212-d217368e6651?w=500&h=300&fit=crop", cue:"Toque de pecho. Potencia vertical."},
+    {n:"Hollow Body Hold", s:"3 × 20–30s", r:"60 s", cat:"core", img:"https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&h=300&fit=crop", cue:"Cuerpo arqueado. Control de hiperextensión."}
   ]},
-  sab:{title:"Legs B", focus:"Cadena posterior énfasis", ex:[
-    {n:"Peso muerto rumano", s:"4 × 6–10", r:"2–3 min", cue:"Isquio en <b>estiramiento</b>, no busques 1RM. Cadera atrás, barra pegada, espalda neutra."},
-    {n:"Prensa con pies altos", s:"4 × 10–12", r:"2 min", cue:"Pies arriba en la plataforma = más glúteo e isquio."},
-    {n:"Hip thrust", s:"3 × 8–12", r:"90 s", cue:"Motor de la cadera. Aprieta glúteo 1 s arriba, barbilla metida."},
-    {n:"Curl femoral sentado", s:"7 × 10–12", r:"30–45 s", fst:true, cue:"Remate de isquios. Controla la vuelta, bombeo en las últimas series."},
-    {n:"Búlgaras", s:"3 × 10–12 /pierna", r:"60 s", cue:"Unilateral. Tronco ligeramente al frente para cargar glúteo."},
-    {n:"Gemelo sentado (sóleo)", s:"4 × 12–15", r:"45 s", cue:"Rodilla flexionada apunta al sóleo. Reps altas, pausa arriba."},
-    {n:"Core anti-rotación — Pallof press", s:"3 × 12 /lado", r:"45 s", cue:"En polea, resiste que el torso gire. Trabaja faja profunda y oblicuos."}
+  sab:{title:"Legs 2", focus:"Cadena posterior + Pliométrico", ex:[
+    {n:"Leg Press", s:"4 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1598747411994-8c7ea253b77e?w=500&h=300&fit=crop"},
+    {n:"Smith Machine Squat", s:"3 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1604480132715-8ceb299b0d0d?w=500&h=300&fit=crop"},
+    {n:"Romanian Deadlift", s:"3 × 8–10", r:"2 min", cat:"strength", img:"https://images.unsplash.com/photo-1520312151996-ce3a9cb86de8?w=500&h=300&fit=crop"},
+    {n:"Leg Curl Machine", s:"3 × 10–12", r:"90 s", cat:"hypertrophy", img:"https://images.unsplash.com/photo-1586869657354-48dfc4d02c9f?w=500&h=300&fit=crop"},
+    {n:"Leg Extensions", s:"7 × 12–15", r:"30–45 s", fst:true, cat:"hypertrophy", img:"https://images.unsplash.com/photo-1598747411994-8c7ea253b77e?w=500&h=300&fit=crop", cue:"FST-7 remate de cuádriceps. Aprieta 1s arriba."},
+    {n:"Jump Squats", s:"3 × 6–8", r:"90 s", cat:"plyometric", img:"https://images.unsplash.com/photo-1584966990588-7fd0cd4ff14b?w=500&h=300&fit=crop", cue:"Sentadilla pliométrica. Explosividad tren inferior."},
+    {n:"Pallof Press", s:"3 × 10/lado", r:"60 s", cat:"core", img:"https://images.unsplash.com/photo-1587280591945-3e512337babd?w=500&h=300&fit=crop", cue:"Anti-rotación dinámico. Resiste la torsión."}
   ]}
 };
 
 const NOTAS = `
   <div class="note-block">
-    <h3>Cómo ejecutar</h3>
-    <p>Rango <b>6–15 reps</b> general, <b>12–20</b> en aislamientos. Lleva las series a <b>RPE 8–10</b>: deja 1–2 reps en los compuestos pesados y el <b>último set de cada ejercicio va al fallo</b>.</p>
-    <p>Excéntrica controlada (<b>2–3 s</b>), ROM completo, y <b>partials en estiramiento</b> al cerrar la serie. Descanso: compuestos 2–3 min, aislamientos 60–90 s.</p>
+    <h3>Opción A: Integración Gradual</h3>
+    <p>Agregamos <b>2–3 ejercicios nuevos por día</b> a tu PPL x2 original. Duración: +15 min por sesión (75–80 min).</p>
+    <p><b>Nuevos elementos:</b> Pliométricos (explosividad), Core avanzado (faja natural), e imágenes de referencia en cada ejercicio.</p>
+    <p>Mantén pesos de fuerza sin cambios. Hipertrofia y FST-7 intactos. Adaptación gradual: esperamos 2–3 semanas para sentir la explosividad.</p>
   </div>
   <div class="note-block amberblk">
-    <h3>FST-7</h3>
-    <p><b>7 series</b> de un aislamiento, <b>30–45 s</b> de descanso entre cada una. Siempre al <b>final</b> del músculo del día. Bombeo y estiramiento de fascia.</p>
-    <p>Es normal bajar reps o pausar 2–3 s en las series 5–7. No sacrifiques técnica por el número. Solo <b>un músculo por sesión</b> lleva FST-7.</p>
+    <h3>Categorías de ejercicios</h3>
+    <p><b>Fuerza (rojo):</b> Compuestos pesados, movimientos primarios. <b>Hipertrofia (azul):</b> Aislamientos, reps altas, bomba. <b>Pliométrico (naranja):</b> Explosividad, potencia. <b>Core (púrpura):</b> Anti-movimiento, estabilidad.</p>
   </div>
   <div class="note-block">
-    <h3>Progresión</h3>
-    <p><b>Doble progresión:</b> primero sube reps dentro del rango; cuando topes el techo en todas las series, sube carga y vuelve a empezar abajo. Lleva registro de cada sesión.</p>
-    <p><b>Deload cada 6–8 semanas:</b> una semana bajando volumen ~50%, manteniendo intensidad. Si una articulación se carga, recorta volumen ahí antes de empujar más.</p>
+    <h3>Usar las imágenes</h3>
+    <p>Cada ejercicio tiene un botón <b>📸 Ver forma</b>. Abre una imagen de referencia. Úsala antes de entrenar si es tu primer intento o si dudas de la técnica.</p>
   </div>
   <div class="note-block amberblk">
-    <h3>El bulk y el primer déficit</h3>
-    <p>Sube a ritmo controlado: <b>+0.25 a 0.5% del peso por semana</b> (≈ 1–1.8 kg al mes). Superávit ligero: arranca <b>+200 a +350 kcal</b> sobre mantenimiento y ajusta a las 2 semanas.</p>
-    <p>Proteína <b>1.8–2.2 g/kg</b> (≈ 160–190 g/día para ti).</p>
-    <p>El primer corte no lo manda el calendario sino tu <b>% de grasa</b>: corre el bulk <b>4–6 meses mínimo</b> y mete el déficit (8–12 sem) cuando llegues a <b>~15–17%</b> de grasa. El espejo y la cinta te avisan antes que la fecha.</p>
+    <h3>Progresión (Próximas 12 semanas)</h3>
+    <p><b>Semanas 1–4:</b> Adaptación. Pliométricos bajo volumen, forma perfecta. Mantén pesos.</p>
+    <p><b>Semanas 5–8:</b> Consolida. Incrementa peso +2–3%, aumenta reps en pliométricos.</p>
+    <p><b>Semanas 9+:</b> Potencia. Peso +2–5%, pliométricos máximo, core holds prolongados. En 6–9 meses: piruetas spider-man viable.</p>
+  </div>
+  <div class="note-block">
+    <h3>Recovery</h3>
+    <p><b>Proteína:</b> 1.8–2.0 g/kg (160–180g/día). <b>Sueño:</b> 7–8h (pliométricos requieren CNS recovery). <b>Calorías:</b> Lean bulk ligero (+300 kcal si buscas definición).</p>
   </div>
 `;
 
 const main = document.getElementById('main');
 const tabs = document.getElementById('tabs');
+const imageModal = document.getElementById('imageModal');
+const modalClose = document.getElementById('modalClose');
+const closeModalBtn = document.getElementById('closeModalBtn');
+
 let store = {};
-try { store = JSON.parse(localStorage.getItem('rutina_done')||'{}'); } catch(e){ store = {}; }
-function save(){ try{ localStorage.setItem('rutina_done', JSON.stringify(store)); }catch(e){} }
+try { store = JSON.parse(localStorage.getItem('rutina_done_v2')||'{}'); } catch(e){ store = {}; }
+function save(){ try{ localStorage.setItem('rutina_done_v2', JSON.stringify(store)); }catch(e){} }
+
+function getCategoryBadge(cat){
+  const labels = {strength:'Fuerza', hypertrophy:'Hipertrofia', plyometric:'Pliométrico', core:'Core'};
+  const classes = {strength:'cat-strength', hypertrophy:'cat-hypertrophy', plyometric:'cat-plyometric', core:'cat-core'};
+  return `<span class="category-badge ${classes[cat]}">${labels[cat]}</span>`;
+}
 
 function renderDay(key){
   const d = DAYS[key];
@@ -306,8 +396,10 @@ function renderDay(key){
             <span class="sets-badge">${e.s}</span>
             ${e.fst?'<span class="fst-tag">FST-7</span>':''}
             <span class="rest">⏱ ${e.r}</span>
+            ${getCategoryBadge(e.cat)}
           </div>
-          <div class="cue">${e.cue}</div>
+          ${e.img?`<button class="image-btn" onclick="showImage('${e.n}', '${e.img}'); return false;">📸 Ver forma correcta</button>`:''}
+          <div class="cue">${e.cue || 'Mantén buena forma. Si no llega, reduce peso.'}</div>
         </div>
       </div>
     </div>`;
@@ -333,6 +425,22 @@ function renderDay(key){
 function renderNotas(){
   main.innerHTML = `<div class="panel active">${NOTAS}</div>`;
 }
+
+function showImage(name, image){
+  document.getElementById('modalTitle').textContent = name;
+  document.getElementById('modalImage').src = image;
+  imageModal.classList.add('active');
+}
+
+modalClose.addEventListener('click', ()=>{
+  imageModal.classList.remove('active');
+});
+closeModalBtn.addEventListener('click', ()=>{
+  imageModal.classList.remove('active');
+});
+imageModal.addEventListener('click', (e)=>{
+  if(e.target === imageModal) imageModal.classList.remove('active');
+});
 
 tabs.addEventListener('click', ev=>{
   const btn = ev.target.closest('.tab');
