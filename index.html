@@ -60,6 +60,46 @@
   }
   .chip b{color:var(--text);}
 
+  /* ---- Mode switch ---- */
+  .modes{
+    display:flex;gap:6px;margin-top:16px;background:var(--surface);
+    border:1px solid var(--line);border-radius:13px;padding:4px;
+  }
+  .mode{
+    flex:1;border:none;background:transparent;color:var(--muted);
+    border-radius:9px;padding:9px 6px;cursor:pointer;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;
+    letter-spacing:.04em;transition:.18s;line-height:1.2;
+  }
+  .mode small{
+    display:block;font-family:'Spline Sans Mono',monospace;font-size:8.5px;
+    font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--faint);margin-top:3px;
+  }
+  .mode.on{background:var(--volt);color:#0c0d0e;}
+  .mode.on small{color:#0c0d0e;opacity:.65;}
+  .mode.locked{opacity:.55;}
+  .mode.locked small{color:var(--amber);}
+
+  /* ---- Phase banner ---- */
+  .phase{
+    margin:0 16px 4px;padding:13px 15px;border-radius:13px;
+    background:linear-gradient(180deg,var(--amber-dim),var(--surface) 70%);
+    border:1px solid var(--amber);
+  }
+  .phase .p-top{
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+    font-family:'Spline Sans Mono',monospace;font-size:10px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--amber);
+  }
+  .phase .p-name{
+    font-family:'Anton',sans-serif;font-weight:400;font-size:19px;
+    text-transform:uppercase;margin-top:5px;letter-spacing:.01em;
+  }
+  .phase .p-goal{font-size:12.5px;color:var(--muted);margin-top:4px;}
+  .phase.pre{background:var(--surface);border-color:var(--line);}
+  .phase.pre .p-top{color:var(--faint);}
+
   /* ---- Day tabs ---- */
   .tabs{
     position:sticky;top:0;z-index:30;
@@ -148,6 +188,8 @@
   .t-pot{color:#ffb45e;border-color:rgba(255,157,46,.4);background:rgba(255,157,46,.1);}
   .t-core{color:#c99cff;border-color:rgba(180,130,255,.35);background:rgba(180,130,255,.08);}
   .t-skill{color:#6fe6c8;border-color:rgba(90,225,190,.35);background:rgba(90,225,190,.08);}
+  .t-esp{color:#ffd36e;border-color:rgba(255,200,90,.4);background:rgba(255,200,90,.1);}
+  .t-aer{color:#8adfe8;border-color:rgba(120,215,230,.35);background:rgba(120,215,230,.08);}
   .opt{
     font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
     color:var(--faint);border:1px dashed var(--line);padding:3px 7px;border-radius:6px;
@@ -259,6 +301,19 @@
   .note-block li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;background:var(--volt-dim);}
   .note-block.amberblk li::before{background:var(--amber);}
 
+  .note-block.alert{border-color:#ff5f5f;background:linear-gradient(180deg,rgba(255,60,60,.13),var(--surface) 65%);}
+  .note-block.alert h3{color:#ff8f8f;}
+  .note-block.alert li::before{background:#ff5f5f;}
+  .wk{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px;}
+  .wk th{
+    text-align:left;font-family:'Spline Sans Mono',monospace;font-size:9.5px;
+    font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);
+    padding:0 8px 7px 0;border-bottom:1px solid var(--line);
+  }
+  .wk td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top;}
+  .wk td:first-child{color:var(--text);font-weight:600;white-space:nowrap;}
+  .wk tr:last-child td{border-bottom:none;}
+
   footer{text-align:center;color:var(--faint);font-size:11px;padding:8px 0 20px;font-family:'Spline Sans Mono',monospace;}
 </style>
 </head>
@@ -274,21 +329,15 @@
     <span class="chip">Aislados <b>60–90 s</b></span>
     <span class="chip"><b>FST-7</b> 30–45 s</span>
   </div>
+  <div class="modes" id="modes"></div>
 </header>
 
-<nav class="tabs" id="tabs">
-  <button class="tab active" data-day="lun">LUN<small>Push A</small></button>
-  <button class="tab" data-day="mar">MAR<small>Pull A</small></button>
-  <button class="tab" data-day="mie">MIÉ<small>Legs A</small></button>
-  <button class="tab" data-day="jue">JUE<small>Push B</small></button>
-  <button class="tab" data-day="vie">VIE<small>Pull B</small></button>
-  <button class="tab" data-day="sab">SÁB<small>Legs B</small></button>
-  <button class="tab" data-day="notas">NOTAS<small>Reglas</small></button>
-</nav>
+<div id="phaseBox"></div>
+<nav class="tabs" id="tabs"></nav>
 
 <main id="main"></main>
 
-<footer>Doble progresión · Deload cada 6–8 sem · Domingo descanso</footer>
+<footer id="foot"></footer>
 
 <div class="modal" id="modal">
   <div class="sheet">
@@ -310,8 +359,8 @@
 <script>
 const IMG = 'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/';
 
-/* p = potencia/pliométrico · c = core · s = skill (calistenia) */
-const DAYS = {
+/* ============ BLOQUE OFFSEASON ============ */
+const OFF = {
   lun:{title:"Push A", focus:"Pecho énfasis", ex:[
     {n:"Flexión pliométrica (con despegue)", s:"3 × 3–5", r:"90 s", tag:"pot", sec:"Potencia · sistema nervioso fresco", id:"Plyo_Push-up",
      cue:"Va <b>primero</b>: la potencia se entrena sin fatiga. Baja controlado, empuja tan fuerte que las manos despeguen. Sin aplauso al inicio; aplauso cuando domines el despegue. <b>Nada de fallo</b>: si pierdes altura, corta la serie."},
@@ -441,7 +490,105 @@ const DAYS = {
   ]}
 };
 
-const NOTAS = `
+/* ============ BLOQUE CRUZ · VÍA CRUCIS MARZO ============ */
+const CRUZ = {
+  lun:{title:"Empuje + Yugo", focus:"Carga axial y hombro", ex:[
+    {n:"Cargada de costal al hombro", s:"5 × 3 /lado", r:"2 min", tag:"esp", sec:"Gesto específico · piso a hombro", id:"Sandbag_Load",
+     cue:"<b>El movimiento más específico de todo el plan.</b> Del piso al hombro en un solo tiempo, alternando lados. Espalda neutra, cadera atrás, jala el costal pegado al cuerpo. Fase 1: 30–40 kg. Fase 2: 50–65 kg. Fase 3: 70–85 kg. Nunca al fallo: en cuanto la espalda se redondee, se acabó la serie. Un costal se deforma y castiga la técnica mucho más que una barra, así que sube despacio."},
+    {n:"Push press (envión de hombro)", s:"4 × 5", r:"2–3 min", tag:"fuerza", sec:"Fuerza", id:"Push_Press",
+     cue:"Impulso de pierna + empuje. Es el patrón de reacomodar la cruz sobre el hombro. Rígido de tronco, costillas abajo."},
+    {n:"Caminata con yugo o barra en trapecio", s:"4 × 40 m", r:"2–3 min", tag:"esp", id:"Yoke_Walk",
+     cue:"Barra sobre el trapecio con toalla o pad. <b>Pasos cortos y rápidos</b>, mirada al frente, respiración corta y constante. Fase 1: 60–70 kg. Fase 2: 90–110 kg. Fase 3: 130–150 kg. <b>Aquí es donde llegas al peso real de la cruz</b>: el yugo reparte la carga en los dos hombros, así que es la forma segura de que tu columna conozca 150 kg antes de marzo."},
+    {n:"Press inclinado con mancuerna", s:"3 × 8–10", r:"90 s", tag:"hiper", sec:"Mantenimiento de masa", id:"Incline_Dumbbell_Press",
+     cue:"Mantienes el pecho que ya construiste. Volumen recortado a propósito: la energía va al acarreo."},
+    {n:"Elevaciones laterales", s:"3 × 12–15", r:"60 s", tag:"hiper", id:"Side_Lateral_Raise",
+     cue:"Deltoide medial. Además, el hombro ancho reparte mejor la carga del madero."},
+    {n:"Extensión de tríceps en polea", s:"3 × 10–12", r:"60 s", tag:"hiper", id:"Triceps_Pushdown",
+     cue:"Codos pegados, extiende completo."},
+    {n:"Cuello isométrico (4 direcciones)", s:"3 × 20 s c/u", r:"30 s", tag:"esp", sec:"Cuello y core", id:"Isometric_Neck_Exercise_-_Front_And_Back",
+     cue:"Mano contra la cabeza, empuja sin que se mueva: frente, atrás y ambos lados. <b>El cuello sostiene la cabeza cuando el hombro va cargado y el torso se inclina.</b> Nunca a máxima fuerza: presión moderada y sostenida."},
+    {n:"Pallof press", s:"3 × 12 /lado", r:"45 s", tag:"core", id:"Pallof_Press",
+     cue:"Anti-rotación. La cruz sobre un hombro es exactamente esta fuerza durante 3 km."}
+  ]},
+
+  mar:{title:"Acarreo largo", focus:"La sesión clave de la semana", ex:[
+    {n:"Caminata del granjero a un brazo", s:"6 × 40 m /lado", r:"90 s", tag:"esp", sec:"Acarreo asimétrico", id:"Farmers_Walk",
+     cue:"Una sola mancuerna pesada. <b>Hombros nivelados, no te inclines</b>. Fase 1: 35 kg. Fase 2: 45–55 kg. Fase 3: 60 kg+. Si el hombro se cae de un lado, bájale al peso."},
+    {n:"Acarreo a un hombro (barra o viga)", s:"6 × 60 m", r:"2–3 min", tag:"esp", yt:"one shoulder barbell carry technique",
+     cue:"<b>El ensayo directo del evento.</b> Barra acolchada sobre un hombro, cambiando de lado cada serie. Fase 1: 35–45 kg. Fase 2: 60–75 kg. Fase 3: 85–100 kg pero en tramos <b>cortos</b> (30–40 m). Empieza SIEMPRE por el lado que llevarás la cruz, y trabaja el otro igual para no descompensarte. Con 90 kg sobre una clavícula, la regla es que el peso máximo va en distancia corta y la distancia larga va con peso moderado: nunca las dos cosas el mismo día."},
+    {n:"Arrastre de trineo con arnés", s:"5 × 50 m", r:"90 s", tag:"esp", sec:"Arrastre y pendiente", id:"Sled_Drag_-_Harness",
+     cue:"Reproduce la fricción de la base de la cruz raspando el piso. Inclínate al frente y camina con pasos cortos. Si no hay trineo: llanta con cuerda, o cuesta arriba con mochila cargada."},
+    {n:"Empuje de trineo en pendiente", s:"5 × 30 m", r:"90 s", tag:"esp", id:"Sled_Push",
+     cue:"Simula las subidas del recorrido. Brazos rígidos, cadera baja, empuje continuo sin frenar."},
+    {n:"Caminata en pendiente con mochila (zona 2)", s:"30–50 min", r:"—", tag:"aer", sec:"Base aeróbica", id:"Trail_Running_Walking",
+     cue:"Mochila cargada, ritmo en el que <b>puedes hablar en frases completas</b>. Esto baja tu pulso a una carga dada, y un pulso más bajo el día del evento significa menos estrés por calor. Fase 1: 12 kg. Fase 2: 20 kg. Fase 3: 25–30 kg."},
+    {n:"Puente lateral", s:"3 × 30–45 s /lado", r:"45 s", tag:"core", id:"Side_Bridge",
+     cue:"Anti-flexión lateral. Es el músculo que evita que te dobles hacia el lado cargado."}
+  ]},
+
+  mie:{title:"Tirón + Cuello", focus:"Espalda alta y agarre", ex:[
+    {n:"Peso muerto con barra hexagonal", s:"4 × 5", r:"3 min", tag:"fuerza", sec:"Fuerza", id:"Trap_Bar_Deadlift",
+     cue:"Barra hexagonal (o convencional si no hay). Menos cizalla lumbar que la barra recta y más transferible a levantar un objeto voluminoso del piso. Pesado pero <b>lejos del fallo</b>: 2 reps en reserva siempre."},
+    {n:"Remo con barra", s:"4 × 8", r:"2 min", tag:"fuerza", id:"Bent_Over_Barbell_Row",
+     cue:"Torso ~45°, espalda neutra. La espalda alta gruesa es literalmente el colchón sobre el que descansa el madero."},
+    {n:"Dominadas", s:"3 × 6–10", r:"2 min", tag:"fuerza", id:"Pullups",
+     cue:"Con lastre si te sobran reps. Dorsal fuerte = torso estable bajo carga asimétrica."},
+    {n:"Encogimientos pesados con pausa", s:"4 × 8", r:"90 s", tag:"esp", sec:"Trapecio y cuello", id:"Barbell_Shrug",
+     cue:"<b>Pausa de 2 s arriba en cada rep.</b> El trapecio superior es el que amortigua la clavícula. Este ejercicio deja de ser estético en este bloque: es protección."},
+    {n:"Face pull", s:"3 × 15", r:"60 s", tag:"hiper", id:"Face_Pull",
+     cue:"Deltoide posterior y rotadores. Compensa la postura cerrada de cargar al frente."},
+    {n:"Cuello con arnés", s:"3 × 12", r:"60 s", tag:"esp", id:"Seated_Head_Harness_Neck_Resistance",
+     cue:"Si no hay arnés, usa los isométricos del lunes. Progresión muy lenta: el cuello se lesiona fácil y tarda en sanar."},
+    {n:"Curl martillo", s:"3 × 10–12", r:"60 s", tag:"hiper", id:"Hammer_Curls",
+     cue:"Braquial y antebrazo. Mantiene el brazo y refuerza el agarre."},
+    {n:"Dead bug", s:"3 × 10 /lado", r:"45 s", tag:"core", id:"Dead_Bug",
+     cue:"Lumbar pegada al piso. Anti-extensión: evita que la carga te arquee la espalda."}
+  ]},
+
+  jue:{title:"Aeróbico + Calor", focus:"Día de aclimatación", ex:[
+    {n:"Zona 2 bajo el sol", s:"45–75 min", r:"—", tag:"aer", sec:"Exposición al calor", id:"Trail_Running_Walking",
+     cue:"<b>A la hora del día en que será el evento</b>, con ropa parecida a la que usarás. Ritmo conversacional. En fases 1 y 2 es opcional hacerlo en calor; <b>en fase 3 es obligatorio</b> y se convierte en el bloque de aclimatación. Revisa la pestaña CALOR."},
+    {n:"Turkish get-up", s:"3 × 3 /lado", r:"90 s", tag:"esp", sec:"Estabilidad", id:"Kettlebell_Turkish_Get-Up_Squat_style",
+     cue:"Levantarte del piso con peso sobre el hombro. Es exactamente lo que pasa después de cada caída dentro de la representación. Peso ligero, lentísimo, sin prisa."},
+    {n:"Plancha", s:"3 × 45–60 s", r:"45 s", tag:"core", id:"Plank",
+     cue:"Costillas abajo, glúteo apretado. Postura, no resistencia infinita."},
+    {n:"Extensiones lumbares", s:"3 × 12", r:"60 s", tag:"esp", id:"Hyperextensions_Back_Extensions",
+     cue:"Sin peso o con disco ligero. Salud lumbar, no hipertrofia. Sube hasta la línea del cuerpo, no más."}
+  ]},
+
+  vie:{title:"Pierna + Descensos", focus:"Bajadas y cadena posterior", ex:[
+    {n:"Sentadilla frontal", s:"4 × 5", r:"3 min", tag:"fuerza", sec:"Fuerza", id:"Front_Squat_Clean_Grip",
+     cue:"<b>Frontal, no trasera, en este bloque.</b> La carga al frente obliga al torso a mantenerse erguido contra una fuerza que lo quiere doblar: es el mismo problema mecánico de la cruz. Si la muñeca molesta, usa agarre cruzado."},
+    {n:"Peso muerto rumano", s:"3 × 8", r:"2 min", tag:"fuerza", id:"Romanian_Deadlift",
+     cue:"Isquios y glúteo. Cadera atrás, barra pegada, espalda neutra."},
+    {n:"Bajada controlada del cajón (step-down)", s:"4 × 8 /pierna", r:"90 s", tag:"esp", sec:"Descensos · lo que nadie entrena", id:"Barbell_Step_Ups",
+     cue:"<b>Sube fácil, baja en 3–4 segundos.</b> Las bajadas del recorrido son trabajo excéntrico con carga, y es lo que revienta el cuádriceps y deja las piernas temblando a mitad del camino. Cajón de 30–40 cm, mancuernas en mano."},
+    {n:"Zancada caminando con carga", s:"3 × 20 pasos", r:"90 s", tag:"esp", id:"Barbell_Walking_Lunge",
+     cue:"Con mancuernas o barra. Paso largo, rodilla trasera casi al piso, torso erguido."},
+    {n:"Gemelo de pie con pausa", s:"4 × 10", r:"60 s", tag:"hiper", sec:"Complementos", id:"Standing_Calf_Raises",
+     cue:"Pausa 2 s abajo. El gemelo y el sóleo absorben cada paso de bajada; si fallan, el tobillo y la rodilla pagan."},
+    {n:"Curl femoral tumbado", s:"3 × 10–12", r:"60 s", tag:"hiper", id:"Lying_Leg_Curls",
+     cue:"Equilibra la rodilla. Controla la bajada."},
+    {n:"Elevación de piernas colgado", s:"3 × 12", r:"45 s", tag:"core", id:"Hanging_Leg_Raise",
+     cue:"Abdomen bajo, sin balanceo."}
+  ]},
+
+  sab:{title:"Simulacro", focus:"Ensayo progresivo del recorrido", ex:[
+    {n:"Recorrido con carga", s:"Según fase", r:"—", tag:"esp", sec:"El ensayo", id:"Trail_Running_Walking",
+     cue:"<b>Fase 1 (dic):</b> 1 km, 30 kg al hombro, terreno plano. <b>Fase 2 (ene):</b> 1.5–2 km, 50–65 kg, con subidas. <b>Fase 3 (feb):</b> 2.5–3 km con la cruz real, en el horario y bajo el sol del evento, idealmente en la ruta real. Con acompañante siempre. <b>El primer simulacro con los 90 kg completos nunca debe ser el día del evento</b>, pero tampoco antes de haber pasado las marcas mínimas de la pestaña FASES."},
+    {n:"Cargada del piso al hombro (repetida)", s:"8 × 1", r:"90 s", tag:"esp", id:"Sandbag_Load",
+     cue:"Intercalada dentro del recorrido, simulando las estaciones donde se levanta de nuevo. Cada repetición debe verse igual de limpia que la primera."},
+    {n:"Sostén estático bajo carga", s:"6 × 30–60 s", r:"2 min", tag:"esp", id:"Yoke_Walk",
+     cue:"<b>Las estaciones son paradas de pie, no descansos.</b> Sostener quieto 90 kg es una demanda distinta a caminar con ellos y casi nadie la entrena. De pie, quieto, respirando corto y constante. Progresa por <b>tiempo antes que por peso</b>: llegar a 60 s cómodos con 70 kg vale más que 20 s con 100."},
+    {n:"Arrodillarse y levantarse bajo carga", s:"5 × 3", r:"2 min", tag:"esp", yt:"kneel and stand with sandbag on shoulder",
+     cue:"Si la representación incluye caídas, <b>ensáyalas con protección de rodilla y con carga reducida</b>. Bajar a la rodilla es el momento de mayor riesgo de todo el evento: es cuando el peso se desplaza y el cuello queda expuesto."},
+    {n:"Movilidad y descarga", s:"10–15 min", r:"—", tag:"aer", sec:"Cierre", yt:"movilidad toracica hombro post carga",
+     cue:"Torácica, pectoral, dorsal y cuello. No es opcional: sin esto, la postura se te cierra semana a semana y el hombro empieza a doler antes del evento."}
+  ]}
+};
+
+
+const OFF_NOTAS = `
   <div class="note-block">
     <h3>Cómo ejecutar</h3>
     <p>Rango <b>6–15 reps</b> general, <b>12–20</b> en aislamientos. Lleva las series a <b>RPE 8–10</b>: deja 1–2 reps en los compuestos pesados y el <b>último set de cada ejercicio va al fallo</b>.</p>
@@ -502,16 +649,333 @@ const NOTAS = `
   </div>
 `;
 
-const TAGS = {fuerza:['Fuerza','t-fuerza'], hiper:['Hipertrofia','t-hiper'], pot:['Potencia','t-pot'], core:['Core','t-core'], skill:['Skill','t-skill']};
+const FASES = `
+  <div class="note-block">
+    <h3>Cómo está armado el bloque</h3>
+    <p>Dieciséis semanas, de <b>diciembre al Viernes Santo</b>. Las fases se cuentan <b>hacia atrás desde el evento</b>, no desde diciembre: si cambias la fecha abajo, todo el plan se recorre solo.</p>
+    <p>La lógica es simple: <b>primero el tejido, después la carga, al final el calor.</b> El hombro y la clavícula tardan meses en tolerar un madero y eso no se puede acelerar. El calor, en cambio, se adapta en días y se pierde rápido, así que va pegado al evento.</p>
+    <table class="wk">
+      <tr><th>Fase</th><th>Cuándo</th><th>Objetivo</th></tr>
+      <tr><td>1 · Tejido</td><td>Faltan 16–12 sem<br>Diciembre</td><td>Acostumbrar hombro, clavícula y cuello. Cargas ligeras, cero dolor. Base aeróbica.</td></tr>
+      <tr><td>2 · Carga</td><td>Faltan 11–7 sem<br>Enero</td><td>Subir peso en acarreos, meter pendiente y bajadas. Primer simulacro de 1.5–2 km.</td></tr>
+      <tr><td>3 · Específico</td><td>Faltan 6–4 sem<br>Febrero</td><td>Simulacros con carga real en la ruta real.</td></tr>
+      <tr><td>3b · Calor</td><td>Faltan 3–2 sem<br>Marzo</td><td>Bloque de aclimatación de 10–14 días bajo el sol.</td></tr>
+      <tr><td>4 · Afinar</td><td>Última semana</td><td>Volumen a la mitad, nada nuevo. Solo dormir y mantener el calor.</td></tr>
+    </table>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)">
+      <div style="font-family:'Spline Sans Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:8px">Fecha del evento</div>
+      <input type="date" id="evInput" style="width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);font-family:'Archivo',sans-serif;font-size:14px;padding:11px;border-radius:10px">
+      <p style="margin-top:8px;font-size:12px">Por defecto está el <b>Viernes Santo de 2027 (26 de marzo)</b>. Si tu representación es otro día, cámbialo aquí y las fases se recalculan.</p>
+    </div>
+  </div>
+  <div class="note-block">
+    <h3>La semana</h3>
+    <table class="wk">
+      <tr><th>Día</th><th>Sesión</th><th>Para qué</th></tr>
+      <tr><td>Lunes</td><td>Empuje + Yugo</td><td>Levantar del piso al hombro, carga axial</td></tr>
+      <tr><td>Martes</td><td>Acarreo largo</td><td><b>La sesión clave.</b> Caminar cargado</td></tr>
+      <tr><td>Miércoles</td><td>Tirón + Cuello</td><td>Espalda alta, trapecio, agarre</td></tr>
+      <tr><td>Jueves</td><td>Aeróbico + Calor</td><td>Bajar pulso, adaptar al sol</td></tr>
+      <tr><td>Viernes</td><td>Pierna + Descensos</td><td>Bajadas, lo que revienta el cuádriceps</td></tr>
+      <tr><td>Sábado</td><td>Simulacro</td><td>Ensayo progresivo del recorrido</td></tr>
+      <tr><td>Domingo</td><td>Descanso</td><td>Basquetbol suave o nada</td></tr>
+    </table>
+    <p style="margin-top:12px">Si una semana solo puedes entrenar cuatro días, el orden de prioridad es: <b>martes, sábado, viernes, miércoles</b>. El acarreo y el simulacro no se negocian.</p>
+  </div>
+  <div class="note-block amberblk">
+    <h3>Qué se sacrifica</h3>
+    <p>Esto no es tu bloque de hipertrofia con extras. Es un plan distinto y algo se cede:</p>
+    <ul>
+      <li><b>Se va el FST-7.</b> Las 7 series de bombeo compiten directamente con la recuperación que necesitan los acarreos.</li>
+      <li><b>Se va casi todo el aislamiento de brazo.</b> Queda lo mínimo para no perder tamaño.</li>
+      <li><b>Se van los pliométricos.</b> El tejido conectivo tiene un presupuesto y en este bloque se lo lleva el acarreo. El trabajo de pino también se pausa: cargar al hombro y sostenerte de manos no se llevan bien en el mismo mes.</li>
+      <li><b>Vas a perder algo de masa magra</b> si el aeróbico sube mucho y no ajustas la comida. Es el costo real de llegar entero en marzo, y se recupera en 8–10 semanas después.</li>
+    </ul>
+    <p>En marzo, terminado el evento, se vuelve al bloque de offseason completo. El conmutador de arriba lo tiene guardado tal cual.</p>
+  </div>
+  <div class="note-block">
+    <h3>Progresión de cargas</h3>
+    <table class="wk">
+      <tr><th>Ejercicio</th><th>Fase 1</th><th>Fase 2</th><th>Fase 3</th></tr>
+      <tr><td>Acarreo a un hombro</td><td>35–45 kg × 60 m</td><td>60–75 kg</td><td>85–100 kg × 30–40 m</td></tr>
+      <tr><td>Cargada al hombro</td><td>30–40 kg</td><td>50–65 kg</td><td>70–85 kg</td></tr>
+      <tr><td>Caminata del granjero</td><td>35 kg</td><td>45–55 kg</td><td>60 kg+</td></tr>
+      <tr><td>Yugo / barra trapecio</td><td>60–70 kg</td><td>90–110 kg</td><td>130–150 kg</td></tr>
+      <tr><td>Mochila zona 2</td><td>12 kg</td><td>20 kg</td><td>25–30 kg</td></tr>
+      <tr><td>Simulacro</td><td>1 km · 30 kg</td><td>1.5–2 km · 50–65 kg</td><td>2.5–3 km · cruz real</td></tr>
+    </table>
+    <p style="margin-top:12px">Sube <b>una sola variable por semana</b>: o distancia, o peso. Nunca las dos. Si una semana el hombro amanece adolorido dos días seguidos, repite la semana anterior en vez de avanzar.</p>
+  </div>
+  <div class="note-block alert">
+    <h3>Marcas mínimas antes del simulacro completo</h3>
+    <p>Con <b>90 kg efectivos</b> esto deja de ser un reto de resistencia y pasa a ser un reto de fuerza. 90 kg sobre un solo hombro es <b>más que tu peso corporal</b>, y tu peso muerto actual es de 140 kg: el margen es más estrecho de lo que parece.</p>
+    <p>Antes de hacer el primer simulacro de 3 km con la cruz completa, deberías poder hacer todo esto sin drama:</p>
+    <ul>
+      <li><b>Peso muerto barra hexagonal:</b> 4 × 5 con 170–180 kg</li>
+      <li><b>Sentadilla frontal:</b> 4 × 5 con 90–100 kg</li>
+      <li><b>Yugo:</b> 40 m con 130 kg, caminando erguido</li>
+      <li><b>Acarreo a un hombro:</b> 40 m con 85 kg, sin ladearte</li>
+      <li><b>Sostén estático:</b> 60 s con 90 kg</li>
+      <li><b>Caminata del granjero:</b> 40 m con 55 kg por mano</li>
+    </ul>
+    <p>Si a seis semanas del evento no llegas a estas marcas, <b>no fuerces el simulacro completo</b>: haz el recorrido con carga parcial o con más ayuda. El objetivo es llegar al evento entero, no demostrar algo en febrero.</p>
+  </div>
+  <div class="note-block amberblk">
+    <h3>Lo que cambia con 90 kg</h3>
+    <p>Tres cosas dejan de ser opcionales con este peso:</p>
+    <ul>
+      <li><b>El Cireneo.</b> Si la representación permite ayuda en algún tramo, úsala, y ensáyala antes. Coordinar el reparto de peso con otra persona se practica: hacerlo por primera vez el día del evento, cansado y bajo el sol, es cuando la carga se desliza.</li>
+      <li><b>Cambiar de hombro.</b> Cargar 90 kg del mismo lado durante 3 km deja la clavícula machacada y la columna en flexión lateral sostenida. Identifica desde ahora en qué puntos del guion puedes cambiar.</li>
+      <li><b>El acolchado.</b> Con 50 kg una tela doblada alcanza; con 90 kg necesitas acolchado real y probado. La piel de la clavícula se abre y no se recupera a media procesión.</li>
+    </ul>
+    <p>Y una nota de método: <b>el yugo carga los dos hombros, el acarreo a un hombro carga uno solo.</b> Por eso el yugo llega a 150 kg y el acarreo se queda en 85–100 en tramos cortos. No intentes igualarlos: la columna tolera muchísimo más carga simétrica que asimétrica.</p>
+  </div>
+  <div class="note-block alert">
+    <h3>Antes de empezar</h3>
+    <p>El plan ya está calibrado a <b>~90 kg efectivos sobre el hombro</b>. Conviene confirmarlo con una prueba real en diciembre, porque el peso efectivo cambia mucho según cuánto arrastre la base y qué tanto se reparta.</p>
+    <p>Y una cosa que sí o sí va antes de la primera sesión: <b>una revisión médica</b>, sobre todo de presión y corazón. Carga pesada más calor más esfuerzo prolongado estresa el sistema cardiovascular de forma distinta a entrenar bajo techo, y 90 kg no es una carga de conversación.</p>
+  </div>
+`;
+
+const CALOR = `
+  <div class="note-block amberblk">
+    <h3>Por qué el calor es lo más importante</h3>
+    <p>De todo lo que puedes entrenar, <b>la tolerancia al calor es lo que más determina si terminas o te quedas a medias</b>, y casi nadie lo entrena. La gente entrena la fuerza y llega en marzo a descubrir que el problema no era el peso.</p>
+    <p>Adaptarte hace tres cosas medibles: aumenta tu volumen de plasma, adelanta el momento en que empiezas a sudar y baja tu pulso y tu temperatura interna a un mismo esfuerzo. Traducido: el mismo recorrido se siente notablemente menos brutal.</p>
+  </div>
+  <div class="note-block">
+    <h3>El protocolo</h3>
+    <p>La adaptación se logra en aproximadamente <b>6 a 8 días</b> de exposición, y los protocolos de investigación usan bloques de <b>10 a 14 días</b> de ejercicio suave a moderado en calor para consolidarla.</p>
+    <ul>
+      <li><b>10 a 14 días seguidos</b>, o casi seguidos, de exposición.</li>
+      <li><b>60 a 90 minutos</b> por sesión, esfuerzo <b>conversacional</b>. No es entrenamiento duro: es exposición.</li>
+      <li><b>En el horario del evento</b> y con ropa parecida a la que usarás. La túnica cambia todo respecto a entrenar en playera.</li>
+      <li>Termina el bloque <b>3 a 5 días antes</b> del evento.</li>
+    </ul>
+    <p><b>Cuándo colocarlo:</b> las últimas dos semanas de febrero y los primeros días de marzo, empalmado con la fase 3.</p>
+  </div>
+  <div class="note-block">
+    <h3>Por qué no en enero</h3>
+    <p>Porque se pierde. La evidencia indica que se pierde alrededor de <b>1 día de adaptación por cada 2 días sin exposición</b>, y que la pérdida es completa a las <b>6 semanas</b>. Un bloque de calor en enero no te sirve de nada en marzo.</p>
+    <p>La buena noticia es que <b>re-aclimatarse toma poco</b>, unos 4 a 5 días. Si te enfermas o pierdes el bloque, todavía hay rescate. Y si entre el bloque y el evento pasan más de 5 días, mete una sesión suelta en calor cada quinto día para sostener la adaptación.</p>
+  </div>
+  <div class="note-block alert">
+    <h3>Señales de alarma · aprendértelas de memoria</h3>
+    <p>Esto aplica tanto en los entrenamientos en calor como el día del evento. <b>Para si aparece cualquiera de estas:</b></p>
+    <ul>
+      <li>Dejas de sudar aunque siga haciendo calor</li>
+      <li>Piel caliente y seca, o al contrario, escalofríos bajo el sol</li>
+      <li>Dolor de cabeza que va creciendo, náusea, mareo</li>
+      <li>Calambres que no ceden</li>
+      <li>Te cuesta seguir una conversación o no recuerdas en qué parte del recorrido vas</li>
+    </ul>
+    <p><b>La confusión mental es una emergencia médica</b>, no un signo de cansancio. Si alguien nota que estás desorientado, el evento se acabó para ti en ese momento: sombra, ropa fuera, agua fría en cuello e ingles, y atención médica. El golpe de calor mata y avanza rápido.</p>
+    <p>Dile a tu equipo estas señales <b>antes</b> del evento, porque el que las va a notar primero no eres tú. Y acuerda desde ahora que si alguien pide parar, se para, sin discusión. Nadie que colapsó a la mitad pensó cinco minutos antes que estaba en problemas.</p>
+  </div>
+  <div class="note-block">
+    <h3>Hidratación</h3>
+    <p>Empieza el día bien hidratado, no cargando agua a última hora. Durante el evento, bebe <b>a intervalos regulares y con sodio</b>, no solo agua simple: en esfuerzos largos con mucho sudor, tomar únicamente agua pura en volumen alto puede diluir el sodio en sangre, y eso es peligroso por sí mismo.</p>
+    <p>Suero oral, bebida deportiva o agua con una pizca de sal y algo de fruta funcionan. Practícalo en los simulacros de febrero: el día del evento no es momento de estrenar nada.</p>
+  </div>
+  <div class="note-block alert">
+    <h3>Si piensas ayunar</h3>
+    <p>Muchas representaciones incluyen ayuno o abstinencia previa. <b>Si ese es tu caso, dilo con tiempo a quien te acompañe y considéralo seriamente con un médico.</b></p>
+    <p>Ayuno más deshidratación más 150 kg más sol más tres kilómetros es una combinación de factores de riesgo que se multiplican entre sí, no que se suman. Se puede honrar la disciplina y aun así tomar agua, o comer ligero antes. Vale la pena hablarlo con quien coordina el evento, porque llegar a la meta en camilla no le sirve a nadie.</p>
+  </div>
+`;
+
+const DIAD = `
+  <div class="note-block">
+    <h3>Los últimos 10 días</h3>
+    <ul>
+      <li><b>Día −10:</b> último acarreo pesado. De aquí en adelante nada nuevo y nada máximo.</li>
+      <li><b>Días −9 a −4:</b> volumen a la mitad, se mantienen las sesiones cortas en calor.</li>
+      <li><b>Días −3 a −1:</b> caminatas suaves, movilidad, sombra. Duerme más de lo normal: el sueño de estas noches vale más que cualquier sesión.</li>
+      <li><b>Víspera:</b> comida conocida, sal normal, hidratación constante todo el día. Prepara ropa, calzado y protección de hombro.</li>
+    </ul>
+  </div>
+  <div class="note-block">
+    <h3>Equipo</h3>
+    <ul>
+      <li><b>Protección de hombro.</b> Acolchado bajo la túnica, en el lado que carga. Pruébalo en los simulacros de febrero, no el mismo día.</li>
+      <li><b>Calzado con suela real.</b> Si la representación exige sandalia, al menos ensáyala cargado varias veces antes.</li>
+      <li><b>Protector solar</b> en cara, cuello y manos, resistente al sudor.</li>
+      <li><b>Rodilleras discretas</b> si el guion incluye caídas.</li>
+      <li><b>Alguien con agua</b> siguiéndote todo el recorrido.</li>
+    </ul>
+  </div>
+  <div class="note-block amberblk">
+    <h3>Durante el recorrido</h3>
+    <ul>
+      <li><b>Cambia de hombro</b> en cada oportunidad que el guion permita. Por eso entrenaste los dos lados.</li>
+      <li><b>Pasos cortos, sobre todo en bajada.</b> El paso largo cuesta abajo es lo que dobla la rodilla y lo que hace que la carga se te vaya al frente.</li>
+      <li><b>Respiración corta y constante.</b> No aguantes el aire bajo carga: sube la presión y te marea.</li>
+      <li><b>Bebe en cada estación</b> aunque no tengas sed. La sed llega tarde.</li>
+      <li><b>En las paradas, mantente erguido.</b> Doblarte bajo carga es donde se lastima la espalda baja.</li>
+    </ul>
+  </div>
+  <div class="note-block alert">
+    <h3>Parar no es fallar</h3>
+    <p>Vas a cargar 150 kg bajo el sol frente a gente que te está viendo, y en ese contexto la presión de aguantar es enorme. Vale la pena decidir ahora, con la cabeza fría, algo que en el momento va a ser muy difícil decidir: <b>hay un punto en el que parar es la decisión correcta.</b></p>
+    <p>Acuerda con tu equipo, desde antes, una señal y una regla: si aparece cualquiera de las señales de alarma de la pestaña CALOR, se para. Sin negociar, sin "aguanto tantito más". Una representación interrumpida se explica; un golpe de calor no siempre se revierte.</p>
+  </div>
+  <div class="note-block">
+    <h3>Después</h3>
+    <p>Sombra, líquidos con sal, comida, y una revisión honesta del hombro y la espalda en los días siguientes. Si aparece dolor que no cede en una semana, entumecimiento u hormigueo en el brazo, revísalo con un médico: la carga sostenida sobre la clavícula puede irritar estructuras nerviosas y eso no se aguanta, se atiende.</p>
+    <p>Deja <b>7 a 10 días de descanso real</b> antes de volver al bloque de offseason. Habrás acumulado más fatiga estructural de la que sientes.</p>
+  </div>
+  <div class="note-block">
+    <h3>Nota</h3>
+    <p>Soy un asistente, no médico ni entrenador certificado, y no puedo ver cómo te mueves ni conozco tu historial. Este plan está construido con principios sólidos de preparación física, pero <b>un evento con esta carga y este calor merece que alguien te vea en persona</b>: idealmente una revisión médica antes de empezar, y si se puede, un entrenador que te observe los acarreos en enero.</p>
+  </div>
+`;
+
+const TAGS = {fuerza:['Fuerza','t-fuerza'], hiper:['Hipertrofia','t-hiper'], pot:['Potencia','t-pot'], core:['Core','t-core'], skill:['Skill','t-skill'], esp:['Específico','t-esp'], aer:['Aeróbico','t-aer']};
+
+const BLOCKS = {
+  off:{
+    name:'Offseason', tag:'PPL ×2', key:'rutina_done',
+    kicker:'Bloque Hipertrofia · PPL ×2', h1:'Modo <span class="accent">Offseason</span>',
+    sub:'6 días, cada músculo 2× por semana. Masa como objetivo, con potencia y core integrados.',
+    chips:['RPE <b>8–10</b>','Compuestos <b>2–3 min</b>','Aislados <b>60–90 s</b>','<b>FST-7</b> 30–45 s'],
+    foot:'Doble progresión · Deload cada 6–8 sem · Domingo descanso',
+    days:OFF,
+    tabs:[['lun','LUN','Push A'],['mar','MAR','Pull A'],['mie','MIÉ','Legs A'],['jue','JUE','Push B'],['vie','VIE','Pull B'],['sab','SÁB','Legs B'],['notas','NOTAS','Reglas']],
+    pages:{notas:OFF_NOTAS}
+  },
+  cruz:{
+    name:'Reto Marzo', tag:'Vía Crucis', key:'rutina_cruz',
+    kicker:'Bloque Específico · 13 semanas', h1:'Reto <span class="accent">Marzo</span>',
+    sub:'3 km con subidas y bajadas, cruz de ~150 kg (~90 kg efectivos al hombro), bajo el sol.',
+    chips:['<b>~90 kg</b> al hombro','Acarreo <b>2×/sem</b>','Calor <b>últimas 2 sem</b>','Simulacro <b>sábados</b>'],
+    foot:'Primero el tejido · Después la carga · Al final el calor',
+    days:CRUZ,
+    tabs:[['lun','LUN','Yugo'],['mar','MAR','Acarreo'],['mie','MIÉ','Cuello'],['jue','JUE','Calor'],['vie','VIE','Descensos'],['sab','SÁB','Simulacro'],['fases','FASES','Plan'],['calor','CALOR','Protocolo'],['diad','DÍA D','Evento']],
+    pages:{fases:FASES, calor:CALOR, diad:DIAD}
+  }
+};
 
 const main = document.getElementById('main');
 const tabs = document.getElementById('tabs');
 const modal = document.getElementById('modal');
+
+/* ---- Temporada: el bloque Cruz se activa el 1 de diciembre ---- */
+function seasonStart(){
+  const n = new Date();
+  const y = n.getMonth() >= 11 ? n.getFullYear() : n.getFullYear()-1;
+  return new Date(y, 11, 1);
+}
+function cruzUnlocked(){
+  return true;   // pestaña siempre habilitada
+}
+/* Fecha del evento. Por defecto Viernes Santo 2027 (26 mar). Editable en la pestaña FASES. */
+const EVENTO_DEF = '2027-03-26';
+function eventoDate(){
+  const s = localStorage.getItem('rutina_evento') || EVENTO_DEF;
+  return new Date(s + 'T12:00:00');
+}
+function semanasRestantes(){
+  return Math.ceil((eventoDate() - new Date()) / 86400000 / 7);
+}
+/* Las fases se cuentan HACIA ATRÁS desde el evento, no desde diciembre.
+   Así el plan se reajusta solo si la fecha cambia. */
+const FASES_DEF = [
+  {wr:[18,99],n:'Fase 0 · Antes de tiempo', g:'Todavía falta. Sigue en el bloque de offseason y arranca este cuando queden 16 semanas.'},
+  {wr:[12,17],n:'Fase 1 · Tejido',     g:'Acostumbrar hombro, clavícula y cuello. Cargas ligeras, cero dolor. Base aeróbica.'},
+  {wr:[7,11], n:'Fase 2 · Carga',      g:'Subir peso en los acarreos, meter pendiente y bajadas. Primer simulacro largo.'},
+  {wr:[4,6],  n:'Fase 3 · Específico', g:'Simulacros con carga real en la ruta real. Prepara el bloque de calor.'},
+  {wr:[2,3],  n:'Fase 3b · Calor',     g:'Bloque de aclimatación: 10–14 días seguidos bajo el sol, en el horario del evento.'},
+  {wr:[0,1],  n:'Fase 4 · Afinar',     g:'Volumen a la mitad. Nada nuevo, nada máximo. Dormir y sostener el calor.'},
+  {wr:[-99,-1],n:'Evento pasado',      g:'Descansa 7–10 días de verdad y regresa al bloque de offseason.'}
+];
+function faseActual(){
+  const wr = semanasRestantes();
+  return FASES_DEF.find(f => wr >= f.wr[0] && wr <= f.wr[1]) || FASES_DEF[0];
+}
+
+let mode = localStorage.getItem('rutina_mode') || 'off';
+if(mode === 'cruz' && !cruzUnlocked() && !localStorage.getItem('rutina_preview')) mode = 'off';
+let B = BLOCKS[mode];
 let store = {};
-try { store = JSON.parse(localStorage.getItem('rutina_done')||'{}'); } catch(e){ store = {}; }
-function save(){ try{ localStorage.setItem('rutina_done', JSON.stringify(store)); }catch(e){} }
+function loadStore(){
+  try { store = JSON.parse(localStorage.getItem(B.key)||'{}'); } catch(e){ store = {}; }
+}
+function save(){ try{ localStorage.setItem(B.key, JSON.stringify(store)); }catch(e){} }
+
+function renderModes(){
+  const unlocked = cruzUnlocked();
+  document.getElementById('modes').innerHTML = Object.entries(BLOCKS).map(([k,b])=>{
+    const lock = (k==='cruz' && !unlocked);
+    return `<button class="mode${k===mode?' on':''}${lock?' locked':''}" data-mode="${k}">
+      ${b.name}<small>${lock?'✦ Se activa en diciembre':b.tag}</small></button>`;
+  }).join('');
+  document.querySelectorAll('[data-mode]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k = btn.dataset.mode;
+      if(k===mode) return;
+      if(k==='cruz' && !cruzUnlocked()){
+        if(!confirm('El bloque del Reto de Marzo está pensado para arrancar el 1 de diciembre.\n\n¿Quieres verlo de todas formas en modo vista previa?')) return;
+        localStorage.setItem('rutina_preview','1');
+      }
+      mode = k; B = BLOCKS[k];
+      localStorage.setItem('rutina_mode', k);
+      loadStore(); renderShell(); renderTabs(); renderDay(B.tabs[0][0]);
+      window.scrollTo({top:0,behavior:'instant'});
+    });
+  });
+}
+
+function renderShell(){
+  document.querySelector('.kicker').innerHTML = B.kicker;
+  document.querySelector('h1').innerHTML = B.h1;
+  document.querySelector('.sub').textContent = B.sub;
+  document.querySelector('.meta-row').innerHTML = B.chips.map(c=>`<span class="chip">${c}</span>`).join('');
+  document.getElementById('foot').textContent = B.foot;
+  renderModes();
+  renderPhase();
+}
+
+function renderPhase(){
+  const box = document.getElementById('phaseBox');
+  if(mode !== 'cruz'){ box.innerHTML=''; return; }
+  if(!cruzUnlocked()){
+    box.innerHTML = `<div class="phase pre"><div class="p-top"><span>Vista previa</span><span>Arranca 1 dic</span></div>
+      <div class="p-name">Aún no empieza</div>
+      <div class="p-goal">Puedes revisar el plan completo. El seguimiento por semanas se activa el 1 de diciembre.</div></div>`;
+    return;
+  }
+  const wr = semanasRestantes();
+  const dias = Math.ceil((eventoDate() - new Date())/86400000);
+  const f = faseActual();
+  const cuenta = dias > 0 ? `Faltan ${dias} días · ${wr} sem` : 'Evento pasado';
+  box.innerHTML = `<div class="phase"><div class="p-top"><span>${cuenta}</span><span>${eventoDate().toLocaleDateString('es-MX',{day:'numeric',month:'short'})}</span></div>
+    <div class="p-name">${f.n}</div>
+    <div class="p-goal">${f.g}</div></div>`;
+}
+
+function renderTabs(){
+  tabs.innerHTML = B.tabs.map((t,i)=>
+    `<button class="tab${i===0?' active':''}" data-day="${t[0]}">${t[1]}<small>${t[2]}</small></button>`
+  ).join('');
+}
 
 function renderDay(key){
+  if(B.pages[key]){
+    tabs.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.day===key));
+    main.innerHTML = `<div class="panel active">${B.pages[key]}</div>`;
+    const ev = document.getElementById('evInput');
+    if(ev){
+      ev.value = localStorage.getItem('rutina_evento') || EVENTO_DEF;
+      ev.addEventListener('change', ()=>{
+        if(!ev.value) return;
+        localStorage.setItem('rutina_evento', ev.value);
+        renderPhase();
+      });
+    }
+    return;
+  }
+  tabs.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.day===key));
+  const DAYS = B.days;
   const d = DAYS[key];
   let html = `<div class="panel active"><div class="day-head"><div class="day-title">${d.title}</div><br><span class="day-focus">${d.focus}</span></div>`;
   d.ex.forEach((e,i)=>{
@@ -578,21 +1042,17 @@ document.getElementById('mClose').addEventListener('click', ()=>modal.classList.
 modal.addEventListener('click', ev=>{ if(ev.target===modal) modal.classList.remove('open'); });
 document.addEventListener('keydown', ev=>{ if(ev.key==='Escape') modal.classList.remove('open'); });
 
-function renderNotas(){
-  main.innerHTML = `<div class="panel active">${NOTAS}</div>`;
-}
-
 tabs.addEventListener('click', ev=>{
   const btn = ev.target.closest('.tab');
   if(!btn) return;
-  tabs.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  const day = btn.dataset.day;
   window.scrollTo({top:0,behavior:'instant'});
-  if(day==='notas') renderNotas(); else renderDay(day);
+  renderDay(btn.dataset.day);
 });
 
-renderDay('lun');
+loadStore();
+renderShell();
+renderTabs();
+renderDay(B.tabs[0][0]);
 </script>
 </body>
 </html>
