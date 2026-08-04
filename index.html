@@ -190,6 +190,13 @@
   .t-skill{color:#6fe6c8;border-color:rgba(90,225,190,.35);background:rgba(90,225,190,.08);}
   .t-esp{color:#ffd36e;border-color:rgba(255,200,90,.4);background:rgba(255,200,90,.1);}
   .t-aer{color:#8adfe8;border-color:rgba(120,215,230,.35);background:rgba(120,215,230,.08);}
+  .env{
+    font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 7px;border-radius:6px;border:1px solid;
+  }
+  .e-gym{color:#9aa4ab;border-color:rgba(150,165,175,.3);background:rgba(150,165,175,.07);}
+  .e-libre{color:#8adfa0;border-color:rgba(120,220,150,.35);background:rgba(120,220,150,.08);}
+  .e-cruz{color:#ffa8a8;border-color:rgba(255,140,140,.4);background:rgba(255,140,140,.1);}
   .opt{
     font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
     color:var(--faint);border:1px dashed var(--line);padding:3px 7px;border-radius:6px;
@@ -490,103 +497,109 @@ const OFF = {
   ]}
 };
 
-/* ============ BLOQUE CRUZ · VÍA CRUCIS MARZO ============ */
+/* ============ BLOQUE CRUZ · VÍA CRUCIS MARZO ============
+   env: gym = gimnasio convencional · libre = espacio abierto · cruz = con la cruz real (último mes) */
 const CRUZ = {
-  lun:{title:"Empuje + Yugo", focus:"Carga axial y hombro", ex:[
-    {n:"Cargada de costal al hombro", s:"5 × 3 /lado", r:"2 min", tag:"esp", sec:"Gesto específico · piso a hombro", id:"Sandbag_Load",
-     cue:"<b>El movimiento más específico de todo el plan.</b> Del piso al hombro en un solo tiempo, alternando lados. Espalda neutra, cadera atrás, jala el costal pegado al cuerpo. Fase 1: 30–40 kg. Fase 2: 50–65 kg. Fase 3: 70–85 kg. Nunca al fallo: en cuanto la espalda se redondee, se acabó la serie. Un costal se deforma y castiga la técnica mucho más que una barra, así que sube despacio."},
-    {n:"Push press (envión de hombro)", s:"4 × 5", r:"2–3 min", tag:"fuerza", sec:"Fuerza", id:"Push_Press",
-     cue:"Impulso de pierna + empuje. Es el patrón de reacomodar la cruz sobre el hombro. Rígido de tronco, costillas abajo."},
-    {n:"Caminata con yugo o barra en trapecio", s:"4 × 40 m", r:"2–3 min", tag:"esp", id:"Yoke_Walk",
-     cue:"Barra sobre el trapecio con toalla o pad. <b>Pasos cortos y rápidos</b>, mirada al frente, respiración corta y constante. Fase 1: 60–70 kg. Fase 2: 90–110 kg. Fase 3: 130–150 kg. <b>Aquí es donde llegas al peso real de la cruz</b>: el yugo reparte la carga en los dos hombros, así que es la forma segura de que tu columna conozca 150 kg antes de marzo."},
-    {n:"Press inclinado con mancuerna", s:"3 × 8–10", r:"90 s", tag:"hiper", sec:"Mantenimiento de masa", id:"Incline_Dumbbell_Press",
+  lun:{title:"Empuje + Carga axial", focus:"Gimnasio", ex:[
+    {n:"Cargada con mancuerna al hombro", s:"5 × 3 /lado", r:"2 min", tag:"esp", env:"gym", sec:"Gesto específico · piso a hombro", id:"Dumbbell_Clean",
+     cue:"<b>Lo más parecido al gesto de levantar la cruz que hay en un gimnasio.</b> Del piso al hombro en un tiempo, alternando lados. Espalda neutra, cadera atrás, la mancuerna pegada al cuerpo. Fase 1: 20–30 kg. Fase 2: 35–45 kg. Fase 3: 50–60 kg. Si tu gym tiene barra y espacio, la <b>cargada colgante con barra</b> es todavía mejor."},
+    {n:"Sostén con barra en el rack", s:"5 × 45–60 s", r:"2–3 min", tag:"esp", env:"gym", id:"Barbell_Squat",
+     cue:"<b>El sustituto del yugo, y el mejor ejercicio de todo el plan para las estaciones.</b> Carga la barra en el rack, ponle una toalla, desmóntala como para sentadilla y simplemente <b>quédate de pie</b>. Pasadores del rack puestos por si acaso. Fase 1: 70–90 kg. Fase 2: 110–130 kg. Fase 3: 140–160 kg. Progresa por <b>tiempo antes que por peso</b>."},
+    {n:"Caminata con barra al hombro", s:"4 × 20–30 m", r:"2–3 min", tag:"esp", env:"gym", yt:"barbell back carry walk technique",
+     cue:"Misma barra acolchada, ahora caminando por el pasillo del gym. <b>Pasos cortos y rápidos</b>, mirada al frente, respiración corta y constante. Usa 60–70% de lo que sostienes estático. Si el gimnasio no te deja caminar con barra, sube el tiempo del sostén y compensa con la mochila del martes."},
+    {n:"Press militar con barra", s:"4 × 5", r:"2–3 min", tag:"fuerza", env:"gym", sec:"Fuerza", id:"Barbell_Shoulder_Press",
+     cue:"Compuesto de hombro. Rígido de tronco, costillas abajo, glúteo apretado. Es el patrón de reacomodar el madero por encima del hombro."},
+    {n:"Press inclinado con mancuerna", s:"3 × 8–10", r:"90 s", tag:"hiper", env:"gym", sec:"Mantenimiento de masa", id:"Incline_Dumbbell_Press",
      cue:"Mantienes el pecho que ya construiste. Volumen recortado a propósito: la energía va al acarreo."},
-    {n:"Elevaciones laterales", s:"3 × 12–15", r:"60 s", tag:"hiper", id:"Side_Lateral_Raise",
+    {n:"Elevaciones laterales", s:"3 × 12–15", r:"60 s", tag:"hiper", env:"gym", id:"Side_Lateral_Raise",
      cue:"Deltoide medial. Además, el hombro ancho reparte mejor la carga del madero."},
-    {n:"Extensión de tríceps en polea", s:"3 × 10–12", r:"60 s", tag:"hiper", id:"Triceps_Pushdown",
+    {n:"Extensión de tríceps en polea", s:"3 × 10–12", r:"60 s", tag:"hiper", env:"gym", id:"Triceps_Pushdown",
      cue:"Codos pegados, extiende completo."},
-    {n:"Cuello isométrico (4 direcciones)", s:"3 × 20 s c/u", r:"30 s", tag:"esp", sec:"Cuello y core", id:"Isometric_Neck_Exercise_-_Front_And_Back",
-     cue:"Mano contra la cabeza, empuja sin que se mueva: frente, atrás y ambos lados. <b>El cuello sostiene la cabeza cuando el hombro va cargado y el torso se inclina.</b> Nunca a máxima fuerza: presión moderada y sostenida."},
-    {n:"Pallof press", s:"3 × 12 /lado", r:"45 s", tag:"core", id:"Pallof_Press",
+    {n:"Cuello con disco (boca arriba y boca abajo)", s:"3 × 12 c/u", r:"45 s", tag:"esp", env:"gym", sec:"Cuello y core", id:"Lying_Face_Up_Plate_Neck_Resistance",
+     cue:"Acostado en banco, disco ligero sobre la frente o la nuca con una toalla. <b>El cuello sostiene la cabeza cuando el hombro va cargado y el torso se inclina.</b> Empieza con 2.5–5 kg y sube lentísimo: el cuello se lesiona fácil y tarda en sanar. Si no te acomoda, usa los isométricos con la mano."},
+    {n:"Pallof press", s:"3 × 12 /lado", r:"45 s", tag:"core", env:"gym", id:"Pallof_Press",
      cue:"Anti-rotación. La cruz sobre un hombro es exactamente esta fuerza durante 3 km."}
   ]},
 
-  mar:{title:"Acarreo largo", focus:"La sesión clave de la semana", ex:[
-    {n:"Caminata del granjero a un brazo", s:"6 × 40 m /lado", r:"90 s", tag:"esp", sec:"Acarreo asimétrico", id:"Farmers_Walk",
-     cue:"Una sola mancuerna pesada. <b>Hombros nivelados, no te inclines</b>. Fase 1: 35 kg. Fase 2: 45–55 kg. Fase 3: 60 kg+. Si el hombro se cae de un lado, bájale al peso."},
-    {n:"Acarreo a un hombro (barra o viga)", s:"6 × 60 m", r:"2–3 min", tag:"esp", yt:"one shoulder barbell carry technique",
-     cue:"<b>El ensayo directo del evento.</b> Barra acolchada sobre un hombro, cambiando de lado cada serie. Fase 1: 35–45 kg. Fase 2: 60–75 kg. Fase 3: 85–100 kg pero en tramos <b>cortos</b> (30–40 m). Empieza SIEMPRE por el lado que llevarás la cruz, y trabaja el otro igual para no descompensarte. Con 90 kg sobre una clavícula, la regla es que el peso máximo va en distancia corta y la distancia larga va con peso moderado: nunca las dos cosas el mismo día."},
-    {n:"Arrastre de trineo con arnés", s:"5 × 50 m", r:"90 s", tag:"esp", sec:"Arrastre y pendiente", id:"Sled_Drag_-_Harness",
-     cue:"Reproduce la fricción de la base de la cruz raspando el piso. Inclínate al frente y camina con pasos cortos. Si no hay trineo: llanta con cuerda, o cuesta arriba con mochila cargada."},
-    {n:"Empuje de trineo en pendiente", s:"5 × 30 m", r:"90 s", tag:"esp", id:"Sled_Push",
-     cue:"Simula las subidas del recorrido. Brazos rígidos, cadera baja, empuje continuo sin frenar."},
-    {n:"Caminata en pendiente con mochila (zona 2)", s:"30–50 min", r:"—", tag:"aer", sec:"Base aeróbica", id:"Trail_Running_Walking",
-     cue:"Mochila cargada, ritmo en el que <b>puedes hablar en frases completas</b>. Esto baja tu pulso a una carga dada, y un pulso más bajo el día del evento significa menos estrés por calor. Fase 1: 12 kg. Fase 2: 20 kg. Fase 3: 25–30 kg."},
-    {n:"Puente lateral", s:"3 × 30–45 s /lado", r:"45 s", tag:"core", id:"Side_Bridge",
-     cue:"Anti-flexión lateral. Es el músculo que evita que te dobles hacia el lado cargado."}
+  mar:{title:"Cuestas y Acarreo", focus:"Espacio libre", ex:[
+    {n:"Caminata en cuesta con mochila", s:"6 × 150 m subida", r:"bajada", tag:"esp", env:"libre", sec:"La sesión clave · busca una pendiente", id:"Trail_Running_Walking",
+     cue:"<b>El sustituto del trineo y el corazón de la semana.</b> Busca una subida decente y súbela cargado, bájala caminando suave como descanso. Mochila con discos, libros o arena bien acomodados y pegados a la espalda. Fase 1: 15 kg. Fase 2: 25 kg. Fase 3: 35 kg. Pasos cortos, inclínate al frente desde el tobillo, no desde la cintura."},
+    {n:"Acarreo a un hombro (viga, tubo o barra)", s:"6 × 60 m", r:"2–3 min", tag:"esp", env:"libre", yt:"one shoulder log carry technique",
+     cue:"<b>El ensayo directo del evento.</b> Consíguete un tubo, una viga de madera o lleva una barra: cualquier cosa larga y acolchada sobre un hombro, cambiando de lado cada serie. Fase 1: 35–45 kg. Fase 2: 60–75 kg. Fase 3: 85 kg+ en tramos cortos de 30–40 m. Empieza siempre por el lado que llevarás la cruz y trabaja el otro igual para no descompensarte."},
+    {n:"Caminata del granjero con mancuernas", s:"6 × 40 m /lado", r:"90 s", tag:"esp", env:"gym", id:"Farmers_Walk",
+     cue:"Esta sí en el gym, o en casa si tienes mancuernas. Una sola mancuerna pesada, <b>hombros nivelados, no te inclines</b>. Fase 1: 35 kg. Fase 2: 45–55 kg. Fase 3: 60 kg+."},
+    {n:"Caminata larga con mochila (zona 2)", s:"30–50 min", r:"—", tag:"aer", env:"libre", sec:"Base aeróbica", id:"Trail_Running_Walking",
+     cue:"Terreno mixto, ritmo en el que <b>puedes hablar en frases completas</b>. Esto baja tu pulso a una carga dada, y un pulso más bajo el día del evento significa menos estrés por calor. Fase 1: 12 kg. Fase 2: 20 kg. Fase 3: 25–30 kg."},
+    {n:"Puente lateral", s:"3 × 30–45 s /lado", r:"45 s", tag:"core", env:"libre", id:"Side_Bridge",
+     cue:"En el pasto, al terminar. Anti-flexión lateral: es el músculo que evita que te dobles hacia el lado cargado."}
   ]},
 
-  mie:{title:"Tirón + Cuello", focus:"Espalda alta y agarre", ex:[
-    {n:"Peso muerto con barra hexagonal", s:"4 × 5", r:"3 min", tag:"fuerza", sec:"Fuerza", id:"Trap_Bar_Deadlift",
-     cue:"Barra hexagonal (o convencional si no hay). Menos cizalla lumbar que la barra recta y más transferible a levantar un objeto voluminoso del piso. Pesado pero <b>lejos del fallo</b>: 2 reps en reserva siempre."},
-    {n:"Remo con barra", s:"4 × 8", r:"2 min", tag:"fuerza", id:"Bent_Over_Barbell_Row",
-     cue:"Torso ~45°, espalda neutra. La espalda alta gruesa es literalmente el colchón sobre el que descansa el madero."},
-    {n:"Dominadas", s:"3 × 6–10", r:"2 min", tag:"fuerza", id:"Pullups",
+  mie:{title:"Tirón + Cuello", focus:"Gimnasio", ex:[
+    {n:"Peso muerto con barra", s:"4 × 5", r:"3 min", tag:"fuerza", env:"gym", sec:"Fuerza", id:"Barbell_Deadlift",
+     cue:"Tu base de fuerza para todo lo demás. Pesado pero <b>lejos del fallo</b>: 2 reps en reserva siempre. Vienes de 140 kg y en este bloque hay que subirlo. Si el gimnasio tiene barra hexagonal, mejor todavía."},
+    {n:"Remo con barra", s:"4 × 8", r:"2 min", tag:"fuerza", env:"gym", id:"Bent_Over_Barbell_Row",
+     cue:"Torso ~45°, espalda neutra. La espalda alta gruesa es literalmente el colchón sobre el que descansa el madero. Si la lumbar te queda cargada del peso muerto, hazlo en máquina Smith o con apoyo de pecho."},
+    {n:"Dominadas", s:"3 × 6–10", r:"2 min", tag:"fuerza", env:"gym", id:"Pullups",
      cue:"Con lastre si te sobran reps. Dorsal fuerte = torso estable bajo carga asimétrica."},
-    {n:"Encogimientos pesados con pausa", s:"4 × 8", r:"90 s", tag:"esp", sec:"Trapecio y cuello", id:"Barbell_Shrug",
-     cue:"<b>Pausa de 2 s arriba en cada rep.</b> El trapecio superior es el que amortigua la clavícula. Este ejercicio deja de ser estético en este bloque: es protección."},
-    {n:"Face pull", s:"3 × 15", r:"60 s", tag:"hiper", id:"Face_Pull",
+    {n:"Encogimientos pesados con pausa", s:"4 × 8", r:"90 s", tag:"esp", env:"gym", sec:"Trapecio y agarre", id:"Barbell_Shrug",
+     cue:"<b>Pausa de 2 s arriba en cada rep.</b> El trapecio superior es el que amortigua la clavícula. En este bloque deja de ser estético: es protección. Sube el peso agresivamente aquí."},
+    {n:"Pinza de discos", s:"4 × 30–40 s", r:"60 s", tag:"esp", env:"gym", id:"Plate_Pinch",
+     cue:"Dos discos lisos pegados, sostenidos con los dedos. El agarre es lo que falla primero cuando hay que estabilizar una carga larga con la mano libre."},
+    {n:"Face pull", s:"3 × 15", r:"60 s", tag:"hiper", env:"gym", id:"Face_Pull",
      cue:"Deltoide posterior y rotadores. Compensa la postura cerrada de cargar al frente."},
-    {n:"Cuello con arnés", s:"3 × 12", r:"60 s", tag:"esp", id:"Seated_Head_Harness_Neck_Resistance",
-     cue:"Si no hay arnés, usa los isométricos del lunes. Progresión muy lenta: el cuello se lesiona fácil y tarda en sanar."},
-    {n:"Curl martillo", s:"3 × 10–12", r:"60 s", tag:"hiper", id:"Hammer_Curls",
+    {n:"Cuello isométrico (4 direcciones)", s:"3 × 20 s c/u", r:"30 s", tag:"esp", env:"gym", id:"Isometric_Neck_Exercise_-_Sides",
+     cue:"Mano contra la cabeza, empuja sin que se mueva: frente, atrás y ambos lados. Presión moderada y sostenida, nunca máxima."},
+    {n:"Curl martillo", s:"3 × 10–12", r:"60 s", tag:"hiper", env:"gym", id:"Hammer_Curls",
      cue:"Braquial y antebrazo. Mantiene el brazo y refuerza el agarre."},
-    {n:"Dead bug", s:"3 × 10 /lado", r:"45 s", tag:"core", id:"Dead_Bug",
+    {n:"Dead bug", s:"3 × 10 /lado", r:"45 s", tag:"core", env:"gym", id:"Dead_Bug",
      cue:"Lumbar pegada al piso. Anti-extensión: evita que la carga te arquee la espalda."}
   ]},
 
-  jue:{title:"Aeróbico + Calor", focus:"Día de aclimatación", ex:[
-    {n:"Zona 2 bajo el sol", s:"45–75 min", r:"—", tag:"aer", sec:"Exposición al calor", id:"Trail_Running_Walking",
-     cue:"<b>A la hora del día en que será el evento</b>, con ropa parecida a la que usarás. Ritmo conversacional. En fases 1 y 2 es opcional hacerlo en calor; <b>en fase 3 es obligatorio</b> y se convierte en el bloque de aclimatación. Revisa la pestaña CALOR."},
-    {n:"Turkish get-up", s:"3 × 3 /lado", r:"90 s", tag:"esp", sec:"Estabilidad", id:"Kettlebell_Turkish_Get-Up_Squat_style",
-     cue:"Levantarte del piso con peso sobre el hombro. Es exactamente lo que pasa después de cada caída dentro de la representación. Peso ligero, lentísimo, sin prisa."},
-    {n:"Plancha", s:"3 × 45–60 s", r:"45 s", tag:"core", id:"Plank",
+  jue:{title:"Aeróbico + Calor", focus:"Espacio libre", ex:[
+    {n:"Zona 2 bajo el sol", s:"45–75 min", r:"—", tag:"aer", env:"libre", sec:"Exposición al calor", id:"Trail_Running_Walking",
+     cue:"Caminar o trotar suave, <b>a la hora del día en que será el evento</b> y con ropa parecida a la que usarás. Ritmo conversacional. En fases 1 y 2 el calor es opcional; <b>en las últimas dos semanas es obligatorio</b> y esta sesión se vuelve diaria. Revisa la pestaña CALOR."},
+    {n:"Escalera o caminadora en pendiente", s:"15–20 min", r:"—", tag:"aer", env:"gym", id:"Stairmaster",
+     cue:"Alternativa para días de lluvia o si no hay cuestas cerca. Caminadora al 10–15% de inclinación, o escaladora. Con mochila si el gym lo permite."},
+    {n:"Turkish get-up", s:"3 × 3 /lado", r:"90 s", tag:"esp", env:"gym", sec:"Estabilidad", id:"Kettlebell_Turkish_Get-Up_Squat_style",
+     cue:"Levantarte del piso con peso sobre el hombro: exactamente lo que pasa después de cada caída dentro de la representación. Con pesa rusa o mancuerna. Peso ligero, lentísimo, sin prisa."},
+    {n:"Plancha", s:"3 × 45–60 s", r:"45 s", tag:"core", env:"libre", id:"Plank",
      cue:"Costillas abajo, glúteo apretado. Postura, no resistencia infinita."},
-    {n:"Extensiones lumbares", s:"3 × 12", r:"60 s", tag:"esp", id:"Hyperextensions_Back_Extensions",
+    {n:"Extensiones lumbares", s:"3 × 12", r:"60 s", tag:"esp", env:"gym", id:"Hyperextensions_Back_Extensions",
      cue:"Sin peso o con disco ligero. Salud lumbar, no hipertrofia. Sube hasta la línea del cuerpo, no más."}
   ]},
 
-  vie:{title:"Pierna + Descensos", focus:"Bajadas y cadena posterior", ex:[
-    {n:"Sentadilla frontal", s:"4 × 5", r:"3 min", tag:"fuerza", sec:"Fuerza", id:"Front_Squat_Clean_Grip",
-     cue:"<b>Frontal, no trasera, en este bloque.</b> La carga al frente obliga al torso a mantenerse erguido contra una fuerza que lo quiere doblar: es el mismo problema mecánico de la cruz. Si la muñeca molesta, usa agarre cruzado."},
-    {n:"Peso muerto rumano", s:"3 × 8", r:"2 min", tag:"fuerza", id:"Romanian_Deadlift",
+  vie:{title:"Pierna + Descensos", focus:"Gimnasio", ex:[
+    {n:"Sentadilla frontal", s:"4 × 5", r:"3 min", tag:"fuerza", env:"gym", sec:"Fuerza", id:"Front_Squat_Clean_Grip",
+     cue:"<b>Frontal, no trasera, en este bloque.</b> La carga al frente obliga al torso a mantenerse erguido contra una fuerza que lo quiere doblar: es el mismo problema mecánico de la cruz. Si la muñeca molesta, usa agarre cruzado o hazla como sentadilla goblet pesada."},
+    {n:"Peso muerto rumano", s:"3 × 8", r:"2 min", tag:"fuerza", env:"gym", id:"Romanian_Deadlift",
      cue:"Isquios y glúteo. Cadera atrás, barra pegada, espalda neutra."},
-    {n:"Bajada controlada del cajón (step-down)", s:"4 × 8 /pierna", r:"90 s", tag:"esp", sec:"Descensos · lo que nadie entrena", id:"Barbell_Step_Ups",
-     cue:"<b>Sube fácil, baja en 3–4 segundos.</b> Las bajadas del recorrido son trabajo excéntrico con carga, y es lo que revienta el cuádriceps y deja las piernas temblando a mitad del camino. Cajón de 30–40 cm, mancuernas en mano."},
-    {n:"Zancada caminando con carga", s:"3 × 20 pasos", r:"90 s", tag:"esp", id:"Barbell_Walking_Lunge",
+    {n:"Bajada controlada del cajón", s:"4 × 8 /pierna", r:"90 s", tag:"esp", env:"gym", sec:"Descensos · lo que nadie entrena", id:"Dumbbell_Step_Ups",
+     cue:"<b>Sube fácil, baja en 3–4 segundos.</b> Las bajadas del recorrido son trabajo excéntrico con carga, y es lo que revienta el cuádriceps y deja las piernas temblando a mitad del camino. Banco o cajón de 30–40 cm, mancuernas en mano."},
+    {n:"Prensa", s:"3 × 10–12", r:"2 min", tag:"hiper", env:"gym", id:"Leg_Press",
+     cue:"Sustituye la fuerza de empuje que darías con el trineo. Pies medios, ROM completo sin despegar el sacro."},
+    {n:"Zancada caminando con carga", s:"3 × 20 pasos", r:"90 s", tag:"esp", env:"gym", id:"Barbell_Walking_Lunge",
      cue:"Con mancuernas o barra. Paso largo, rodilla trasera casi al piso, torso erguido."},
-    {n:"Gemelo de pie con pausa", s:"4 × 10", r:"60 s", tag:"hiper", sec:"Complementos", id:"Standing_Calf_Raises",
+    {n:"Gemelo de pie con pausa", s:"4 × 10", r:"60 s", tag:"hiper", env:"gym", sec:"Complementos", id:"Standing_Calf_Raises",
      cue:"Pausa 2 s abajo. El gemelo y el sóleo absorben cada paso de bajada; si fallan, el tobillo y la rodilla pagan."},
-    {n:"Curl femoral tumbado", s:"3 × 10–12", r:"60 s", tag:"hiper", id:"Lying_Leg_Curls",
+    {n:"Curl femoral tumbado", s:"3 × 10–12", r:"60 s", tag:"hiper", env:"gym", id:"Lying_Leg_Curls",
      cue:"Equilibra la rodilla. Controla la bajada."},
-    {n:"Elevación de piernas colgado", s:"3 × 12", r:"45 s", tag:"core", id:"Hanging_Leg_Raise",
+    {n:"Elevación de piernas colgado", s:"3 × 12", r:"45 s", tag:"core", env:"gym", id:"Hanging_Leg_Raise",
      cue:"Abdomen bajo, sin balanceo."}
   ]},
 
-  sab:{title:"Simulacro", focus:"Ensayo progresivo del recorrido", ex:[
-    {n:"Recorrido con carga", s:"Según fase", r:"—", tag:"esp", sec:"El ensayo", id:"Trail_Running_Walking",
-     cue:"<b>Fase 1 (dic):</b> 1 km, 30 kg al hombro, terreno plano. <b>Fase 2 (ene):</b> 1.5–2 km, 50–65 kg, con subidas. <b>Fase 3 (feb):</b> 2.5–3 km con la cruz real, en el horario y bajo el sol del evento, idealmente en la ruta real. Con acompañante siempre. <b>El primer simulacro con los 90 kg completos nunca debe ser el día del evento</b>, pero tampoco antes de haber pasado las marcas mínimas de la pestaña FASES."},
-    {n:"Cargada del piso al hombro (repetida)", s:"8 × 1", r:"90 s", tag:"esp", id:"Sandbag_Load",
-     cue:"Intercalada dentro del recorrido, simulando las estaciones donde se levanta de nuevo. Cada repetición debe verse igual de limpia que la primera."},
-    {n:"Sostén estático bajo carga", s:"6 × 30–60 s", r:"2 min", tag:"esp", id:"Yoke_Walk",
-     cue:"<b>Las estaciones son paradas de pie, no descansos.</b> Sostener quieto 90 kg es una demanda distinta a caminar con ellos y casi nadie la entrena. De pie, quieto, respirando corto y constante. Progresa por <b>tiempo antes que por peso</b>: llegar a 60 s cómodos con 70 kg vale más que 20 s con 100."},
-    {n:"Arrodillarse y levantarse bajo carga", s:"5 × 3", r:"2 min", tag:"esp", yt:"kneel and stand with sandbag on shoulder",
-     cue:"Si la representación incluye caídas, <b>ensáyalas con protección de rodilla y con carga reducida</b>. Bajar a la rodilla es el momento de mayor riesgo de todo el evento: es cuando el peso se desplaza y el cuello queda expuesto."},
-    {n:"Movilidad y descarga", s:"10–15 min", r:"—", tag:"aer", sec:"Cierre", yt:"movilidad toracica hombro post carga",
-     cue:"Torácica, pectoral, dorsal y cuello. No es opcional: sin esto, la postura se te cierra semana a semana y el hombro empieza a doler antes del evento."}
+  sab:{title:"Simulacro", focus:"Libre · y con la cruz el último mes", ex:[
+    {n:"Recorrido con mochila cargada", s:"Según fase", r:"—", tag:"esp", env:"libre", sec:"Hasta el último mes · con mochila", id:"Trail_Running_Walking",
+     cue:"<b>Fase 1 (dic):</b> 2 km con 15–20 kg, terreno plano. <b>Fase 2 (ene):</b> 3–4 km con 25–30 kg, con subidas y bajadas. <b>Fase 3 (feb):</b> 4–5 km con 30–35 kg, en el horario y el sol del evento, idealmente en la ruta real. La mochila no reproduce el peso al hombro, pero sí la distancia, la pendiente, el calor y el tiempo de pie."},
+    {n:"Acarreo a un hombro por tramos", s:"8 × 100 m", r:"90 s", tag:"esp", env:"libre", yt:"one shoulder log carry technique",
+     cue:"Intercalado dentro del recorrido, con la viga o el tubo. Simula las estaciones: cargas un tramo, paras, vuelves a levantar. <b>Cada repetición debe verse igual de limpia que la primera.</b>"},
+    {n:"Sostén estático de pie", s:"6 × 45–60 s", r:"90 s", tag:"esp", env:"libre", id:"Farmers_Walk",
+     cue:"<b>Las estaciones son paradas de pie, no descansos.</b> Sostener quieto es una demanda distinta a caminar y casi nadie la entrena. De pie, erguido, respirando corto y constante."},
+    {n:"Sesión con la cruz real", s:"Ver plan del último mes", r:"—", tag:"esp", env:"cruz", sec:"Último mes · con la cruz real", yt:"via crucis cargar cruz tecnica hombro",
+     cue:"<b>Se activa cuando puedas sacar la cruz, no antes.</b> Cuatro sesiones en total, una por semana, subiendo distancia: 800 m → 1.5 km → 2.5 km → 500 m suaves. El detalle completo está en la pestaña FASES. <b>La primera vez con la cruz nunca es el recorrido completo</b>, y nunca sin acompañante."},
+    {n:"Movilidad y descarga", s:"10–15 min", r:"—", tag:"aer", env:"libre", sec:"Cierre", yt:"movilidad toracica hombro post carga",
+     cue:"Torácica, pectoral, dorsal y cuello. No es opcional: sin esto la postura se te cierra semana a semana y el hombro empieza a doler antes del evento."}
   ]}
 };
-
 
 const OFF_NOTAS = `
   <div class="note-block">
@@ -671,16 +684,16 @@ const FASES = `
   <div class="note-block">
     <h3>La semana</h3>
     <table class="wk">
-      <tr><th>Día</th><th>Sesión</th><th>Para qué</th></tr>
-      <tr><td>Lunes</td><td>Empuje + Yugo</td><td>Levantar del piso al hombro, carga axial</td></tr>
-      <tr><td>Martes</td><td>Acarreo largo</td><td><b>La sesión clave.</b> Caminar cargado</td></tr>
-      <tr><td>Miércoles</td><td>Tirón + Cuello</td><td>Espalda alta, trapecio, agarre</td></tr>
-      <tr><td>Jueves</td><td>Aeróbico + Calor</td><td>Bajar pulso, adaptar al sol</td></tr>
-      <tr><td>Viernes</td><td>Pierna + Descensos</td><td>Bajadas, lo que revienta el cuádriceps</td></tr>
-      <tr><td>Sábado</td><td>Simulacro</td><td>Ensayo progresivo del recorrido</td></tr>
+      <tr><th>Día</th><th>Sesión</th><th>Dónde</th></tr>
+      <tr><td>Lunes</td><td>Empuje + Carga axial</td><td>Gimnasio</td></tr>
+      <tr><td>Martes</td><td><b>Cuestas y Acarreo</b></td><td>Aire libre</td></tr>
+      <tr><td>Miércoles</td><td>Tirón + Cuello</td><td>Gimnasio</td></tr>
+      <tr><td>Jueves</td><td>Aeróbico + Calor</td><td>Aire libre</td></tr>
+      <tr><td>Viernes</td><td>Pierna + Descensos</td><td>Gimnasio</td></tr>
+      <tr><td>Sábado</td><td><b>Simulacro</b></td><td>Libre · cruz el último mes</td></tr>
       <tr><td>Domingo</td><td>Descanso</td><td>Basquetbol suave o nada</td></tr>
     </table>
-    <p style="margin-top:12px">Si una semana solo puedes entrenar cuatro días, el orden de prioridad es: <b>martes, sábado, viernes, miércoles</b>. El acarreo y el simulacro no se negocian.</p>
+    <p style="margin-top:12px">Tres días de gimnasio, dos de aire libre, uno de simulacro. Si una semana solo puedes entrenar cuatro días, el orden de prioridad es: <b>martes, sábado, viernes, miércoles</b>. El acarreo y el simulacro no se negocian.</p>
   </div>
   <div class="note-block amberblk">
     <h3>Qué se sacrifica</h3>
@@ -697,38 +710,68 @@ const FASES = `
     <h3>Progresión de cargas</h3>
     <table class="wk">
       <tr><th>Ejercicio</th><th>Fase 1</th><th>Fase 2</th><th>Fase 3</th></tr>
-      <tr><td>Acarreo a un hombro</td><td>35–45 kg × 60 m</td><td>60–75 kg</td><td>85–100 kg × 30–40 m</td></tr>
-      <tr><td>Cargada al hombro</td><td>30–40 kg</td><td>50–65 kg</td><td>70–85 kg</td></tr>
-      <tr><td>Caminata del granjero</td><td>35 kg</td><td>45–55 kg</td><td>60 kg+</td></tr>
-      <tr><td>Yugo / barra trapecio</td><td>60–70 kg</td><td>90–110 kg</td><td>130–150 kg</td></tr>
+      <tr><td>Sostén con barra</td><td>70–90 kg</td><td>110–130 kg</td><td>140–160 kg</td></tr>
+      <tr><td>Acarreo a un hombro</td><td>35–45 kg × 60 m</td><td>60–75 kg</td><td>85 kg+ × 30–40 m</td></tr>
+      <tr><td>Cargada con mancuerna</td><td>20–30 kg</td><td>35–45 kg</td><td>50–60 kg</td></tr>
+      <tr><td>Granjero (mancuerna)</td><td>35 kg</td><td>45–55 kg</td><td>60 kg+</td></tr>
+      <tr><td>Mochila en cuestas</td><td>15 kg</td><td>25 kg</td><td>35 kg</td></tr>
       <tr><td>Mochila zona 2</td><td>12 kg</td><td>20 kg</td><td>25–30 kg</td></tr>
-      <tr><td>Simulacro</td><td>1 km · 30 kg</td><td>1.5–2 km · 50–65 kg</td><td>2.5–3 km · cruz real</td></tr>
+      <tr><td>Simulacro sábado</td><td>2 km · 15–20 kg</td><td>3–4 km · 25–30 kg</td><td>4–5 km · 30–35 kg</td></tr>
     </table>
     <p style="margin-top:12px">Sube <b>una sola variable por semana</b>: o distancia, o peso. Nunca las dos. Si una semana el hombro amanece adolorido dos días seguidos, repite la semana anterior en vez de avanzar.</p>
   </div>
+  <div class="note-block">
+    <h3>Equipo · qué usar en vez de qué</h3>
+    <p>Nada de este plan necesita gimnasio de crossfit. Estas son las sustituciones y por qué funcionan:</p>
+    <table class="wk">
+      <tr><th>Lo clásico</th><th>Tu versión</th><th>Dónde</th></tr>
+      <tr><td>Yugo</td><td>Sostén con barra en el rack + caminata con barra al hombro</td><td>Gimnasio</td></tr>
+      <tr><td>Costal</td><td>Cargada con mancuerna al hombro</td><td>Gimnasio</td></tr>
+      <tr><td>Trineo</td><td>Cuestas con mochila cargada · prensa · caminadora en pendiente</td><td>Libre / gym</td></tr>
+      <tr><td>Barra hexagonal</td><td>Peso muerto con barra normal</td><td>Gimnasio</td></tr>
+      <tr><td>Asas de granjero</td><td>Una mancuerna pesada</td><td>Gimnasio</td></tr>
+      <tr><td>Arnés de cuello</td><td>Disco sobre banco + isométricos con la mano</td><td>Gimnasio</td></tr>
+      <tr><td>La cruz</td><td>Viga, tubo o barra acolchada al hombro</td><td>Libre</td></tr>
+    </table>
+    <p style="margin-top:12px">El <b>sostén con barra en el rack</b> es el que más rinde de todos: cargas la barra como para sentadilla, le pones una toalla, la desmontas y te quedas de pie. Con los pasadores puestos es seguro, cabe en cualquier gimnasio y es lo más parecido que existe a estar parado en una estación con la cruz encima.</p>
+    <p>Para la <b>mochila</b>: discos o libros envueltos en toalla, bien pegados a la espalda y amarrados para que no bailen. Una mochila de senderismo con cinturón de cadera aguanta 30 kg sin problema; una escolar no.</p>
+  </div>
+  <div class="note-block amberblk">
+    <h3>El último mes · con la cruz real</h3>
+    <p>Como la cruz solo sale un mes antes, ese mes carga con toda la especificidad del plan <b>y además</b> con el bloque de calor. Está apretado, así que el orden importa:</p>
+    <table class="wk">
+      <tr><th>Semana</th><th>Sesión con la cruz</th><th>El resto</th></tr>
+      <tr><td>Faltan 4</td><td><b>800 m</b> + 6 sostenes de 45 s. Primer contacto: aquí se ajusta el acolchado y se decide el hombro.</td><td>Gym normal. Arranca el calor.</td></tr>
+      <tr><td>Faltan 3</td><td><b>1.5 km</b> en la ruta real, con las paradas de las estaciones.</td><td>Gym al 75%. Calor diario.</td></tr>
+      <tr><td>Faltan 2</td><td><b>2.5 km</b>, horario y ropa del evento. <b>Sesión pico.</b></td><td>Gym al 60%. Calor diario.</td></tr>
+      <tr><td>Faltan 1</td><td><b>500 m suaves</b>, solo para repasar el acolchado y el cambio de hombro.</td><td>Volumen a la mitad. Dormir.</td></tr>
+    </table>
+    <p style="margin-top:12px"><b>La primera sesión con la cruz nunca es el recorrido completo</b>, y ninguna es sin acompañante. Si en la sesión de "faltan 4" el hombro no aguanta los 800 m, no subas a 1.5 km la semana siguiente: repite y ajusta el acolchado.</p>
+    <p>Los tres meses anteriores existen precisamente para que ese primer contacto no sea un salto al vacío. Si llegas con las marcas mínimas cubiertas, 800 m con la cruz se van a sentir duros pero manejables.</p>
+  </div>
   <div class="note-block alert">
-    <h3>Marcas mínimas antes del simulacro completo</h3>
+    <h3>Marcas mínimas antes de la cruz</h3>
     <p>Con <b>90 kg efectivos</b> esto deja de ser un reto de resistencia y pasa a ser un reto de fuerza. 90 kg sobre un solo hombro es <b>más que tu peso corporal</b>, y tu peso muerto actual es de 140 kg: el margen es más estrecho de lo que parece.</p>
-    <p>Antes de hacer el primer simulacro de 3 km con la cruz completa, deberías poder hacer todo esto sin drama:</p>
+    <p>Antes de la primera sesión con la cruz real deberías poder hacer todo esto sin drama:</p>
     <ul>
-      <li><b>Peso muerto barra hexagonal:</b> 4 × 5 con 170–180 kg</li>
+      <li><b>Peso muerto:</b> 4 × 5 con 170–180 kg</li>
       <li><b>Sentadilla frontal:</b> 4 × 5 con 90–100 kg</li>
-      <li><b>Yugo:</b> 40 m con 130 kg, caminando erguido</li>
+      <li><b>Sostén con barra:</b> 60 s con 150 kg, erguido</li>
       <li><b>Acarreo a un hombro:</b> 40 m con 85 kg, sin ladearte</li>
-      <li><b>Sostén estático:</b> 60 s con 90 kg</li>
-      <li><b>Caminata del granjero:</b> 40 m con 55 kg por mano</li>
+      <li><b>Granjero:</b> 40 m con 55 kg en una mano</li>
+      <li><b>Mochila:</b> 5 km con 30 kg sin quedar destruido</li>
     </ul>
-    <p>Si a seis semanas del evento no llegas a estas marcas, <b>no fuerces el simulacro completo</b>: haz el recorrido con carga parcial o con más ayuda. El objetivo es llegar al evento entero, no demostrar algo en febrero.</p>
+    <p>Si a un mes del evento no llegas a estas marcas, <b>no fuerces el recorrido completo con la cruz</b>: haz los tramos con más ayuda o con carga parcial. El objetivo es llegar al evento entero, no demostrar algo en febrero.</p>
   </div>
   <div class="note-block amberblk">
     <h3>Lo que cambia con 90 kg</h3>
     <p>Tres cosas dejan de ser opcionales con este peso:</p>
     <ul>
-      <li><b>El Cireneo.</b> Si la representación permite ayuda en algún tramo, úsala, y ensáyala antes. Coordinar el reparto de peso con otra persona se practica: hacerlo por primera vez el día del evento, cansado y bajo el sol, es cuando la carga se desliza.</li>
+      <li><b>El Cireneo.</b> Si la representación permite ayuda en algún tramo, úsala y ensáyala en las sesiones del último mes. Coordinar el reparto de peso con otra persona se practica: hacerlo por primera vez el día del evento, cansado y bajo el sol, es cuando la carga se desliza.</li>
       <li><b>Cambiar de hombro.</b> Cargar 90 kg del mismo lado durante 3 km deja la clavícula machacada y la columna en flexión lateral sostenida. Identifica desde ahora en qué puntos del guion puedes cambiar.</li>
-      <li><b>El acolchado.</b> Con 50 kg una tela doblada alcanza; con 90 kg necesitas acolchado real y probado. La piel de la clavícula se abre y no se recupera a media procesión.</li>
+      <li><b>El acolchado.</b> Con 50 kg una tela doblada alcanza; con 90 kg necesitas acolchado real y probado. La piel de la clavícula se abre y no se recupera a media procesión. <b>Pruébalo en la primera sesión con la cruz</b>, que para eso es.</li>
     </ul>
-    <p>Y una nota de método: <b>el yugo carga los dos hombros, el acarreo a un hombro carga uno solo.</b> Por eso el yugo llega a 150 kg y el acarreo se queda en 85–100 en tramos cortos. No intentes igualarlos: la columna tolera muchísimo más carga simétrica que asimétrica.</p>
+    <p>Y una nota de método: el sostén con barra carga <b>los dos hombros</b>, el acarreo a un hombro carga <b>uno solo</b>. Por eso el sostén llega a 160 kg y el acarreo unilateral se queda en 85–100 en tramos cortos. No intentes igualarlos: la columna tolera muchísimo más carga simétrica que asimétrica.</p>
   </div>
   <div class="note-block alert">
     <h3>Antes de empezar</h3>
@@ -830,6 +873,7 @@ const DIAD = `
   </div>
 `;
 
+const ENVS = {gym:'◧ Gimnasio', libre:'▲ Aire libre', cruz:'✝ Con la cruz'};
 const TAGS = {fuerza:['Fuerza','t-fuerza'], hiper:['Hipertrofia','t-hiper'], pot:['Potencia','t-pot'], core:['Core','t-core'], skill:['Skill','t-skill'], esp:['Específico','t-esp'], aer:['Aeróbico','t-aer']};
 
 const BLOCKS = {
@@ -847,7 +891,7 @@ const BLOCKS = {
     name:'Reto Marzo', tag:'Vía Crucis', key:'rutina_cruz',
     kicker:'Bloque Específico · 13 semanas', h1:'Reto <span class="accent">Marzo</span>',
     sub:'3 km con subidas y bajadas, cruz de ~150 kg (~90 kg efectivos al hombro), bajo el sol.',
-    chips:['<b>~90 kg</b> al hombro','Acarreo <b>2×/sem</b>','Calor <b>últimas 2 sem</b>','Simulacro <b>sábados</b>'],
+    chips:['<b>~90 kg</b> al hombro','<b>3</b> gym + <b>3</b> libre','Calor <b>últimas 2 sem</b>','Cruz <b>último mes</b>'],
     foot:'Primero el tejido · Después la carga · Al final el calor',
     days:CRUZ,
     tabs:[['lun','LUN','Yugo'],['mar','MAR','Acarreo'],['mie','MIÉ','Cuello'],['jue','JUE','Calor'],['vie','VIE','Descensos'],['sab','SÁB','Simulacro'],['fases','FASES','Plan'],['calor','CALOR','Protocolo'],['diad','DÍA D','Evento']],
@@ -993,6 +1037,7 @@ function renderDay(key){
             <span class="sets-badge">${e.s}</span>
             ${e.fst?'<span class="fst-tag">FST-7</span>':''}
             <span class="tag ${cls}">${label}</span>
+            ${e.env?`<span class="env e-${e.env}">${ENVS[e.env]}</span>`:''}
             ${e.opt?'<span class="opt">Opcional</span>':''}
             <span class="rest">⏱ ${e.r}</span>
           </div>
