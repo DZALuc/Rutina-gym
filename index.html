@@ -267,6 +267,7 @@
   .shots{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .shot{position:relative;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
   .shot img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover;background:var(--surface-2);}
+  .shot svg{width:100%;display:block;aspect-ratio:4/3;background:var(--surface-2);}
   .shot em{
     position:absolute;left:7px;bottom:7px;font-style:normal;
     font-family:'Spline Sans Mono',monospace;font-size:9px;font-weight:600;
@@ -353,10 +354,7 @@
       <button class="sheet-close" id="mClose">✕</button>
     </div>
     <div class="sheet-body">
-      <div class="shots">
-        <div class="shot"><img id="mImg0" alt="Posición inicial"><em>Inicio</em></div>
-        <div class="shot"><img id="mImg1" alt="Posición final"><em>Final</em></div>
-      </div>
+      <div class="shots" id="mShots"></div>
       <ol class="steps" id="mSteps"></ol>
       <a class="yt" id="mYt" target="_blank" rel="noopener">Ver en video ↗</a>
     </div>
@@ -471,7 +469,7 @@ const OFF = {
      cue:"Agarre neutro = braquial y antebrazo, da grosor al brazo."},
     {n:"Curl predicador", s:"7 × 12", r:"30–45 s", fst:true, tag:"hiper", id:"Preacher_Curl",
      cue:"Remate de bíceps con el brazo fijo. Bombeo total, no sueltes la tensión."},
-    {n:"Plancha hueca (hollow body hold)", s:"3 × 20–30 s", r:"45 s", tag:"core", sec:"Core", yt:"hollow body hold tecnica correcta",
+    {n:"Plancha hueca (hollow body hold)", seq:"hollow", steps:["Lumbar pegada al piso en todo momento", "Empieza con rodillas dobladas y brazos al frente", "Estira brazos y piernas solo si la lumbar sigue pegada", "Si la lumbar se despega, regresa a la versión corta"], s:"3 × 20–30 s", r:"45 s", tag:"core", sec:"Core", yt:"hollow body hold tecnica correcta",
      cue:"<b>La posición base de toda la gimnasia.</b> Lumbar pegada al piso, costillas cerradas, piernas y brazos estirados. Empieza con rodillas dobladas y ve estirando conforme la lumbar aguante pegada. Si se despega, regresa a la versión corta."}
   ]},
 
@@ -505,7 +503,7 @@ const CRUZ = {
      cue:"<b>Lo más parecido al gesto de levantar la cruz que hay en un gimnasio.</b> Del piso al hombro en un tiempo, alternando lados. Espalda neutra, cadera atrás, la mancuerna pegada al cuerpo. Fase 1: 20–30 kg. Fase 2: 35–45 kg. Fase 3: 50–60 kg. Si tu gym tiene barra y espacio, la <b>cargada colgante con barra</b> es todavía mejor."},
     {n:"Sostén con barra en el rack", s:"5 × 45–60 s", r:"2–3 min", tag:"esp", env:"gym", id:"Barbell_Squat",
      cue:"<b>El sustituto del yugo, y el mejor ejercicio de todo el plan para las estaciones.</b> Carga la barra en el rack, ponle una toalla, desmóntala como para sentadilla y simplemente <b>quédate de pie</b>. Pasadores del rack puestos por si acaso. Fase 1: 70–90 kg. Fase 2: 110–130 kg. Fase 3: 140–160 kg. Progresa por <b>tiempo antes que por peso</b>."},
-    {n:"Caminata con barra al hombro", s:"4 × 20–30 m", r:"2–3 min", tag:"esp", env:"gym", yt:"barbell back carry walk technique",
+    {n:"Caminata con barra al hombro", seq:"barra", steps:["Acolcha la barra con una toalla y desmóntala del rack como para sentadilla", "Costillas abajo, glúteo apretado, mirada al frente", "Pasos cortos y rápidos, sin rebotar", "Respira corto y constante: nunca aguantes el aire bajo carga"], s:"4 × 20–30 m", r:"2–3 min", tag:"esp", env:"gym", yt:"barbell back carry walk technique",
      cue:"Misma barra acolchada, ahora caminando por el pasillo del gym. <b>Pasos cortos y rápidos</b>, mirada al frente, respiración corta y constante. Usa 60–70% de lo que sostienes estático. Si el gimnasio no te deja caminar con barra, sube el tiempo del sostén y compensa con la mochila del martes."},
     {n:"Press militar con barra", s:"4 × 5", r:"2–3 min", tag:"fuerza", env:"gym", sec:"Fuerza", id:"Barbell_Shoulder_Press",
      cue:"Compuesto de hombro. Rígido de tronco, costillas abajo, glúteo apretado. Es el patrón de reacomodar el madero por encima del hombro."},
@@ -524,10 +522,10 @@ const CRUZ = {
   mar:{title:"Cuestas y Acarreo", focus:"Espacio libre", ex:[
     {n:"Caminata en cuesta con mochila", s:"6 × 150 m subida", r:"bajada", tag:"esp", env:"libre", sec:"La sesión clave · busca una pendiente", id:"Trail_Running_Walking",
      cue:"<b>El sustituto del trineo y el corazón de la semana.</b> Busca una subida decente y súbela cargado, bájala caminando suave como descanso. Mochila con discos, libros o arena bien acomodados y pegados a la espalda. Fase 1: 15 kg. Fase 2: 25 kg. Fase 3: 35 kg. Pasos cortos, inclínate al frente desde el tobillo, no desde la cintura."},
-    {n:"Acarreo a un hombro (viga, tubo o barra)", s:"6 × 60 m", r:"2–3 min", tag:"esp", env:"libre", yt:"one shoulder log carry technique",
+    {n:"Acarreo a un hombro (viga, tubo o barra)", seq:"viga", steps:["Para la viga vertical y recárgala sobre el hombro acolchado", "El peso cae sobre el trapecio, no sobre la clavícula", "Abraza la viga con el brazo del mismo lado; el otro va de contrapeso", "Camina con pasos cortos, torso lo más erguido posible", "Cambia de hombro cada serie"], s:"6 × 60 m", r:"2–3 min", tag:"esp", env:"libre", yt:"one shoulder log carry technique",
      cue:"<b>El ensayo directo del evento.</b> Consíguete un tubo, una viga de madera o lleva una barra: cualquier cosa larga y acolchada sobre un hombro, cambiando de lado cada serie. Fase 1: 35–45 kg. Fase 2: 60–75 kg. Fase 3: 85 kg+ en tramos cortos de 30–40 m. Empieza siempre por el lado que llevarás la cruz y trabaja el otro igual para no descompensarte."},
-    {n:"Caminata del granjero con mancuernas", s:"6 × 40 m /lado", r:"90 s", tag:"esp", env:"gym", id:"Farmers_Walk",
-     cue:"Esta sí en el gym, o en casa si tienes mancuernas. Una sola mancuerna pesada, <b>hombros nivelados, no te inclines</b>. Fase 1: 35 kg. Fase 2: 45–55 kg. Fase 3: 60 kg+."},
+    {n:"Acarreo de maleta (garrafón o mochila en una mano)", seq:"maleta", steps:["Toma el garrafón o la mochila del asa, pegado al cuerpo", "Hombros nivelados: nadie debería notar de qué lado cargas", "Camina recto 40 m, cambia de mano y regresa", "Si el torso se inclina hacia la carga, baja el peso"], s:"6 × 40 m /lado", r:"90 s", tag:"esp", env:"libre", yt:"suitcase carry technique",
+     cue:"La versión de aire libre del granjero: un garrafón de agua (20 L = 20 kg), una mochila cargada tomada del asa, o la misma viga en una mano. <b>Hombros nivelados, no te inclines.</b> Si el hombro se cae de un lado, bájale al peso. Anti-flexión lateral puro: es lo que evita que te dobles hacia el lado de la cruz."},
     {n:"Caminata larga con mochila (zona 2)", s:"30–50 min", r:"—", tag:"aer", env:"libre", sec:"Base aeróbica", id:"Trail_Running_Walking",
      cue:"Terreno mixto, ritmo en el que <b>puedes hablar en frases completas</b>. Esto baja tu pulso a una carga dada, y un pulso más bajo el día del evento significa menos estrés por calor. Fase 1: 12 kg. Fase 2: 20 kg. Fase 3: 25–30 kg."},
     {n:"Puente lateral", s:"3 × 30–45 s /lado", r:"45 s", tag:"core", env:"libre", id:"Side_Bridge",
@@ -541,7 +539,9 @@ const CRUZ = {
      cue:"Torso ~45°, espalda neutra. La espalda alta gruesa es literalmente el colchón sobre el que descansa el madero. Si la lumbar te queda cargada del peso muerto, hazlo en máquina Smith o con apoyo de pecho."},
     {n:"Dominadas", s:"3 × 6–10", r:"2 min", tag:"fuerza", env:"gym", id:"Pullups",
      cue:"Con lastre si te sobran reps. Dorsal fuerte = torso estable bajo carga asimétrica."},
-    {n:"Encogimientos pesados con pausa", s:"4 × 8", r:"90 s", tag:"esp", env:"gym", sec:"Trapecio y agarre", id:"Barbell_Shrug",
+    {n:"Caminata del granjero", s:"4 × 40 m /lado", r:"90 s", tag:"esp", env:"gym", sec:"Trapecio y agarre", id:"Farmers_Walk",
+     cue:"Una sola mancuerna pesada por el pasillo del gym. <b>Hombros nivelados, no te inclines.</b> Fase 1: 35 kg. Fase 2: 45–55 kg. Fase 3: 60 kg+. Aquí es donde el agarre y el oblicuo trabajan con carga de verdad; la versión del martes con garrafón es el complemento ligero."},
+    {n:"Encogimientos pesados con pausa", s:"4 × 8", r:"90 s", tag:"esp", env:"gym", id:"Barbell_Shrug",
      cue:"<b>Pausa de 2 s arriba en cada rep.</b> El trapecio superior es el que amortigua la clavícula. En este bloque deja de ser estético: es protección. Sube el peso agresivamente aquí."},
     {n:"Pinza de discos", s:"4 × 30–40 s", r:"60 s", tag:"esp", env:"gym", id:"Plate_Pinch",
      cue:"Dos discos lisos pegados, sostenidos con los dedos. El agarre es lo que falla primero cuando hay que estabilizar una carga larga con la mano libre."},
@@ -557,15 +557,13 @@ const CRUZ = {
 
   jue:{title:"Aeróbico + Calor", focus:"Espacio libre", ex:[
     {n:"Zona 2 bajo el sol", s:"45–75 min", r:"—", tag:"aer", env:"libre", sec:"Exposición al calor", id:"Trail_Running_Walking",
-     cue:"Caminar o trotar suave, <b>a la hora del día en que será el evento</b> y con ropa parecida a la que usarás. Ritmo conversacional. En fases 1 y 2 el calor es opcional; <b>en las últimas dos semanas es obligatorio</b> y esta sesión se vuelve diaria. Revisa la pestaña CALOR."},
-    {n:"Escalera o caminadora en pendiente", s:"15–20 min", r:"—", tag:"aer", env:"gym", id:"Stairmaster",
-     cue:"Alternativa para días de lluvia o si no hay cuestas cerca. Caminadora al 10–15% de inclinación, o escaladora. Con mochila si el gym lo permite."},
-    {n:"Turkish get-up", s:"3 × 3 /lado", r:"90 s", tag:"esp", env:"gym", sec:"Estabilidad", id:"Kettlebell_Turkish_Get-Up_Squat_style",
-     cue:"Levantarte del piso con peso sobre el hombro: exactamente lo que pasa después de cada caída dentro de la representación. Con pesa rusa o mancuerna. Peso ligero, lentísimo, sin prisa."},
+     cue:"Caminar o trotar suave, <b>a la hora del día en que será el evento</b> y con ropa parecida a la que usarás. Ritmo conversacional. En fases 1 y 2 el calor es opcional; <b>en las últimas dos semanas es obligatorio</b> y esta sesión se vuelve diaria. Revisa la pestaña CALOR. <b>Si llueve:</b> caminadora del gym al 10–15% de inclinación, mismo tiempo — es la única excepción del día."},
+    {n:"Levantarse del piso con mochila puesta", seq:"getup", steps:["Boca abajo, manos a la altura del pecho", "Empuja y mete una rodilla debajo del cuerpo", "Media rodilla: pausa con el torso erguido", "Empuja con la pierna delantera y ponte de pie, sin prisa", "Alterna el lado de la rodilla en cada repetición"], s:"3 × 5 /lado", r:"90 s", tag:"esp", env:"libre", sec:"Estabilidad", yt:"get up del piso con peso tecnica",
+     cue:"Con la mochila cargada en la espalda: acuéstate y levántate <b>lento y controlado</b>, alternando el lado del apoyo. Es exactamente lo que pasa después de cada caída dentro de la representación. La mochila desplaza tu centro de gravedad igual que lo hará el madero."},
     {n:"Plancha", s:"3 × 45–60 s", r:"45 s", tag:"core", env:"libre", id:"Plank",
-     cue:"Costillas abajo, glúteo apretado. Postura, no resistencia infinita."},
-    {n:"Extensiones lumbares", s:"3 × 12", r:"60 s", tag:"esp", env:"gym", id:"Hyperextensions_Back_Extensions",
-     cue:"Sin peso o con disco ligero. Salud lumbar, no hipertrofia. Sube hasta la línea del cuerpo, no más."}
+     cue:"En el pasto. Costillas abajo, glúteo apretado. Postura, no resistencia infinita."},
+    {n:"Puente lateral", s:"3 × 30–45 s /lado", r:"45 s", tag:"core", env:"libre", id:"Side_Bridge",
+     cue:"Segunda dosis semanal de anti-flexión lateral: con 90 kg a un solo hombro, este es el core que más vas a usar."}
   ]},
 
   vie:{title:"Pierna + Descensos", focus:"Gimnasio", ex:[
@@ -583,6 +581,8 @@ const CRUZ = {
      cue:"Pausa 2 s abajo. El gemelo y el sóleo absorben cada paso de bajada; si fallan, el tobillo y la rodilla pagan."},
     {n:"Curl femoral tumbado", s:"3 × 10–12", r:"60 s", tag:"hiper", env:"gym", id:"Lying_Leg_Curls",
      cue:"Equilibra la rodilla. Controla la bajada."},
+    {n:"Extensiones lumbares", s:"3 × 12", r:"60 s", tag:"esp", env:"gym", id:"Hyperextensions_Back_Extensions",
+     cue:"Sin peso o con disco ligero. Salud lumbar, no hipertrofia. Sube hasta la línea del cuerpo, no más."},
     {n:"Elevación de piernas colgado", s:"3 × 12", r:"45 s", tag:"core", env:"gym", id:"Hanging_Leg_Raise",
      cue:"Abdomen bajo, sin balanceo."}
   ]},
@@ -590,13 +590,13 @@ const CRUZ = {
   sab:{title:"Simulacro", focus:"Libre · y con la cruz el último mes", ex:[
     {n:"Recorrido con mochila cargada", s:"Según fase", r:"—", tag:"esp", env:"libre", sec:"Hasta el último mes · con mochila", id:"Trail_Running_Walking",
      cue:"<b>Fase 1 (dic):</b> 2 km con 15–20 kg, terreno plano. <b>Fase 2 (ene):</b> 3–4 km con 25–30 kg, con subidas y bajadas. <b>Fase 3 (feb):</b> 4–5 km con 30–35 kg, en el horario y el sol del evento, idealmente en la ruta real. La mochila no reproduce el peso al hombro, pero sí la distancia, la pendiente, el calor y el tiempo de pie."},
-    {n:"Acarreo a un hombro por tramos", s:"8 × 100 m", r:"90 s", tag:"esp", env:"libre", yt:"one shoulder log carry technique",
+    {n:"Acarreo a un hombro por tramos", seq:"viga", steps:["Carga un tramo de 100 m con la viga al hombro", "Baja la carga con control en cada parada", "Vuelve a levantarla: cada repetición igual de limpia que la primera", "Cambia de hombro en tramos alternos"], s:"8 × 100 m", r:"90 s", tag:"esp", env:"libre", yt:"one shoulder log carry technique",
      cue:"Intercalado dentro del recorrido, con la viga o el tubo. Simula las estaciones: cargas un tramo, paras, vuelves a levantar. <b>Cada repetición debe verse igual de limpia que la primera.</b>"},
-    {n:"Sostén estático de pie", s:"6 × 45–60 s", r:"90 s", tag:"esp", env:"libre", id:"Farmers_Walk",
-     cue:"<b>Las estaciones son paradas de pie, no descansos.</b> Sostener quieto es una demanda distinta a caminar y casi nadie la entrena. De pie, erguido, respirando corto y constante."},
-    {n:"Sesión con la cruz real", s:"Ver plan del último mes", r:"—", tag:"esp", env:"cruz", sec:"Último mes · con la cruz real", yt:"via crucis cargar cruz tecnica hombro",
+    {n:"Sostén estático de pie", seq:"sosten", steps:["De pie con la viga al hombro, carga sobre el trapecio", "Glúteo apretado, costillas abajo, mirada al frente", "Respira corto y constante", "Si empiezas a ladearte, termina la serie: la posición perfecta es el ejercicio"], s:"6 × 45–60 s", r:"90 s", tag:"esp", env:"libre", yt:"static hold log on shoulder",
+     cue:"<b>Las estaciones son paradas de pie, no descansos.</b> Con la viga o el tubo al hombro, quieto, erguido, respirando corto y constante. Sostener es una demanda distinta a caminar y casi nadie la entrena. El lunes en el gym haces la versión pesada con barra; aquí ensayas la de campo."},
+    {n:"Sesión con la cruz real", seq:"kneel", steps:["Primera sesión: solo 800 m, para ajustar acolchado y elegir hombro", "Para arrodillarte: baja con control, el torso se mantiene erguido", "Pausa en media rodilla, el peso sigue sobre el trapecio", "Empuja con la pierna delantera para subir", "Nunca sin acompañante, nunca el recorrido completo a la primera"], s:"Ver plan del último mes", r:"—", tag:"esp", env:"cruz", sec:"Último mes · con la cruz real", yt:"via crucis cargar cruz tecnica hombro",
      cue:"<b>Se activa cuando puedas sacar la cruz, no antes.</b> Cuatro sesiones en total, una por semana, subiendo distancia: 800 m → 1.5 km → 2.5 km → 500 m suaves. El detalle completo está en la pestaña FASES. <b>La primera vez con la cruz nunca es el recorrido completo</b>, y nunca sin acompañante."},
-    {n:"Movilidad y descarga", s:"10–15 min", r:"—", tag:"aer", env:"libre", sec:"Cierre", yt:"movilidad toracica hombro post carga",
+    {n:"Movilidad y descarga", seq:"movi", steps:["Pecho en marco de puerta o poste: 30 s por lado", "Extensión torácica sobre un respaldo o banca: 10 lentas", "Cuello: inclinaciones suaves a cada lado, 20 s", "Dorsal: cuélgate de una barra o estírate contra un poste, 30 s"], s:"10–15 min", r:"—", tag:"aer", env:"libre", sec:"Cierre", yt:"movilidad toracica hombro post carga",
      cue:"Torácica, pectoral, dorsal y cuello. No es opcional: sin esto la postura se te cierra semana a semana y el hombro empieza a doler antes del evento."}
   ]}
 };
@@ -658,7 +658,7 @@ const OFF_NOTAS = `
   <div class="note-block">
     <h3>Fuentes de las imágenes</h3>
     <p>Las fotos de posición inicial y final vienen de <b>free-exercise-db</b>, una base de datos abierta de ejercicios. Cada botón <b>Ver forma</b> muestra las dos posiciones y los pasos de ejecución.</p>
-    <p>Los ejercicios sin foto en esa base (dominadas explosivas, plancha hueca) llevan enlace directo a búsqueda de video.</p>
+    <p>Los ejercicios de acarreo que no existen en esa base (viga al hombro, sostén, garrafón, levantarse con mochila…) llevan <b>ilustraciones secuenciales propias</b> paso a paso, dibujadas dentro de la app: no dependen de internet ni de enlaces externos. El enlace a video queda al pie del panel como opción extra, no como la explicación principal.</p>
   </div>
 `;
 
@@ -874,6 +874,50 @@ const DIAD = `
 `;
 
 const ENVS = {gym:'◧ Gimnasio', libre:'▲ Aire libre', cruz:'✝ Con la cruz'};
+
+/* ---- Ilustraciones secuenciales (para ejercicios sin foto en la base) ----
+   Trazo: blanco = cuerpo · verde volt = la carga · rojo = error */
+const S_='<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round">';
+const G_='<line x1="8" y1="108" x2="152" y2="108" stroke="#2a2e32" stroke-width="3"/>';
+const SEQ = {
+  viga: [
+   ['1 · Recarga', S_+G_+'<line x1="128" y1="106" x2="86" y2="44" stroke="#c8fb3d" stroke-width="6"/><circle cx="70" cy="34" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="71" y1="41" x2="74" y2="76" stroke="#eef1f2" stroke-width="3"/><line x1="74" y1="76" x2="62" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="62" y1="92" x2="60" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="74" y1="76" x2="88" y2="94" stroke="#eef1f2" stroke-width="3"/><line x1="88" y1="94" x2="90" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="72" y1="50" x2="88" y2="46" stroke="#eef1f2" stroke-width="3"/><line x1="72" y1="52" x2="57" y2="62" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['2 · Asegura', S_+G_+'<line x1="26" y1="50" x2="122" y2="42" stroke="#c8fb3d" stroke-width="6"/><circle cx="76" cy="29" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="36" x2="78" y2="72" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="72" x2="70" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="90" x2="68" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="72" x2="88" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="88" y1="90" x2="92" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="46" x2="95" y2="42" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="49" x2="60" y2="59" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['3 · Camina', S_+G_+'<line x1="30" y1="52" x2="126" y2="44" stroke="#c8fb3d" stroke-width="6"/><circle cx="81" cy="30" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="37" x2="85" y2="72" stroke="#eef1f2" stroke-width="3"/><line x1="85" y1="72" x2="99" y2="88" stroke="#eef1f2" stroke-width="3"/><line x1="99" y1="88" x2="105" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="85" y1="72" x2="70" y2="88" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="88" x2="62" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="47" x2="99" y2="43" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="50" x2="65" y2="60" stroke="#eef1f2" stroke-width="3"/></svg>']
+  ],
+  maleta: [
+   ['Bien · nivelado', S_+G_+'<path d="M22 34 l6 6 l12 -14" stroke="#c8fb3d" stroke-width="4"/><line x1="62" y1="44" x2="98" y2="44" stroke="#5c6266" stroke-width="2" stroke-dasharray="4 4"/><circle cx="80" cy="30" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="37" x2="80" y2="72" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="72" x2="70" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="90" x2="68" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="72" x2="90" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="90" y1="90" x2="92" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="46" x2="103" y2="76" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="48" x2="64" y2="62" stroke="#eef1f2" stroke-width="3"/><rect x="97" y="78" width="14" height="20" rx="2" stroke="#c8fb3d" stroke-width="3"/></svg>'],
+   ['Mal · inclinado', S_+G_+'<line x1="24" y1="26" x2="38" y2="40" stroke="#ff5f5f" stroke-width="4"/><line x1="38" y1="26" x2="24" y2="40" stroke="#ff5f5f" stroke-width="4"/><circle cx="92" cy="34" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="91" y1="41" x2="80" y2="74" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="74" x2="70" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="90" x2="68" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="74" x2="90" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="90" y1="90" x2="92" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="90" y1="48" x2="110" y2="78" stroke="#eef1f2" stroke-width="3"/><line x1="89" y1="50" x2="74" y2="62" stroke="#eef1f2" stroke-width="3"/><rect x="104" y="80" width="14" height="20" rx="2" stroke="#c8fb3d" stroke-width="3"/></svg>']
+  ],
+  barra: [
+   ['1 · Postura', S_+G_+'<circle cx="80" cy="27" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="30" y1="44" x2="130" y2="44" stroke="#c8fb3d" stroke-width="6"/><line x1="80" y1="48" x2="56" y2="44" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="48" x2="104" y2="44" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="48" x2="80" y2="76" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="76" x2="70" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="92" x2="68" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="76" x2="90" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="90" y1="92" x2="92" y2="106" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['2 · Pasos cortos', S_+G_+'<circle cx="82" cy="28" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="32" y1="46" x2="132" y2="44" stroke="#c8fb3d" stroke-width="6"/><line x1="82" y1="49" x2="58" y2="45" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="49" x2="106" y2="45" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="49" x2="85" y2="76" stroke="#eef1f2" stroke-width="3"/><line x1="85" y1="76" x2="97" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="97" y1="90" x2="102" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="85" y1="76" x2="72" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="72" y1="90" x2="65" y2="106" stroke="#eef1f2" stroke-width="3"/></svg>']
+  ],
+  getup: [
+   ['1 · Boca abajo', S_+G_+'<circle cx="34" cy="98" r="6" stroke="#eef1f2" stroke-width="3"/><line x1="41" y1="99" x2="92" y2="100" stroke="#eef1f2" stroke-width="3"/><line x1="92" y1="100" x2="126" y2="103" stroke="#eef1f2" stroke-width="3"/><line x1="52" y1="100" x2="49" y2="107" stroke="#eef1f2" stroke-width="3"/><rect x="56" y="86" width="22" height="10" rx="2" stroke="#c8fb3d" stroke-width="3"/></svg>'],
+   ['2 · Manos y rodilla', S_+G_+'<circle cx="46" cy="60" r="6" stroke="#eef1f2" stroke-width="3"/><line x1="51" y1="66" x2="84" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="53" y1="68" x2="47" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="84" y1="92" x2="88" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="84" y1="92" x2="112" y2="100" stroke="#eef1f2" stroke-width="3"/><line x1="112" y1="100" x2="127" y2="105" stroke="#eef1f2" stroke-width="3"/><rect x="56" y="60" width="20" height="9" rx="2" transform="rotate(28 66 64)" stroke="#c8fb3d" stroke-width="3"/></svg>'],
+   ['3 · Media rodilla', S_+G_+'<circle cx="75" cy="42" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="49" x2="78" y2="80" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="80" x2="95" y2="86" stroke="#eef1f2" stroke-width="3"/><line x1="95" y1="86" x2="96" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="80" x2="70" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="56" x2="62" y2="66" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="56" x2="92" y2="66" stroke="#eef1f2" stroke-width="3"/><rect x="60" y="52" width="10" height="19" rx="2" stroke="#c8fb3d" stroke-width="3"/></svg>'],
+   ['4 · De pie', S_+G_+'<circle cx="80" cy="30" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="37" x2="80" y2="72" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="72" x2="70" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="90" x2="68" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="72" x2="90" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="90" y1="90" x2="92" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="46" x2="66" y2="60" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="46" x2="94" y2="60" stroke="#eef1f2" stroke-width="3"/><rect x="64" y="44" width="10" height="21" rx="2" stroke="#c8fb3d" stroke-width="3"/></svg>']
+  ],
+  sosten: [
+   ['Erguido ✓', S_+G_+'<path d="M24 34 l6 6 l12 -14" stroke="#c8fb3d" stroke-width="4"/><line x1="28" y1="50" x2="120" y2="42" stroke="#c8fb3d" stroke-width="6"/><circle cx="76" cy="29" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="36" x2="78" y2="72" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="72" x2="70" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="90" x2="68" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="72" x2="88" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="88" y1="90" x2="92" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="46" x2="95" y2="42" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="49" x2="60" y2="59" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['Ladeado ✗', S_+G_+'<line x1="26" y1="26" x2="40" y2="40" stroke="#ff5f5f" stroke-width="4"/><line x1="40" y1="26" x2="26" y2="40" stroke="#ff5f5f" stroke-width="4"/><line x1="22" y1="60" x2="112" y2="46" stroke="#c8fb3d" stroke-width="6"/><circle cx="68" cy="36" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="43" x2="82" y2="74" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="74" x2="72" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="72" y1="90" x2="70" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="74" x2="92" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="92" y1="90" x2="94" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="72" y1="52" x2="90" y2="48" stroke="#eef1f2" stroke-width="3"/><line x1="71" y1="55" x2="56" y2="64" stroke="#eef1f2" stroke-width="3"/></svg>']
+  ],
+  kneel: [
+   ['1 · De pie', S_+G_+'<line x1="26" y1="50" x2="122" y2="42" stroke="#c8fb3d" stroke-width="6"/><circle cx="76" cy="29" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="36" x2="78" y2="72" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="72" x2="70" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="90" x2="68" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="72" x2="88" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="88" y1="90" x2="92" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="46" x2="95" y2="42" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="49" x2="60" y2="59" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['2 · Rodilla · torso erguido', S_+G_+'<line x1="24" y1="62" x2="116" y2="52" stroke="#c8fb3d" stroke-width="6"/><circle cx="72" cy="43" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="73" y1="50" x2="75" y2="82" stroke="#eef1f2" stroke-width="3"/><line x1="75" y1="82" x2="93" y2="88" stroke="#eef1f2" stroke-width="3"/><line x1="93" y1="88" x2="94" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="75" y1="82" x2="67" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="74" y1="58" x2="91" y2="54" stroke="#eef1f2" stroke-width="3"/><line x1="73" y1="61" x2="58" y2="69" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['3 · Empuja y sube', S_+G_+'<line x1="26" y1="54" x2="120" y2="45" stroke="#c8fb3d" stroke-width="6"/><circle cx="75" cy="33" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="40" x2="78" y2="75" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="75" x2="94" y2="86" stroke="#eef1f2" stroke-width="3"/><line x1="94" y1="86" x2="95" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="75" x2="70" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="92" x2="66" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="49" x2="94" y2="45" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="52" x2="61" y2="61" stroke="#eef1f2" stroke-width="3"/><path d="M120 84 l0 -18 m-6 7 l6 -7 l6 7" stroke="#c8fb3d" stroke-width="3"/></svg>']
+  ],
+  hollow: [
+   ['1 · Fácil · rodillas dobladas', S_+G_+'<circle cx="45" cy="88" r="6" stroke="#eef1f2" stroke-width="3"/><path d="M51 91 Q66 96 80 100" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="104" x2="92" y2="104" stroke="#c8fb3d" stroke-width="4"/><line x1="56" y1="92" x2="74" y2="84" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="100" x2="96" y2="82" stroke="#eef1f2" stroke-width="3"/><line x1="96" y1="82" x2="108" y2="92" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['2 · Completa · lumbar pegada', S_+G_+'<circle cx="42" cy="86" r="6" stroke="#eef1f2" stroke-width="3"/><path d="M48 89 Q64 96 82 100" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="104" x2="94" y2="104" stroke="#c8fb3d" stroke-width="4"/><line x1="49" y1="89" x2="30" y2="80" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="100" x2="132" y2="88" stroke="#eef1f2" stroke-width="3"/></svg>']
+  ],
+  movi: [
+   ['Pecho · 30 s por lado', S_+G_+'<line x1="104" y1="28" x2="104" y2="106" stroke="#5c6266" stroke-width="4"/><circle cx="68" cy="34" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="69" y1="41" x2="72" y2="74" stroke="#eef1f2" stroke-width="3"/><line x1="72" y1="74" x2="64" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="64" y1="90" x2="62" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="72" y1="74" x2="84" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="84" y1="90" x2="88" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="48" x2="88" y2="44" stroke="#eef1f2" stroke-width="3"/><line x1="88" y1="44" x2="104" y2="40" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['Torácica · 10 lentas', S_+G_+'<rect x="108" y="84" width="30" height="7" rx="2" stroke="#2a2e32" stroke-width="3"/><circle cx="99" cy="76" r="6" stroke="#eef1f2" stroke-width="3"/><path d="M54 92 Q76 82 95 82" stroke="#eef1f2" stroke-width="3"/><line x1="95" y1="82" x2="112" y2="85" stroke="#eef1f2" stroke-width="3"/><line x1="54" y1="92" x2="50" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="54" y1="92" x2="62" y2="106" stroke="#eef1f2" stroke-width="3"/><path d="M84 66 q6 -8 14 -6" stroke="#c8fb3d" stroke-width="3"/></svg>']
+  ]
+};
+
 const TAGS = {fuerza:['Fuerza','t-fuerza'], hiper:['Hipertrofia','t-hiper'], pot:['Potencia','t-pot'], core:['Core','t-core'], skill:['Skill','t-skill'], esp:['Específico','t-esp'], aer:['Aeróbico','t-aer']};
 
 const BLOCKS = {
@@ -1042,7 +1086,7 @@ function renderDay(key){
             <span class="rest">⏱ ${e.r}</span>
           </div>
           <div class="cue">${e.cue}</div>
-          ${e.id
+          ${(e.id||e.seq)
             ? `<button class="form-btn" data-form="${key}:${i}">▣ Ver forma</button>`
             : `<a class="form-btn link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.yt||e.n)}">▷ Ver video</a>`}
         </div>
@@ -1075,9 +1119,15 @@ function renderDay(key){
 
 function openForm(e){
   document.getElementById('mTitle').textContent = e.n;
-  document.getElementById('mImg0').src = IMG + e.id + '/0.jpg';
-  document.getElementById('mImg1').src = IMG + e.id + '/1.jpg';
-  const steps = (e.cue||'').split(/\.\s+/).filter(s=>s.trim()).map(s=>s.trim().replace(/\.$/,'')+'.');
+  const shots = document.getElementById('mShots');
+  if(e.seq && SEQ[e.seq]){
+    shots.innerHTML = SEQ[e.seq].map(([lbl,svg])=>`<div class="shot">${svg}<em>${lbl}</em></div>`).join('');
+  } else {
+    shots.innerHTML = `
+      <div class="shot"><img src="${IMG+e.id}/0.jpg" alt="Posición inicial"><em>Inicio</em></div>
+      <div class="shot"><img src="${IMG+e.id}/1.jpg" alt="Posición final"><em>Final</em></div>`;
+  }
+  const steps = e.steps || (e.cue||'').replace(/<[^>]+>/g,'').split(/\.\s+/).filter(s=>s.trim()).map(s=>s.trim().replace(/\.$/,''));
   document.getElementById('mSteps').innerHTML = steps.map(s=>`<li>${s}</li>`).join('');
   document.getElementById('mYt').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent((e.yt||e.n) + ' técnica correcta');
   modal.classList.add('open');
