@@ -217,6 +217,48 @@
   }
   .form-btn:active{background:var(--surface-2);color:var(--text);border-color:var(--faint);}
   .form-btn.link{color:var(--volt-dim);border-color:rgba(155,198,44,.3);text-decoration:none;}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;}
+  .form-btn.hot{color:#dfff8a;border-color:var(--volt-dim);background:rgba(200,251,61,.08);}
+  .form-btn.warm{color:#ffce93;border-color:var(--amber);background:rgba(255,157,46,.08);}
+  .logbox{
+    display:none;margin-top:10px;padding:12px;border-radius:12px;
+    background:var(--surface-2);border:1px solid var(--line);
+  }
+  .logbox.open{display:block;}
+  .log-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;}
+  .log-pr{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--muted);}
+  .log-pr b{color:var(--volt);font-weight:600;}
+  .log-pr.dim{color:var(--faint);}
+  .spark{width:96px;height:26px;flex:0 0 auto;}
+  .log-hist{
+    display:flex;justify-content:space-between;
+    font-family:'Spline Sans Mono',monospace;font-size:11.5px;color:var(--text);
+    padding:4px 0;border-bottom:1px dashed var(--line);
+  }
+  .log-hist span{color:var(--faint);font-size:10px;}
+  .sugg{
+    margin-top:9px;font-size:12.5px;line-height:1.45;padding:9px 11px;border-radius:9px;
+    border:1px solid var(--line);color:var(--muted);
+  }
+  .sugg.s-volt{border-color:var(--volt-dim);color:#dfff8a;background:rgba(200,251,61,.07);}
+  .sugg.s-amber{border-color:var(--amber);color:#ffce93;background:rgba(255,157,46,.08);}
+  .log-inputs{display:flex;gap:7px;margin-top:10px;}
+  .log-inputs input{
+    width:0;flex:1;background:var(--bg);border:1px solid var(--line);color:var(--text);
+    font-family:'Spline Sans Mono',monospace;font-size:13px;padding:9px 10px;border-radius:9px;
+  }
+  .log-inputs input:focus{outline:none;border-color:var(--volt-dim);}
+  .logbtn{
+    background:var(--volt);color:#0c0d0e;border:none;border-radius:9px;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:12px;
+    padding:9px 14px;cursor:pointer;flex:0 0 auto;
+  }
+  .logbtn:active{background:var(--volt-dim);}
+  .logundo{
+    background:transparent;border:1px solid var(--line);color:var(--faint);
+    border-radius:9px;padding:9px 11px;cursor:pointer;font-size:13px;flex:0 0 auto;
+  }
+  .logundo:active{color:var(--text);}
 
   /* done toggle */
   .check{
@@ -389,7 +431,7 @@ const OFF = {
 
   mar:{title:"Pull A", focus:"Espalda grosor", ex:[
     {n:"Lanzamiento de balón medicinal al piso", s:"3 × 5", r:"90 s", tag:"pot", sec:"Potencia · sistema nervioso fresco", id:"Overhead_Slam",
-     cue:"Potencia de cadena posterior sin riesgo técnico. Balón de <b>4–8 kg</b>, lánzalo con todo el cuerpo. Si no hay balón, sustituye por <b>kettlebell swing</b> 3 × 10."},
+     cue:"Extensión de cadera explosiva: el mismo motor del salto, en versión de tirón. Balón de <b>4–8 kg</b> lanzado con todo el cuerpo, o <b>kettlebell swing</b> 3 × 10 si no hay balón. Cadera, no brazos."},
     {n:"Dominadas con lastre o jalón al pecho", s:"4 × 6–10", r:"2–3 min", tag:"fuerza", sec:"Bloque principal", id:"Pullups",
      cue:"Lleva los codos al bolsillo, pecho arriba. Estira completo abajo."},
     {n:"Remo con barra o T-bar", s:"4 × 8–10", r:"2 min", tag:"fuerza", id:"Bent_Over_Barbell_Row",
@@ -411,8 +453,8 @@ const OFF = {
   ]},
 
   mie:{title:"Legs A", focus:"Cuádriceps énfasis", ex:[
-    {n:"Salto al cajón", s:"4 × 4", r:"90 s", tag:"pot", sec:"Potencia · sistema nervioso fresco", id:"Front_Box_Jump",
-     cue:"Cajón a altura media (40–60 cm). <b>Baja caminando, nunca saltando</b>: el impacto excéntrico es lo que rompe rodillas. Aterriza suave, rodillas afuera. Reps bajas y explosivas."},
+    {n:"Salto vertical con alcance (pared)", s:"4 × 4", r:"90 s", tag:"pot", medida:"cm", sec:"Potencia · sistema nervioso fresco", id:"Rocket_Jump",
+     cue:"<b>No necesita cajón: solo una pared.</b> Párate de lado a la pared, contramovimiento rápido y salta a tocar <b>lo más alto posible</b>, con braceo completo (aporta ~10% de la altura). <b>Aterriza suave</b>, absorbiendo con cadera y rodilla — el ruido al caer es frenado mal hecho. Descanso completo entre saltos: cada uno con intención máxima; si la altura baja, se acabó la serie. Si un día las rodillas amanecen cargadas, cámbialo por salto desde pausa (2 s quieto abajo, sin rebote)."},
     {n:"Sentadilla", s:"4 × 6–10", r:"3 min", tag:"fuerza", sec:"Bloque principal", id:"Barbell_Squat",
      cue:"Baja al menos paralelo, espalda neutra, empuja el piso con todo el pie."},
     {n:"Hack squat", s:"4 × 8–10", r:"2 min", tag:"fuerza", id:"Hack_Squat",
@@ -428,14 +470,14 @@ const OFF = {
     {n:"Crunch en polea (arrodillado)", s:"3 × 12–15", r:"45 s", tag:"core", sec:"Core", id:"Cable_Crunch",
      cue:"Con peso, redondea la espalda. Trátalo como músculo a hipertrofiar."},
     {n:"Elevación de piernas colgado", s:"3 × 12–15", r:"45 s", tag:"core", id:"Hanging_Leg_Raise",
-     cue:"Sube con el abdomen bajo, sin balancear las piernas. Base directa para la posición carpada del pino."}
+     cue:"Sube con el abdomen bajo, sin balancear las piernas. Abdomen bajo fuerte = transmisión de fuerza limpia entre tronco y piernas en cada salto."}
   ]},
 
   jue:{title:"Push B", focus:"Hombro énfasis", ex:[
     {n:"Flexión pliométrica (con despegue)", s:"3 × 3–5", r:"90 s", tag:"pot", sec:"Potencia · sistema nervioso fresco", id:"Plyo_Push-up",
      cue:"Mismo criterio que el lunes: calidad de despegue, no cantidad. Si el lunes salieron 5 limpias, sube a aplauso aquí."},
     {n:"Press militar de pie o press de hombro en máquina", s:"4 × 6–10", r:"2–3 min", tag:"fuerza", sec:"Bloque principal", id:"Standing_Military_Press",
-     cue:"Compuesto pesado, va primero. De pie = más estabilizadores; máquina = más aislamiento. <b>De pie es el que te sirve para el pino.</b>"},
+     cue:"Compuesto pesado, va primero. De pie = más estabilizadores; máquina = más aislamiento. <b>De pie transfiere más:</b> todo el core estabilizando carga sobre la cabeza."},
     {n:"Press inclinado en máquina", s:"3 × 10–12", r:"90 s", tag:"hiper", id:"Leverage_Incline_Chest_Press",
      cue:"Pecho superior en segundo plano. Reps altas, trabajo secundario."},
     {n:"Fondos en paralelas", s:"3 × 8–12", r:"90 s", tag:"fuerza", id:"Dips_-_Triceps_Version",
@@ -448,8 +490,8 @@ const OFF = {
      cue:"Estira la cabeza larga; en el último set encadena <b>dropset</b> en polea sin descanso."},
     {n:"Deltoide posterior de cierre", s:"3 × 15", r:"45 s", tag:"hiper", id:"Reverse_Machine_Flyes",
      cue:"Equilibra el deltoide posterior que siempre queda corto. Reps altas."},
-    {n:"Pino contra la pared (progresión)", s:"3 × 20–40 s", r:"60 s", tag:"skill", sec:"Skill · vía al pino libre", id:"Handstand_Push-Ups",
-     cue:"<b>Sostén, todavía no empujes.</b> Espalda a la pared, sube caminando con los pies, manos a ~30 cm del muro. Costillas abajo, glúteo apretado, mira entre las manos. Cuando aguantes 60 s limpios, pasa a pino libre asistido."}
+    {n:"Puente lateral", s:"3 × 30–45 s /lado", r:"45 s", tag:"core", sec:"Core", id:"Side_Bridge",
+     cue:"Anti-flexión lateral, la categoría de core que le faltaba al jueves. Cadera arriba en línea, sin dejar que se hunda. Con esto la semana cubre las cuatro: anti-rotación (lun, sáb), anti-extensión (mar, vie), flexión con carga (mié) y anti-lateral (jue, sáb)."}
   ]},
 
   vie:{title:"Pull B", focus:"Espalda amplitud + brazo", ex:[
@@ -470,12 +512,12 @@ const OFF = {
     {n:"Curl predicador", s:"7 × 12", r:"30–45 s", fst:true, tag:"hiper", id:"Preacher_Curl",
      cue:"Remate de bíceps con el brazo fijo. Bombeo total, no sueltes la tensión."},
     {n:"Plancha hueca (hollow body hold)", seq:"hollow", steps:["Lumbar pegada al piso en todo momento", "Empieza con rodillas dobladas y brazos al frente", "Estira brazos y piernas solo si la lumbar sigue pegada", "Si la lumbar se despega, regresa a la versión corta"], s:"3 × 20–30 s", r:"45 s", tag:"core", sec:"Core", yt:"hollow body hold tecnica correcta",
-     cue:"<b>La posición base de toda la gimnasia.</b> Lumbar pegada al piso, costillas cerradas, piernas y brazos estirados. Empieza con rodillas dobladas y ve estirando conforme la lumbar aguante pegada. Si se despega, regresa a la versión corta."}
+     cue:"<b>Rigidez total del tronco:</b> el cuerpo aprende a comportarse como una sola pieza, que es exactamente lo que pasa en el aire durante un salto. Lumbar pegada al piso, costillas cerradas. Empieza con rodillas dobladas y estira conforme la lumbar aguante pegada; si se despega, regresa a la versión corta."}
   ]},
 
   sab:{title:"Legs B", focus:"Cadena posterior énfasis", ex:[
-    {n:"Sentadilla con salto", s:"4 × 5", r:"90 s", tag:"pot", sec:"Potencia · sistema nervioso fresco", id:"Freehand_Jump_Squat",
-     cue:"Sin peso. Media sentadilla, salto máximo, <b>aterrizaje silencioso</b> absorbiendo con cadera y rodilla. El ruido al caer es señal de que estás frenando mal."},
+    {n:"Sentadilla con salto", s:"4 × 5", r:"90 s", tag:"pot", medida:"cm", sec:"Potencia · sistema nervioso fresco", id:"Freehand_Jump_Squat",
+     cue:"Sin peso. Contramovimiento rápido (baja veloz a media sentadilla) y salto <b>máximo</b>: la bajada rápida es el resorte. Braceo completo. <b>Aterrizaje silencioso</b> absorbiendo con cadera y rodilla — el ruido al caer es frenado mal hecho. Aquí es donde se nota el hip thrust del día."},
     {n:"Peso muerto rumano", s:"4 × 6–10", r:"2–3 min", tag:"fuerza", sec:"Bloque principal", id:"Romanian_Deadlift",
      cue:"Isquio en <b>estiramiento</b>, no busques 1RM. Cadera atrás, barra pegada, espalda neutra."},
     {n:"Prensa con pies altos", s:"4 × 10–12", r:"2 min", tag:"fuerza", id:"Leg_Press",
@@ -603,10 +645,16 @@ const CRUZ = {
 
 const OFF_NOTAS = `
   <div class="note-block">
+    <h3>Registro de marcas · cómo usarlo</h3>
+    <p>Cada ejercicio tiene un botón <b>📈 Marca</b>. Al terminar tus series, anota el <b>peso</b> que usaste y las <b>reps de tu peor serie</b> (la última suele serlo). Ese es el dato honesto: la doble progresión avanza cuando <i>todas</i> las series tocan el techo, no solo la primera.</p>
+    <p>Con eso guardado, la app hace el resto: te muestra tu último registro, tu <b>PR</b>, la gráfica de tendencia, y la <b>sugerencia</b> de qué hacer la próxima sesión — buscar una rep más, o subir peso y volver al piso del rango. En ejercicios de tiempo (planchas, sostenes) registras segundos; en acarreos, metros.</p>
+    <p>Las marcas viven en este navegador (localStorage): si abres la app en otro teléfono, no te siguen. Registra siempre en el mismo dispositivo.</p>
+  </div>
+  <div class="note-block">
     <h3>Cómo ejecutar</h3>
     <p>Rango <b>6–15 reps</b> general, <b>12–20</b> en aislamientos. Lleva las series a <b>RPE 8–10</b>: deja 1–2 reps en los compuestos pesados y el <b>último set de cada ejercicio va al fallo</b>.</p>
     <p>Excéntrica controlada (<b>2–3 s</b>), ROM completo, y <b>parciales en estiramiento</b> al cerrar la serie. Descanso: compuestos 2–3 min, aislamientos 60–90 s.</p>
-    <p><b>Excepción:</b> el bloque de potencia y el trabajo de pino <b>nunca van al fallo</b>. Ahí se entrena calidad de movimiento, no fatiga.</p>
+    <p><b>Excepción:</b> el bloque de potencia <b>nunca va al fallo</b>. Los saltos se entrenan con calidad de movimiento, no con fatiga: si la altura cae, la serie terminó.</p>
   </div>
   <div class="note-block amberblk">
     <h3>Por qué la potencia va primero</h3>
@@ -620,7 +668,7 @@ const OFF_NOTAS = `
     <ul>
       <li><b>Pallof press</b> — anti-rotación (lun, sáb)</li>
       <li><b>Dead bug</b> — anti-extensión con control lumbar (mar)</li>
-      <li><b>Plancha hueca</b> — la posición base de la gimnasia (vie)</li>
+      <li><b>Plancha hueca</b> — rigidez de tronco en una sola pieza (vie)</li>
       <li><b>Caminata del granjero a un brazo</b> — anti-flexión lateral (sáb)</li>
       <li><b>Crunch en polea + elevación colgado</b> — hipertrofia de recto (mié)</li>
     </ul>
@@ -635,19 +683,18 @@ const OFF_NOTAS = `
     <h3>Progresión</h3>
     <p><b>Doble progresión:</b> primero sube reps dentro del rango; cuando topes el techo en todas las series, sube carga y vuelve a empezar abajo. Lleva registro de cada sesión.</p>
     <p><b>Deload cada 6–8 semanas:</b> una semana bajando volumen ~50%, manteniendo intensidad. Si una articulación se carga, recorta volumen ahí antes de empujar más.</p>
-    <p><b>Progresión de la potencia:</b> no subas peso, sube <b>calidad</b>. Flexión con despegue → con aplauso → aplauso doble. Cajón medio → cajón alto → salto a una pierna. Cuando el aterrizaje deja de ser silencioso, ya te pasaste.</p>
+    <p><b>Progresión de la potencia:</b> no subas peso, sube <b>calidad y altura</b>. Salto sin carrera → con un paso de carrera → salto desde pausa como variante de arranque. Flexión con despegue → con aplauso. Cuando el aterrizaje deja de ser silencioso o la altura cae entre series, ya te pasaste: la potencia se entrena fresca o no se entrena.</p>
   </div>
   <div class="note-block amberblk">
-    <h3>La ruta al pino y las piruetas</h3>
-    <p>El orden importa y no se salta. Cada escalón se abre cuando cierras el anterior:</p>
+    <h3>El salto vertical</h3>
+    <p>El salto tiene tres motores, y los tres ya están en la semana:</p>
     <ul>
-      <li><b>1 · Pino a la pared 60 s.</b> Es el requisito de entrada. Jueves.</li>
-      <li><b>2 · Plancha hueca 45 s estirada.</b> Sin esto no hay línea en el aire. Viernes.</li>
-      <li><b>3 · Pino libre 10 s.</b> Aquí ya necesitas práctica diaria de 5–10 min fuera del gym.</li>
-      <li><b>4 · Rueda lateral y volteretas.</b> Suelo, y con alguien que sepa. Aquí entra tapete, no gimnasio.</li>
-      <li><b>5 · Inversión dinámica.</b> Meses 12+, y realista solo si el paso 3 está sólido.</li>
+      <li><b>Fuerza relativa</b> — sentadilla, hip thrust y peso muerto rumano. Es el techo: nadie salta más de lo que su fuerza por kilo permite. Cada kilo que le subes a la sentadilla sin subir de grasa es salto gratis.</li>
+      <li><b>Velocidad de aplicación</b> — los pliométricos (salto con alcance, sentadilla con salto, slam). Convierten la fuerza en despegue. Van <b>primero</b> en la sesión, frescos, con intención máxima y reps bajas.</li>
+      <li><b>Técnica</b> — el braceo aporta alrededor de un 10% de la altura. Practícalo en cada salto, no es adorno.</li>
     </ul>
-    <p>Sé honesto con el calendario: el gimnasio te da la <b>base de fuerza y control</b>, pero las piruetas son <b>habilidad</b> y se aprenden practicándolas, no entrenando pierna. Si de verdad las quieres, en algún punto vas a necesitar un tapete y un entrenador de acrobacia.</p>
+    <p><b>Mide para saber si funciona:</b> cada 3 semanas, prueba de pared — de pie, marca tu alcance con el brazo estirado; luego salta con carrera de un paso y marca lo más alto que toques. La diferencia es tu salto. <b>Regístrala en la app</b> (en la marca del salto vertical del miércoles, en cm) y la gráfica te dirá si el plan está pagando.</p>
+    <p><b>Todavía no hagas depth jumps</b> (saltar desde un cajón y rebotar): son el pliométrico más potente pero también el que más castiga tendones, y rinden cuando la sentadilla anda cerca de 1.5× tu peso corporal. Con la doble progresión llegarás; el orden importa.</p>
   </div>
   <div class="note-block">
     <h3>El bulk y el primer déficit</h3>
@@ -701,7 +748,7 @@ const FASES = `
     <ul>
       <li><b>Se va el FST-7.</b> Las 7 series de bombeo compiten directamente con la recuperación que necesitan los acarreos.</li>
       <li><b>Se va casi todo el aislamiento de brazo.</b> Queda lo mínimo para no perder tamaño.</li>
-      <li><b>Se van los pliométricos.</b> El tejido conectivo tiene un presupuesto y en este bloque se lo lleva el acarreo. El trabajo de pino también se pausa: cargar al hombro y sostenerte de manos no se llevan bien en el mismo mes.</li>
+      <li><b>Se van los pliométricos.</b> El tejido conectivo tiene un presupuesto y en este bloque se lo lleva el acarreo. La pliometría de salto también se pausa: el presupuesto de tendón se lo lleva el acarreo, y el salto vuelve con el offseason.</li>
       <li><b>Vas a perder algo de masa magra</b> si el aeróbico sube mucho y no ajustas la comida. Es el costo real de llegar entero en marzo, y se recupera en 8–10 semanas después.</li>
     </ul>
     <p>En marzo, terminado el evento, se vuelve al bloque de offseason completo. El conmutador de arriba lo tiene guardado tal cual.</p>
@@ -920,19 +967,119 @@ const SEQ = {
 
 const TAGS = {fuerza:['Fuerza','t-fuerza'], hiper:['Hipertrofia','t-hiper'], pot:['Potencia','t-pot'], core:['Core','t-core'], skill:['Skill','t-skill'], esp:['Específico','t-esp'], aer:['Aeróbico','t-aer']};
 
+/* ============ REGISTRO DE MARCAS ============ */
+function slug(n){
+  return n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+          .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,44);
+}
+/* Interpreta el esquema del ejercicio: "4 × 6–10", "7 × 12", "3 × 20–30 s", "6 × 60 m", "3 × 12 /lado" */
+function parseTarget(s){
+  const m = (s||'').match(/(\d+)\s*×\s*(\d+)(?:\s*[–-]\s*(\d+))?\s*(s\b|seg|m\b|min|pasos)?/);
+  if(!m) return null;
+  const unidad = m[4] ? (m[4]==='s'||m[4]==='seg' ? 'seg' : m[4]==='m' ? 'm' : m[4]) : 'reps';
+  if(unidad==='min') return null;                       // cardio: solo historial
+  return {sets:+m[1], lo:+m[2], hi:m[3]?+m[3]:+m[2], unidad};
+}
+function getLog(){ try{ return JSON.parse(localStorage.getItem(B.logKey)||'{}'); }catch(e){ return {}; } }
+function setLog(l){ try{ localStorage.setItem(B.logKey, JSON.stringify(l)); }catch(e){} }
+function rondaPeso(x){ return Math.round(x/2.5)*2.5; }
+function fmtKg(x){ return (x%1? x.toFixed(1): x) + ' kg'; }
+function fmtCuando(t){
+  const d = Math.floor((Date.now()-t)/86400000);
+  return d<=0?'hoy':d===1?'ayer':`hace ${d} d`;
+}
+function paso(u){ return u==='seg'||u==='m' ? 5 : 1; }
+/* La sugerencia: doble progresión sobre la peor serie */
+function sugerir(e, hist){
+  if(e.medida==='cm'){
+    return hist.length
+      ? {t:'Prueba de pared cada 3 semanas: misma pared, mismo calzado, el mejor de 3 intentos. La gráfica te dice si el plan paga.', c:'dim'}
+      : {t:'Anota aquí los cm de tu prueba de pared (alcance saltando − alcance de pie). Repite cada 3 semanas.', c:'dim'};
+  }
+  const tg = parseTarget(e.s);
+  const u = tg ? tg.unidad : 'reps';
+  const unidadTxt = u==='seg'?'s':u==='m'?'m':u==='pasos'?' pasos':'';
+  if(!hist.length) return {t:'Registra tu primera marca para activar la sugerencia.', c:'dim'};
+  if(!tg) return null;
+  const L = hist[hist.length-1];
+  if(L.w==null || L.w===0){   // peso corporal
+    if(L.v>=tg.hi) return {t:`Tope del rango sin peso: agrega lastre o pasa a una variante más dura.`, c:'volt'};
+    if(L.v<tg.lo)  return {t:`Aún bajo el rango: usa asistencia o reduce el rango de movimiento hasta llegar a ${tg.lo}${unidadTxt}.`, c:'amber'};
+    return {t:`Mantén: busca ${L.v+paso(u)}${unidadTxt} (techo ${tg.hi}${unidadTxt}).`, c:'dim'};
+  }
+  if(L.v>=tg.hi){
+    const nuevo = rondaPeso(Math.max(L.w+2.5, L.w*1.025));
+    return {t:`✦ Tocaste el techo (${tg.hi}${unidadTxt}): sube a ${fmtKg(nuevo)} y vuelve a ${tg.lo}${unidadTxt}.`, c:'volt'};
+  }
+  if(L.v<tg.lo){
+    return {t:`Quedaste bajo el piso (${tg.lo}${unidadTxt}): repite con ${fmtKg(rondaPeso(L.w*0.95))} o consolida con ${fmtKg(L.w)}.`, c:'amber'};
+  }
+  return {t:`Mantén ${fmtKg(L.w)} y busca ${L.v+paso(u)}${unidadTxt} en tu peor serie (techo ${tg.hi}${unidadTxt}).`, c:'dim'};
+}
+function calcPR(e, hist){
+  if(!hist.length) return null;
+  if(e.medida==='cm') return hist.reduce((a,b)=>b.v>a.v?b:a).v + ' cm';
+  const tg = parseTarget(e.s);
+  const conPeso = hist.filter(x=>x.w>0);
+  if(conPeso.length){
+    const validas = tg ? conPeso.filter(x=>x.v>=tg.lo) : conPeso;
+    const pool = validas.length?validas:conPeso;
+    const best = pool.reduce((a,b)=> b.w>a.w || (b.w===a.w && b.v>a.v) ? b:a);
+    return `${fmtKg(best.w)} × ${best.v}`;
+  }
+  const best = hist.reduce((a,b)=> b.v>a.v?b:a);
+  const u = tg&&tg.unidad==='seg'?' s':tg&&tg.unidad==='m'?' m':'';
+  return `${best.v}${u}`;
+}
+function spark(hist){
+  if(hist.length<2) return '';
+  const vals = hist.slice(-10).map(x=> x.w>0 ? x.w : x.v);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const w=96, h=26, pad=3;
+  const pts = vals.map((v,i)=>{
+    const x = pad + i*(w-2*pad)/(vals.length-1);
+    const y = max===min ? h/2 : h-pad-(v-min)*(h-2*pad)/(max-min);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const subio = vals[vals.length-1]>vals[0];
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${subio?'#c8fb3d':'#8b9296'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+function logPanel(exId, e){
+  const hist = getLog()[exId]||[];
+  const sug = sugerir(e, hist);
+  const pr = calcPR(e, hist);
+  const tg = parseTarget(e.s);
+  const uTxt = e.medida==='cm' ? 'cm salto' : tg ? (tg.unidad==='seg'?'seg':tg.unidad==='m'?'metros':tg.unidad==='pasos'?'pasos':'reps') : 'reps';
+  const ult = hist.slice(-3).reverse().map(x=>
+    `<div class="log-hist">${x.w>0?fmtKg(x.w)+' × ':''}${x.v}${uTxt==='seg'?' s':uTxt==='metros'?' m':uTxt==='cm salto'?' cm':''}<span>${fmtCuando(x.t)}</span></div>`).join('');
+  return `
+    <div class="log-top">
+      ${pr?`<div class="log-pr">PR <b>${pr}</b></div>`:`<div class="log-pr dim">Sin marcas aún</div>`}
+      ${spark(hist)}
+    </div>
+    ${ult}
+    ${sug?`<div class="sugg s-${sug.c}">${sug.t}</div>`:''}
+    <div class="log-inputs">
+      <input type="number" inputmode="decimal" step="0.5" min="0" placeholder="kg" data-w>
+      <input type="number" inputmode="numeric" step="1" min="0" placeholder="${uTxt}" data-v>
+      <button class="logbtn" data-save="${exId}">Guardar</button>
+      ${hist.length?`<button class="logundo" data-undo="${exId}" title="Borrar última">↩</button>`:''}
+    </div>`;
+}
+
 const BLOCKS = {
   off:{
-    name:'Offseason', tag:'PPL ×2', key:'rutina_done',
+    name:'Offseason', tag:'PPL ×2', key:'rutina_done', logKey:'rutina_marcas',
     kicker:'Bloque Hipertrofia · PPL ×2', h1:'Modo <span class="accent">Offseason</span>',
-    sub:'6 días, cada músculo 2× por semana. Masa como objetivo, con potencia y core integrados.',
-    chips:['RPE <b>8–10</b>','Compuestos <b>2–3 min</b>','Aislados <b>60–90 s</b>','<b>FST-7</b> 30–45 s'],
+    sub:'Hipertrofia primero, core sólido y pliometría para el salto vertical. Cada músculo 2× por semana.',
+    chips:['RPE <b>8–10</b>','Doble <b>progresión</b>','Salto: <b>intención máxima</b>','<b>FST-7</b> 30–45 s'],
     foot:'Doble progresión · Deload cada 6–8 sem · Domingo descanso',
     days:OFF,
     tabs:[['lun','LUN','Push A'],['mar','MAR','Pull A'],['mie','MIÉ','Legs A'],['jue','JUE','Push B'],['vie','VIE','Pull B'],['sab','SÁB','Legs B'],['notas','NOTAS','Reglas']],
     pages:{notas:OFF_NOTAS}
   },
   cruz:{
-    name:'Reto Marzo', tag:'Vía Crucis', key:'rutina_cruz',
+    name:'Reto Marzo', tag:'Vía Crucis', key:'rutina_cruz', logKey:'rutina_marcas_cruz',
     kicker:'Bloque Específico · 13 semanas', h1:'Reto <span class="accent">Marzo</span>',
     sub:'3 km con subidas y bajadas, cruz de ~150 kg (~90 kg efectivos al hombro), bajo el sol.',
     chips:['<b>~90 kg</b> al hombro','<b>3</b> gym + <b>3</b> libre','Calor <b>últimas 2 sem</b>','Cruz <b>último mes</b>'],
@@ -1069,6 +1216,11 @@ function renderDay(key){
   d.ex.forEach((e,i)=>{
     const id = key+'_'+i;
     const done = store[id] ? ' done':'';
+    const lid = `${key}:${slug(e.n)}`;
+    const _h = (getLog()[lid]||[]);
+    const _s = _h.length ? sugerir(e,_h) : null;
+    const mCls = _s ? (_s.c==='volt'?' hot':_s.c==='amber'?' warm':'') : '';
+    const mTxt = mCls===' hot' ? '📈 ✦ Toca subir peso' : mCls===' warm' ? '📈 Marca · revisa' : '📈 Marca';
     const [label, cls] = TAGS[e.tag] || TAGS.hiper;
     if(e.sec) html += `<div class="sec"><span>${e.sec}</span></div>`;
     html += `<div class="ex${e.fst?' fst':''}${done}" data-id="${id}">
@@ -1086,9 +1238,13 @@ function renderDay(key){
             <span class="rest">⏱ ${e.r}</span>
           </div>
           <div class="cue">${e.cue}</div>
+          <div class="btnrow">
           ${(e.id||e.seq)
             ? `<button class="form-btn" data-form="${key}:${i}">▣ Ver forma</button>`
             : `<a class="form-btn link" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(e.yt||e.n)}">▷ Ver video</a>`}
+          <button class="form-btn${mCls}" data-logtoggle="${lid}">${mTxt}</button>
+          </div>
+          <div class="logbox" data-box="${lid}"></div>
         </div>
       </div>
     </div>`;
@@ -1109,6 +1265,41 @@ function renderDay(key){
     b.addEventListener('click', ()=>{
       const [k,i] = b.dataset.form.split(':');
       openForm(DAYS[k].ex[+i]);
+    });
+  });
+  /* --- panel de marcas --- */
+  const exDe = id => DAYS[key].ex.find(x=> `${key}:${slug(x.n)}`===id);
+  const pinta = id => {
+    const box = main.querySelector(`[data-box="${id}"]`);
+    if(!box) return;
+    box.innerHTML = logPanel(id, exDe(id));
+    const e = exDe(id), hh = getLog()[id]||[];
+    const ss = hh.length ? sugerir(e,hh) : null;
+    const cls = ss ? (ss.c==='volt'?' hot':ss.c==='amber'?' warm':'') : '';
+    const btn = main.querySelector(`[data-logtoggle="${id}"]`);
+    if(btn){ btn.className = 'form-btn'+cls;
+      btn.textContent = cls===' hot' ? '📈 ✦ Toca subir peso' : cls===' warm' ? '📈 Marca · revisa' : '📈 Marca'; }
+    box.querySelector('[data-save]').addEventListener('click', ()=>{
+      const w = parseFloat(box.querySelector('[data-w]').value);
+      const v = parseFloat(box.querySelector('[data-v]').value);
+      if(isNaN(v) || v<=0) return;
+      const l = getLog();
+      (l[id] = l[id]||[]).push({t:Date.now(), w:isNaN(w)?null:w, v});
+      setLog(l); pinta(id);
+    });
+    const u = box.querySelector('[data-undo]');
+    if(u) u.addEventListener('click', ()=>{
+      const l = getLog();
+      if(l[id] && l[id].length){ l[id].pop(); if(!l[id].length) delete l[id]; setLog(l); pinta(id); }
+    });
+  };
+  main.querySelectorAll('[data-logtoggle]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const id = b.dataset.logtoggle;
+      const box = main.querySelector(`[data-box="${id}"]`);
+      const abre = !box.classList.contains('open');
+      box.classList.toggle('open', abre);
+      if(abre) pinta(id);
     });
   });
   document.getElementById('resetBtn').addEventListener('click', ()=>{
