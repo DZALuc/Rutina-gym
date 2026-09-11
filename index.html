@@ -5,8 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0c0d0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rutina">
+<meta name="description" content="Rutina de gimnasio con registro de marcas, progresión automática y plan del Vía Crucis. Funciona sin conexión.">
 <title>Bloque Offseason — Jimmy</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -351,6 +357,39 @@
   .note-block li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;background:var(--volt-dim);}
   .note-block.amberblk li::before{background:var(--amber);}
 
+  /* ---- Exportar / importar marcas ---- */
+  .io-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .io-btn{
+    flex:1 1 0;min-width:132px;
+    background:transparent;border:1px solid var(--line);color:var(--muted);
+    border-radius:10px;padding:10px 12px;cursor:pointer;
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:12px;letter-spacing:.04em;
+    transition:.18s;
+  }
+  .io-btn:active{background:var(--surface-2);color:var(--text);border-color:var(--faint);}
+  .io-btn:disabled{opacity:.45;cursor:default;}
+  /* ---- Progreso de descarga de fotos ---- */
+  .prog{display:none;margin-top:12px;}
+  .prog.on{display:block;}
+  .prog-bar{
+    height:6px;border-radius:99px;background:var(--surface-2);
+    border:1px solid var(--line);overflow:hidden;
+  }
+  .prog-bar i{
+    display:block;height:100%;width:0;background:var(--volt);
+    border-radius:99px;transition:width .18s linear;
+  }
+  .prog-txt{
+    margin-top:7px;font-family:'Spline Sans Mono',monospace;font-size:11px;
+    color:var(--muted);display:flex;justify-content:space-between;gap:10px;
+  }
+  .prog-txt b{color:var(--volt);font-weight:600;}
+  .io-msg{
+    margin-top:10px;font-size:12.5px;line-height:1.45;padding:9px 11px;border-radius:9px;
+    border:1px solid var(--volt-dim);color:#dfff8a;background:rgba(200,251,61,.07);
+  }
+  .io-msg.err{border-color:var(--amber);color:#ffce93;background:rgba(255,157,46,.08);}
+
   .note-block.alert{border-color:#ff5f5f;background:linear-gradient(180deg,rgba(255,60,60,.13),var(--surface) 65%);}
   .note-block.alert h3{color:#ff8f8f;}
   .note-block.alert li::before{background:#ff5f5f;}
@@ -453,8 +492,14 @@ const OFF = {
   ]},
 
   mie:{title:"Legs A", focus:"Cuádriceps énfasis", ex:[
-    {n:"Salto vertical con alcance (pared)", s:"4 × 4", r:"90 s", tag:"pot", medida:"cm", sec:"Potencia · sistema nervioso fresco", id:"Rocket_Jump",
+    {n:"Pogos (saltitos de tobillo)", s:"2 × 20", r:"60 s", tag:"pot", prep:true, seq:"pogo", sec:"Potencia · sistema nervioso fresco", yt:"pogo jumps ankle stiffness drill",
+     steps:["Pies al ancho de cadera, rodillas casi bloqueadas","Rebota en el mismo sitio empujando solo con el tobillo","En el aire la punta va extendida; el contacto es corto y silencioso","20 rebotes seguidos, 60 s de descanso, y la segunda serie"],
+     cue:"<b>Calentamiento del tobillo, no un ejercicio de fuerza.</b> Rebotes cortos en el mismo sitio con la <b>rodilla casi recta</b>: el resorte sale del tobillo y del Aquiles, no de la cadera. Busca contacto <b>corto y silencioso</b> — si aterrizas plano o suena, estás amortiguando con la rodilla y perdiste el rebote. Prepara el tendón para los saltos que siguen y le enseña al pie a devolver fuerza. <b>Nunca con lastre ni al fallo.</b>"},
+    {n:"Salto vertical con alcance (pared)", s:"4 × 4", r:"90 s", tag:"pot", medida:"cm", id:"Rocket_Jump",
      cue:"<b>No necesita cajón: solo una pared.</b> Párate de lado a la pared, contramovimiento rápido y salta a tocar <b>lo más alto posible</b>, con braceo completo (aporta ~10% de la altura). <b>Aterriza suave</b>, absorbiendo con cadera y rodilla — el ruido al caer es frenado mal hecho. Descanso completo entre saltos: cada uno con intención máxima; si la altura baja, se acabó la serie. Si un día las rodillas amanecen cargadas, cámbialo por salto desde pausa (2 s quieto abajo, sin rebote)."},
+    {n:"Salto con carrera de un paso", s:"3 × 3", r:"2 min", tag:"pot", medida:"cm", seq:"carrera", yt:"one step approach vertical jump technique",
+     steps:["Marca tu alcance de pie contra la pared, brazo estirado","Da un paso atrás: esa es toda la carrera que necesitas","Penúltimo paso largo y bajo, brazos hacia atrás","Planta los dos pies casi juntos y sube los brazos con fuerza","Toca lo más alto que puedas y anota los cm"],
+     cue:"<b>La progresión del salto parado, ya como ejercicio.</b> Un solo paso de aproximación: el <b>penúltimo paso es largo y bajo</b> (ahí se convierte velocidad en altura) y el último planta los dos pies casi juntos. Los brazos van atrás en el paso y suben fuerte en el despegue. <b>Este es el gesto del test de pared</b>, así que mide y registra los cm igual que el salto parado: la diferencia entre ambos te dice cuánto estás aprovechando la carrera. Reps bajas a propósito; si la altura cae, la serie terminó."},
     {n:"Sentadilla", s:"4 × 6–10", r:"3 min", tag:"fuerza", sec:"Bloque principal", id:"Barbell_Squat",
      cue:"Baja al menos paralelo, espalda neutra, empuja el piso con todo el pie."},
     {n:"Hack squat", s:"4 × 8–10", r:"2 min", tag:"fuerza", id:"Hack_Squat",
@@ -516,7 +561,10 @@ const OFF = {
   ]},
 
   sab:{title:"Legs B", focus:"Cadena posterior énfasis", ex:[
-    {n:"Sentadilla con salto", s:"4 × 5", r:"90 s", tag:"pot", medida:"cm", sec:"Potencia · sistema nervioso fresco", id:"Freehand_Jump_Squat",
+    {n:"Pogos (saltitos de tobillo)", s:"2 × 20", r:"60 s", tag:"pot", prep:true, seq:"pogo", sec:"Potencia · sistema nervioso fresco", yt:"pogo jumps ankle stiffness drill",
+     steps:["Pies al ancho de cadera, rodillas casi bloqueadas","Rebota en el mismo sitio empujando solo con el tobillo","En el aire la punta va extendida; el contacto es corto y silencioso","20 rebotes seguidos, 60 s de descanso, y la segunda serie"],
+     cue:"<b>Calentamiento del tobillo, no un ejercicio de fuerza.</b> Rebotes cortos en el mismo sitio con la <b>rodilla casi recta</b>: el resorte sale del tobillo y del Aquiles, no de la cadera. Busca contacto <b>corto y silencioso</b> — si aterrizas plano o suena, estás amortiguando con la rodilla y perdiste el rebote. Prepara el tendón para los saltos que siguen y le enseña al pie a devolver fuerza. <b>Nunca con lastre ni al fallo.</b>"},
+    {n:"Sentadilla con salto", s:"4 × 5", r:"90 s", tag:"pot", medida:"cm", id:"Freehand_Jump_Squat",
      cue:"Sin peso. Contramovimiento rápido (baja veloz a media sentadilla) y salto <b>máximo</b>: la bajada rápida es el resorte. Braceo completo. <b>Aterrizaje silencioso</b> absorbiendo con cadera y rodilla — el ruido al caer es frenado mal hecho. Aquí es donde se nota el hip thrust del día."},
     {n:"Peso muerto rumano", s:"4 × 6–10", r:"2–3 min", tag:"fuerza", sec:"Bloque principal", id:"Romanian_Deadlift",
      cue:"Isquio en <b>estiramiento</b>, no busques 1RM. Cadera atrás, barra pegada, espalda neutra."},
@@ -643,12 +691,46 @@ const CRUZ = {
   ]}
 };
 
+/* Bloque de respaldo. Se inyecta en la página de notas de cada bloque (NOTAS y FASES).
+   El botón exporta las marcas del bloque activo; el import fusiona sin duplicar. */
+const DATOS_IO = `
+  <div class="note-block">
+    <h3>Respaldo de marcas</h3>
+    <p>Las marcas viven solo en este navegador. Antes de cambiar de teléfono, o de vez en cuando, <b>exporta</b>: se descarga un archivo <b>.json</b> con todo el historial de este bloque.</p>
+    <p>En el teléfono nuevo, abre la app, entra a este mismo bloque e <b>importa</b> ese archivo. La fusión <b>no duplica</b>: las marcas que ya existan se ignoran y solo se suman las que falten, así que puedes importar el mismo archivo dos veces sin ensuciar el historial.</p>
+    <div class="io-row">
+      <button class="io-btn" id="ioExport">↓ Exportar marcas</button>
+      <button class="io-btn" id="ioImport">↑ Importar marcas</button>
+      <input type="file" id="ioFile" accept="application/json,.json" style="display:none">
+    </div>
+    <div id="ioMsg"></div>
+  </div>
+`;
+
+/* Backlog #8: las fotos solo quedaban offline si abriste su modal con red. Esto las baja todas
+   de una, para el bloque activo, antes de salir a la ruta. */
+const FOTOS_IO = `
+  <div class="note-block">
+    <h3>Fotos sin conexión</h3>
+    <p>El service worker guarda cada foto <b>la primera vez que abres su ficha</b>. Si sales a entrenar sin datos y nunca abriste ese ejercicio, la foto no está.</p>
+    <p>Este botón las baja <b>todas las del bloque activo</b> de una sola vez. Hazlo con wifi antes de salir; después las fichas abren sin conexión. Solo descarga lo que falte, así que repetirlo es barato.</p>
+    <div class="io-row">
+      <button class="io-btn" id="fotoGo">↓ Guardar todas las fotos</button>
+    </div>
+    <div class="prog" id="fotoProg">
+      <div class="prog-bar"><i></i></div>
+      <div class="prog-txt"><span data-etiqueta>Descargando…</span><span data-cuenta></span></div>
+    </div>
+    <div id="fotoMsg"></div>
+  </div>
+`;
+
 const OFF_NOTAS = `
   <div class="note-block">
     <h3>Registro de marcas · cómo usarlo</h3>
     <p>Cada ejercicio tiene un botón <b>📈 Marca</b>. Al terminar tus series, anota el <b>peso</b> que usaste y las <b>reps de tu peor serie</b> (la última suele serlo). Ese es el dato honesto: la doble progresión avanza cuando <i>todas</i> las series tocan el techo, no solo la primera.</p>
     <p>Con eso guardado, la app hace el resto: te muestra tu último registro, tu <b>PR</b>, la gráfica de tendencia, y la <b>sugerencia</b> de qué hacer la próxima sesión — buscar una rep más, o subir peso y volver al piso del rango. En ejercicios de tiempo (planchas, sostenes) registras segundos; en acarreos, metros.</p>
-    <p>Las marcas viven en este navegador (localStorage): si abres la app en otro teléfono, no te siguen. Registra siempre en el mismo dispositivo.</p>
+    <p>Las marcas viven en este navegador (localStorage): si abres la app en otro teléfono, no te siguen. Registra siempre en el mismo dispositivo, y usa el <b>respaldo de marcas</b> del final de esta pestaña antes de cambiar de equipo.</p>
   </div>
   <div class="note-block">
     <h3>Cómo ejecutar</h3>
@@ -660,6 +742,7 @@ const OFF_NOTAS = `
     <h3>Por qué la potencia va primero</h3>
     <p>Un salto o una flexión pliométrica dependen del <b>sistema nervioso</b>, no del músculo cansado. Si los metes al final, la altura y la velocidad caen ~20–30% y solo acumulas fatiga sin la adaptación que buscas.</p>
     <p>Por eso van justo después del calentamiento, con <b>reps bajas (3–5)</b> y descanso completo. Además dejan el sistema nervioso "encendido" para la serie pesada que sigue.</p>
+    <p><b>Los pogos van antes de los saltos</b> (miércoles y sábado). Son 2 × 20 rebotes de tobillo con la rodilla casi recta: no cansan, preparan. Un tobillo rígido devuelve la fuerza que el suelo le da; uno blando la absorbe y la pierde, y además deja al Aquiles frío justo antes del salto máximo. Son calentamiento, así que <b>nunca llevan lastre</b> — la app no te va a sugerir subirles carga.</p>
     <p><b>Volumen semanal total:</b> ~2 sesiones de empuje, 2 de tirón, 2 de pierna. Son 10–12 minutos por semana de trabajo pliométrico. Es poco a propósito: es lo que el tejido conectivo tolera mientras sigues cargando pesado.</p>
   </div>
   <div class="note-block">
@@ -683,7 +766,7 @@ const OFF_NOTAS = `
     <h3>Progresión</h3>
     <p><b>Doble progresión:</b> primero sube reps dentro del rango; cuando topes el techo en todas las series, sube carga y vuelve a empezar abajo. Lleva registro de cada sesión.</p>
     <p><b>Deload cada 6–8 semanas:</b> una semana bajando volumen ~50%, manteniendo intensidad. Si una articulación se carga, recorta volumen ahí antes de empujar más.</p>
-    <p><b>Progresión de la potencia:</b> no subas peso, sube <b>calidad y altura</b>. Salto sin carrera → con un paso de carrera → salto desde pausa como variante de arranque. Flexión con despegue → con aplauso. Cuando el aterrizaje deja de ser silencioso o la altura cae entre series, ya te pasaste: la potencia se entrena fresca o no se entrena.</p>
+    <p><b>Progresión de la potencia:</b> no subas peso, sube <b>calidad y altura</b>. Salto sin carrera → con un paso de carrera (los dos ya están en el miércoles) → salto desde pausa como variante de arranque. Flexión con despegue → con aplauso. Cuando el aterrizaje deja de ser silencioso o la altura cae entre series, ya te pasaste: la potencia se entrena fresca o no se entrena.</p>
   </div>
   <div class="note-block amberblk">
     <h3>El salto vertical</h3>
@@ -693,7 +776,7 @@ const OFF_NOTAS = `
       <li><b>Velocidad de aplicación</b> — los pliométricos (salto con alcance, sentadilla con salto, slam). Convierten la fuerza en despegue. Van <b>primero</b> en la sesión, frescos, con intención máxima y reps bajas.</li>
       <li><b>Técnica</b> — el braceo aporta alrededor de un 10% de la altura. Practícalo en cada salto, no es adorno.</li>
     </ul>
-    <p><b>Mide para saber si funciona:</b> cada 3 semanas, prueba de pared — de pie, marca tu alcance con el brazo estirado; luego salta con carrera de un paso y marca lo más alto que toques. La diferencia es tu salto. <b>Regístrala en la app</b> (en la marca del salto vertical del miércoles, en cm) y la gráfica te dirá si el plan está pagando.</p>
+    <p><b>Mide para saber si funciona:</b> cada 3 semanas, prueba de pared — de pie, marca tu alcance con el brazo estirado; luego salta con carrera de un paso y marca lo más alto que toques. La diferencia es tu salto. <b>Regístrala en la app</b> (en la marca del <b>salto con carrera de un paso</b> del miércoles, que es exactamente ese gesto, en cm) y la gráfica te dirá si el plan está pagando. El salto parado del mismo día también registra cm: la distancia entre las dos gráficas es lo que te aporta la carrera.</p>
     <p><b>Todavía no hagas depth jumps</b> (saltar desde un cajón y rebotar): son el pliométrico más potente pero también el que más castiga tendones, y rinden cuando la sentadilla anda cerca de 1.5× tu peso corporal. Con la doble progresión llegarás; el orden importa.</p>
   </div>
   <div class="note-block">
@@ -707,7 +790,7 @@ const OFF_NOTAS = `
     <p>Las fotos de posición inicial y final vienen de <b>free-exercise-db</b>, una base de datos abierta de ejercicios. Cada botón <b>Ver forma</b> muestra las dos posiciones y los pasos de ejecución.</p>
     <p>Los ejercicios de acarreo que no existen en esa base (viga al hombro, sostén, garrafón, levantarse con mochila…) llevan <b>ilustraciones secuenciales propias</b> paso a paso, dibujadas dentro de la app: no dependen de internet ni de enlaces externos. El enlace a video queda al pie del panel como opción extra, no como la explicación principal.</p>
   </div>
-`;
+${DATOS_IO}${FOTOS_IO}`;
 
 const FASES = `
   <div class="note-block">
@@ -825,7 +908,7 @@ const FASES = `
     <p>El plan ya está calibrado a <b>~90 kg efectivos sobre el hombro</b>. Conviene confirmarlo con una prueba real en diciembre, porque el peso efectivo cambia mucho según cuánto arrastre la base y qué tanto se reparta.</p>
     <p>Y una cosa que sí o sí va antes de la primera sesión: <b>una revisión médica</b>, sobre todo de presión y corazón. Carga pesada más calor más esfuerzo prolongado estresa el sistema cardiovascular de forma distinta a entrenar bajo techo, y 90 kg no es una carga de conversación.</p>
   </div>
-`;
+${DATOS_IO}${FOTOS_IO}`;
 
 const CALOR = `
   <div class="note-block amberblk">
@@ -955,6 +1038,16 @@ const SEQ = {
    ['2 · Rodilla · torso erguido', S_+G_+'<line x1="24" y1="62" x2="116" y2="52" stroke="#c8fb3d" stroke-width="6"/><circle cx="72" cy="43" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="73" y1="50" x2="75" y2="82" stroke="#eef1f2" stroke-width="3"/><line x1="75" y1="82" x2="93" y2="88" stroke="#eef1f2" stroke-width="3"/><line x1="93" y1="88" x2="94" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="75" y1="82" x2="67" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="74" y1="58" x2="91" y2="54" stroke="#eef1f2" stroke-width="3"/><line x1="73" y1="61" x2="58" y2="69" stroke="#eef1f2" stroke-width="3"/></svg>'],
    ['3 · Empuja y sube', S_+G_+'<line x1="26" y1="54" x2="120" y2="45" stroke="#c8fb3d" stroke-width="6"/><circle cx="75" cy="33" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="40" x2="78" y2="75" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="75" x2="94" y2="86" stroke="#eef1f2" stroke-width="3"/><line x1="94" y1="86" x2="95" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="78" y1="75" x2="70" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="92" x2="66" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="77" y1="49" x2="94" y2="45" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="52" x2="61" y2="61" stroke="#eef1f2" stroke-width="3"/><path d="M120 84 l0 -18 m-6 7 l6 -7 l6 7" stroke="#c8fb3d" stroke-width="3"/></svg>']
   ],
+  pogo: [
+   ['1 · Contacto · rodilla casi recta', S_+G_+'<circle cx="76" cy="30" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="37" x2="76" y2="70" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="46" x2="64" y2="62" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="46" x2="88" y2="62" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="70" x2="71" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="70" x2="81" y2="106" stroke="#eef1f2" stroke-width="3"/><path d="M62 100 q9 8 18 0" stroke="#c8fb3d" stroke-width="3"/></svg>'],
+   ['2 · Despegue · punta extendida', S_+G_+'<circle cx="76" cy="20" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="27" x2="76" y2="60" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="36" x2="64" y2="52" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="36" x2="88" y2="52" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="60" x2="71" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="60" x2="81" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="71" y1="90" x2="69" y2="99" stroke="#c8fb3d" stroke-width="4"/><line x1="81" y1="90" x2="83" y2="99" stroke="#c8fb3d" stroke-width="4"/><path d="M118 92 l0 -26 m-7 9 l7 -9 l7 9" stroke="#c8fb3d" stroke-width="3"/></svg>'],
+   ['3 · Error · amortiguar con rodilla', S_+G_+'<circle cx="76" cy="42" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="76" y1="49" x2="74" y2="74" stroke="#eef1f2" stroke-width="3"/><line x1="75" y1="56" x2="62" y2="70" stroke="#eef1f2" stroke-width="3"/><line x1="75" y1="56" x2="88" y2="70" stroke="#eef1f2" stroke-width="3"/><line x1="74" y1="74" x2="62" y2="92" stroke="#ff5f5f" stroke-width="3"/><line x1="62" y1="92" x2="68" y2="106" stroke="#ff5f5f" stroke-width="3"/><line x1="74" y1="74" x2="88" y2="92" stroke="#ff5f5f" stroke-width="3"/><line x1="88" y1="92" x2="84" y2="106" stroke="#ff5f5f" stroke-width="3"/><path d="M112 62 l22 22 m0 -22 l-22 22" stroke="#ff5f5f" stroke-width="3"/></svg>']
+  ],
+  carrera: [
+   ['1 · Un paso atrás · marca tu alcance', S_+G_+'<line x1="142" y1="12" x2="142" y2="108" stroke="#5c6266" stroke-width="4"/><circle cx="60" cy="34" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="60" y1="41" x2="60" y2="72" stroke="#eef1f2" stroke-width="3"/><line x1="60" y1="48" x2="47" y2="60" stroke="#eef1f2" stroke-width="3"/><line x1="60" y1="48" x2="73" y2="60" stroke="#eef1f2" stroke-width="3"/><line x1="60" y1="72" x2="52" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="52" y1="90" x2="50" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="60" y1="72" x2="70" y2="90" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="90" x2="72" y2="106" stroke="#eef1f2" stroke-width="3"/><path d="M88 100 l30 0 m-8 -6 l8 6 l-8 6" stroke="#c8fb3d" stroke-width="3"/></svg>'],
+   ['2 · Penúltimo paso largo · brazos atrás', S_+G_+'<line x1="142" y1="12" x2="142" y2="108" stroke="#5c6266" stroke-width="4"/><circle cx="88" cy="44" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="88" y1="51" x2="86" y2="78" stroke="#eef1f2" stroke-width="3"/><line x1="87" y1="58" x2="68" y2="50" stroke="#c8fb3d" stroke-width="3"/><line x1="87" y1="60" x2="70" y2="64" stroke="#c8fb3d" stroke-width="3"/><line x1="86" y1="78" x2="66" y2="94" stroke="#eef1f2" stroke-width="3"/><line x1="66" y1="94" x2="62" y2="106" stroke="#eef1f2" stroke-width="3"/><line x1="86" y1="78" x2="104" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="104" y1="92" x2="108" y2="106" stroke="#eef1f2" stroke-width="3"/></svg>'],
+   ['3 · Planta y sube los brazos', S_+G_+'<line x1="142" y1="12" x2="142" y2="108" stroke="#5c6266" stroke-width="4"/><line x1="128" y1="22" x2="142" y2="22" stroke="#c8fb3d" stroke-width="4"/><circle cx="98" cy="44" r="7" stroke="#eef1f2" stroke-width="3"/><line x1="98" y1="51" x2="96" y2="78" stroke="#eef1f2" stroke-width="3"/><line x1="98" y1="55" x2="116" y2="38" stroke="#eef1f2" stroke-width="3"/><line x1="116" y1="38" x2="128" y2="24" stroke="#eef1f2" stroke-width="3"/><line x1="98" y1="57" x2="84" y2="44" stroke="#eef1f2" stroke-width="3"/><line x1="96" y1="78" x2="86" y2="94" stroke="#eef1f2" stroke-width="3"/><line x1="86" y1="94" x2="90" y2="102" stroke="#eef1f2" stroke-width="3"/><line x1="96" y1="78" x2="106" y2="92" stroke="#eef1f2" stroke-width="3"/><line x1="106" y1="92" x2="103" y2="101" stroke="#eef1f2" stroke-width="3"/><path d="M60 92 l0 -30 m-7 10 l7 -10 l7 10" stroke="#c8fb3d" stroke-width="3"/></svg>']
+  ],
   hollow: [
    ['1 · Fácil · rodillas dobladas', S_+G_+'<circle cx="45" cy="88" r="6" stroke="#eef1f2" stroke-width="3"/><path d="M51 91 Q66 96 80 100" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="104" x2="92" y2="104" stroke="#c8fb3d" stroke-width="4"/><line x1="56" y1="92" x2="74" y2="84" stroke="#eef1f2" stroke-width="3"/><line x1="80" y1="100" x2="96" y2="82" stroke="#eef1f2" stroke-width="3"/><line x1="96" y1="82" x2="108" y2="92" stroke="#eef1f2" stroke-width="3"/></svg>'],
    ['2 · Completa · lumbar pegada', S_+G_+'<circle cx="42" cy="86" r="6" stroke="#eef1f2" stroke-width="3"/><path d="M48 89 Q64 96 82 100" stroke="#eef1f2" stroke-width="3"/><line x1="70" y1="104" x2="94" y2="104" stroke="#c8fb3d" stroke-width="4"/><line x1="49" y1="89" x2="30" y2="80" stroke="#eef1f2" stroke-width="3"/><line x1="82" y1="100" x2="132" y2="88" stroke="#eef1f2" stroke-width="3"/></svg>']
@@ -982,6 +1075,91 @@ function parseTarget(s){
 }
 function getLog(){ try{ return JSON.parse(localStorage.getItem(B.logKey)||'{}'); }catch(e){ return {}; } }
 function setLog(l){ try{ localStorage.setItem(B.logKey, JSON.stringify(l)); }catch(e){} }
+
+/* ---- Respaldo de marcas (exportar / importar JSON) ----
+   Backlog #1: todo vive en localStorage, así que el historial se pierde al cambiar de
+   teléfono o al limpiar el navegador. El archivo es la única copia fuera del dispositivo. */
+const IO_VER = 1;
+/* Identidad de una entrada: mismo instante, mismo peso y mismo valor = la misma marca. */
+function entKey(x){ return x.t + '|' + (x.w == null ? '' : x.w) + '|' + x.v; }
+/* Descarta basura del archivo y normaliza tipos antes de tocar el historial real. */
+function limpiaEntrada(x){
+  if(!x || typeof x !== 'object') return null;
+  const t = Number(x.t), v = Number(x.v);
+  if(!isFinite(t) || t <= 0 || !isFinite(v)) return null;
+  const w = (x.w === null || x.w === undefined || x.w === '') ? null : Number(x.w);
+  if(w !== null && !isFinite(w)) return null;
+  return {t, w, v};
+}
+/* Fusiona src dentro de dest sin duplicar. Devuelve el conteo para el aviso. */
+function fusionarMarcas(dest, src){
+  let nuevas = 0, repetidas = 0, ejercicios = 0, descartadas = 0;
+  Object.keys(src || {}).forEach(id => {
+    const lista = Array.isArray(src[id]) ? src[id] : null;
+    if(!lista) { descartadas++; return; }
+    const actual = Array.isArray(dest[id]) ? dest[id] : [];
+    const vistas = new Set(actual.map(entKey));
+    let sumadas = 0;
+    lista.forEach(raw => {
+      const e = limpiaEntrada(raw);
+      if(!e){ descartadas++; return; }
+      const k = entKey(e);
+      if(vistas.has(k)){ repetidas++; return; }
+      vistas.add(k); actual.push(e); sumadas++;
+    });
+    if(sumadas){
+      /* El orden cronológico es invariante del motor: sugerir() lee la última entrada
+         y spark() dibuja las últimas 10. Reordenar aquí es obligatorio. */
+      actual.sort((a,b)=> a.t - b.t);
+      dest[id] = actual;
+      nuevas += sumadas; ejercicios++;
+    } else if(actual.length){
+      dest[id] = actual;
+    }
+  });
+  return {nuevas, repetidas, ejercicios, descartadas};
+}
+function nombreArchivo(){
+  const d = new Date();
+  const p2 = n => String(n).padStart(2,'0');
+  return `rutina-marcas-${mode}-${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}.json`;
+}
+function exportarMarcas(){
+  const marcas = getLog();
+  const total = Object.keys(marcas).reduce((a,k)=> a + (marcas[k]||[]).length, 0);
+  const payload = {
+    app:'rutina', v:IO_VER, bloque:mode, clave:B.logKey,
+    exportado:new Date().toISOString(), ejercicios:Object.keys(marcas).length,
+    entradas:total, marcas
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = nombreArchivo();
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=> URL.revokeObjectURL(url), 1000);
+  return {total, ejercicios:payload.ejercicios, archivo:a.download};
+}
+/* Lee el texto del archivo y devuelve el resumen de la fusión, o {error}. */
+function aplicarImport(txt){
+  let data;
+  try{ data = JSON.parse(txt); }
+  catch(e){ return {error:'Ese archivo no es un JSON válido. Usa el que descargaste con Exportar.'}; }
+  const marcas = (data && typeof data === 'object')
+    ? (data.marcas && typeof data.marcas === 'object' && !Array.isArray(data.marcas) ? data.marcas
+      : (!data.app && !data.marcas && !Array.isArray(data) ? data : null))
+    : null;
+  if(!marcas) return {error:'No encontré marcas en ese archivo.'};
+  if(data.bloque && data.bloque !== mode){
+    const otro = BLOCKS[data.bloque] ? BLOCKS[data.bloque].name : data.bloque;
+    if(!confirm(`Ese respaldo es del bloque "${otro}" y estás en "${B.name}".\n\n¿Importarlo aquí de todas formas?`))
+      return {error:'Importación cancelada. Cambia de bloque arriba y vuelve a intentar.'};
+  }
+  const log = getLog();
+  const r = fusionarMarcas(log, marcas);
+  if(r.nuevas) setLog(log);
+  return r;
+}
 function rondaPeso(x){ return Math.round(x/2.5)*2.5; }
 function fmtKg(x){ return (x%1? x.toFixed(1): x) + ' kg'; }
 function fmtCuando(t){
@@ -991,6 +1169,11 @@ function fmtCuando(t){
 function paso(u){ return u==='seg'||u==='m' ? 5 : 1; }
 /* La sugerencia: doble progresión sobre la peor serie */
 function sugerir(e, hist){
+  /* Calentamiento (pogos): la invariante 2 dice reps bajas y nunca al fallo. Si cayera en la
+     rama de peso corporal, al tocar el techo pediría lastre — justo lo contrario. */
+  if(e.prep){
+    return {t:'Calentamiento: se progresa en calidad de contacto, no en carga. Nunca lo lastres ni lo lleves al fallo — si el rebote se alarga o suena, cierra la serie.', c:'dim'};
+  }
   if(e.medida==='cm'){
     return hist.length
       ? {t:'Prueba de pared cada 3 semanas: misma pared, mismo calzado, el mejor de 3 intentos. La gráfica te dice si el plan paga.', c:'dim'}
@@ -1194,6 +1377,152 @@ function renderTabs(){
   ).join('');
 }
 
+/* ---- Precarga de fotos para uso offline (backlog #8) ----
+   OJO: este nombre DEBE coincidir con la constante FOTOS de sw.js. Si se separan, la página
+   guardaría en una caché que el service worker nunca consulta y el offline fallaría en silencio. */
+const FOTOS_CACHE = 'rutina-fotos';
+const FOTOS_PARALELO = 6;
+
+/* Todas las URLs de foto del bloque activo, sin repetir.
+   Los ejercicios con `seq` son SVG inline: ya funcionan offline, no se descargan. */
+function fotosDelBloque(){
+  const urls = new Set();
+  Object.values(B.days).forEach(d => d.ex.forEach(e => {
+    if(!e.id) return;
+    urls.add(IMG + e.id + '/0.jpg');
+    urls.add(IMG + e.id + '/1.jpg');
+  }));
+  return [...urls];
+}
+/* Devuelve 'ya' | 'nueva' | 'error'. No re-descarga lo que ya está guardado. */
+async function guardaFoto(cache, url){
+  if(await cache.match(url)) return 'ya';
+  let res = null;
+  try{
+    res = await fetch(url);                       // raw.githubusercontent responde con CORS
+  }catch(e){
+    try{ res = await fetch(url, {mode:'no-cors'}); }   // respaldo: respuesta opaca, igual sirve
+    catch(e2){ return 'error'; }
+  }
+  if(!res || !(res.ok || res.type === 'opaque')) return 'error';
+  try{ await cache.put(url, res); }catch(e){ return 'error'; }
+  return 'nueva';
+}
+/* Descarga en paralelo limitado: 6 a la vez para no saturar la red del teléfono. */
+async function precacheFotos(urls, alAvanzar){
+  const cache = await caches.open(FOTOS_CACHE);
+  const cola = urls.slice();
+  let hechas = 0, nuevas = 0, ya = 0, fallos = 0;
+  const obrero = async () => {
+    while(cola.length){
+      const r = await guardaFoto(cache, cola.shift());
+      if(r === 'nueva') nuevas++; else if(r === 'ya') ya++; else fallos++;
+      hechas++;
+      if(alAvanzar) alAvanzar(hechas, urls.length);
+    }
+  };
+  await Promise.all(Array.from({length: Math.min(FOTOS_PARALELO, urls.length)}, obrero));
+  return {total: urls.length, nuevas, ya, fallos, guardadas: nuevas + ya};
+}
+
+/* Conecta los botones de respaldo de la página de notas (NOTAS en off, FASES en cruz). */
+function wireIO(){
+  const bE = document.getElementById('ioExport');
+  const bI = document.getElementById('ioImport');
+  const file = document.getElementById('ioFile');
+  const msg = document.getElementById('ioMsg');
+  if(!bE || !bI || !file || !msg) return;
+  const di = (txt, err) => { msg.innerHTML = `<div class="io-msg${err?' err':''}">${txt}</div>`; };
+
+  bE.addEventListener('click', ()=>{
+    const marcas = getLog();
+    if(!Object.keys(marcas).length){
+      di(`Todavía no hay marcas en <b>${B.name}</b>: registra algo antes de exportar.`, true);
+      return;
+    }
+    try{
+      const r = exportarMarcas();
+      di(`Listo: <b>${r.total}</b> ${r.total===1?'marca':'marcas'} de <b>${r.ejercicios}</b> ${r.ejercicios===1?'ejercicio':'ejercicios'} en <b>${r.archivo}</b>. Guárdalo fuera del teléfono.`);
+    }catch(e){
+      di('No se pudo generar el archivo en este navegador.', true);
+    }
+  });
+
+  bI.addEventListener('click', ()=>{ file.value = ''; file.click(); });
+
+  file.addEventListener('change', ()=>{
+    const f = file.files && file.files[0];
+    if(!f) return;
+    const rd = new FileReader();
+    rd.onerror = ()=> di('No se pudo leer el archivo.', true);
+    rd.onload = ()=>{
+      const r = aplicarImport(String(rd.result));
+      if(r.error){ di(r.error, true); return; }
+      if(!r.nuevas){
+        di(`Sin cambios: las <b>${r.repetidas}</b> ${r.repetidas===1?'marca ya estaba':'marcas ya estaban'} en este dispositivo.`);
+        return;
+      }
+      const extra = [];
+      if(r.repetidas) extra.push(`${r.repetidas} ya ${r.repetidas===1?'estaba':'estaban'}`);
+      if(r.descartadas) extra.push(`${r.descartadas} con formato inválido`);
+      di(`Importadas <b>${r.nuevas}</b> ${r.nuevas===1?'marca nueva':'marcas nuevas'} en <b>${r.ejercicios}</b> ${r.ejercicios===1?'ejercicio':'ejercicios'}${extra.length?` · ${extra.join(' · ')}`:''}.`);
+    };
+    rd.readAsText(f);
+  });
+
+  /* ---- Guardar todas las fotos del bloque (backlog #8) ---- */
+  const go = document.getElementById('fotoGo');
+  const prog = document.getElementById('fotoProg');
+  const fmsg = document.getElementById('fotoMsg');
+  if(!go || !prog || !fmsg) return;
+  const barra = prog.querySelector('.prog-bar i');
+  const etiqueta = prog.querySelector('[data-etiqueta]');
+  const cuenta = prog.querySelector('[data-cuenta]');
+  const fdi = (txt, err) => { fmsg.innerHTML = `<div class="io-msg${err?' err':''}">${txt}</div>`; };
+
+  go.addEventListener('click', async ()=>{
+    if(go.disabled) return;
+    fmsg.innerHTML = '';
+    if(!('caches' in window)){
+      fdi('Este navegador no puede guardar fotos para uso offline. Necesitas abrir la app por <b>https</b> (así está en GitHub Pages).', true);
+      return;
+    }
+    const urls = fotosDelBloque();
+    if(!urls.length){ fdi(`<b>${B.name}</b> no tiene fotos que guardar: sus fichas son ilustraciones, que ya funcionan sin conexión.`); return; }
+    if(navigator.onLine === false){
+      fdi('Estás sin conexión. Conéctate a wifi y vuelve a intentarlo: esto justamente sirve para prepararte <i>antes</i> de salir.', true);
+      return;
+    }
+    go.disabled = true;
+    const textoOriginal = go.textContent;
+    go.textContent = 'Guardando…';
+    prog.classList.add('on');
+    barra.style.width = '0%';
+    etiqueta.textContent = `Fotos de ${B.name}`;
+    cuenta.textContent = `0 / ${urls.length}`;
+    try{
+      const r = await precacheFotos(urls, (hechas, total)=>{
+        barra.style.width = Math.round(hechas*100/total) + '%';
+        cuenta.innerHTML = `<b>${hechas}</b> / ${total}`;
+      });
+      const partes = [];
+      if(r.nuevas) partes.push(`${r.nuevas} ${r.nuevas===1?'nueva':'nuevas'}`);
+      if(r.ya) partes.push(`${r.ya} ya ${r.ya===1?'estaba':'estaban'}`);
+      if(r.fallos){
+        fdi(`Guardadas <b>${r.guardadas}</b> de <b>${r.total}</b> fotos${partes.length?` · ${partes.join(' · ')}`:''}. <b>${r.fallos}</b> no se pudieron descargar — vuelve a tocar el botón con mejor señal y solo reintentará esas.`, true);
+      }else{
+        fdi(`Listo: las <b>${r.total}</b> fotos de <b>${B.name}</b> están guardadas${partes.length?` (${partes.join(' · ')})`:''}. Las fichas ya abren sin conexión.`);
+      }
+    }catch(e){
+      fdi('No se pudieron guardar las fotos en este navegador.', true);
+    }finally{
+      go.disabled = false;
+      go.textContent = textoOriginal;
+      prog.classList.remove('on');
+    }
+  });
+}
+
 function renderDay(key){
   if(B.pages[key]){
     tabs.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.day===key));
@@ -1207,6 +1536,7 @@ function renderDay(key){
         renderPhase();
       });
     }
+    wireIO();
     return;
   }
   tabs.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.day===key));
@@ -1339,6 +1669,15 @@ loadStore();
 renderShell();
 renderTabs();
 renderDay(B.tabs[0][0]);
+
+/* ---- PWA: registro del service worker (backlog #4) ----
+   Ruta RELATIVA: el deploy vive en un subpath (/rutina/) y './sw.js' fija el alcance ahí.
+   Con '/sw.js' el navegador lo buscaría en la raíz del dominio y fallaría. */
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{ /* sin offline, la app sigue igual */ });
+  });
+}
 </script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+{
+  "name": "Rutina — Offseason y Reto Marzo",
+  "short_name": "Rutina",
+  "description": "Rutina de gimnasio con registro de marcas, progresión automática y plan del Vía Crucis. Funciona sin conexión.",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0d0e",
+  "theme_color": "#0c0d0e",
+  "categories": ["health", "fitness", "sports"],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
